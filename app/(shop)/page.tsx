@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <div>home page</div>;
+  return <div>Special deals CYBER MONDAY SALE</div>;
 }

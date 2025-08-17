@@ -7,10 +7,10 @@ const layout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <>
+    <div>
       <MainNav />
       {children}
-    </>
+    </div>
   );
 };
 
