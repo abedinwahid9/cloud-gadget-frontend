@@ -1,10 +1,19 @@
+import { Badge } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-import { FaFacebookF, FaInstagram, FaMobileAlt } from "react-icons/fa";
+import {
+  FaCartArrowDown,
+  FaFacebookF,
+  FaHeart,
+  FaInstagram,
+  FaMobileAlt,
+  FaUserAlt,
+} from "react-icons/fa";
 import { IoLogoYoutube } from "react-icons/io";
 
 const MainNav = () => {
   const socialIconStyle: string = "w-4 h-4 text-secondary";
+  const userIcons: string = "w-4 h-4 text-nav";
 
   return (
     <nav>
@@ -36,11 +45,11 @@ const MainNav = () => {
           </div>
         </div>
       </div>
-      <div className="w-full h-10 bg-secondary  ">
+      <div className="w-full h-10 bg-secondary   py-2 px-5 ">
         <div className="container mx-auto flex justify-between">
-          <div>logo</div>
-          <div>
-            <ul>
+          <div className="text-nav font-semibold text-sm">logo</div>
+          <div className="flex  items-center gap-4">
+            <ul className="text-nav flex items-center gap-4">
               <li>
                 <Link href="/">home</Link>
               </li>
@@ -51,11 +60,33 @@ const MainNav = () => {
                 <Link href="">about us</Link>
               </li>
               <li>
-                <Link href="/">contact</Link>
+                <Link href="/">contact us</Link>
+              </li>
+            </ul>
+            <ul className="text-nav flex items-center gap-4">
+              <li>
+                <Link href="/">
+                  <FaHeart className={userIcons} />
+                </Link>
               </li>
               <li>
-                <Link href="/"></Link>
+                <Link href="/">
+                  <FaCartArrowDown className={userIcons} />
+                </Link>
               </li>
+              <li>
+                <Link href="/">
+                  <FaUserAlt className={userIcons} />
+                </Link>
+              </li>
+              <div className="relative inline-block">
+                <Badge>
+                  <Link href="/"></Link>
+                </Badge>
+
+                {/* This is the icon you want to place at top right */}
+                <FaUserAlt className="absolute top-0 right-0 text-primary" />
+              </div>
             </ul>
           </div>
         </div>
