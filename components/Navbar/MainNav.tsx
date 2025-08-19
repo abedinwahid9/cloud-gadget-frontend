@@ -17,6 +17,13 @@ const MainNav = () => {
   const socialIconStyle: string = "w-4 h-4 text-secondary";
   const userIcons: string = "w-6 h-6 text-nav";
 
+  const navLink = [
+    { name: "Home", href: "/" },
+    { name: "Products", href: "/" },
+    { name: "About Us", href: "/" },
+    { name: "Contact Us", href: "/" },
+  ];
+
   return (
     <nav>
       <div className="w-full h-auto bg-primary ">
@@ -47,21 +54,16 @@ const MainNav = () => {
           </div>
         </div>
       </div>
-      <div className="w-full h-auto bg-secondary   py-4 px-5 ">
+      <div className="w-full h-auto bg-secondary   py-3 px-5 ">
         <div className="container mx-auto flex justify-between">
           <div className="text-nav font-semibold text-sm">logo</div>
           <div className="flex  items-center gap-4">
             <ul className="text-nav flex items-center gap-6">
-              {[
-                { name: "Home", href: "/" },
-                { name: "Products", href: "/" },
-                { name: "About Us", href: "/" },
-                { name: "Contact Us", href: "/" },
-              ].map((item) => (
+              {navLink.map((item) => (
                 <li key={item.name} className="group relative">
                   <Link
                     href={item.href}
-                    className="transition-colors duration-300 hover:text-primary"
+                    className="transition-colors duration-300 hover:text-primary capitalize font-semibold text-lg"
                   >
                     {item.name}
                     <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-primary transition-all duration-300 group-hover:w-full" />
@@ -100,7 +102,9 @@ const MainNav = () => {
           </div>
         </div>
       </div>
-      <CateNav />
+      <div className=" bg-primary/50">
+        <CateNav />
+      </div>
     </nav>
   );
 };

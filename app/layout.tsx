@@ -11,6 +11,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${baiJamjuree.variable} ${geistMono.variable}  antialiased `}
+        cz-shortcut-listen="true"
       >
         <ThemeProvider
           attribute="class"
