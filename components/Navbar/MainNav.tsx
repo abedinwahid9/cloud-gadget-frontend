@@ -1,4 +1,3 @@
-import { Badge } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import {
@@ -10,14 +9,17 @@ import {
   FaUserAlt,
 } from "react-icons/fa";
 import { IoLogoYoutube } from "react-icons/io";
+import { Badge } from "../ui/badge";
+import UserProfile from "../share/UserProfile/UserProfile";
+import CateNav from "./CateNav";
 
 const MainNav = () => {
   const socialIconStyle: string = "w-4 h-4 text-secondary";
-  const userIcons: string = "w-4 h-4 text-nav";
+  const userIcons: string = "w-6 h-6 text-nav";
 
   return (
     <nav>
-      <div className="w-full h-8 bg-primary ">
+      <div className="w-full h-auto bg-primary ">
         <div className="container mx-auto py-2 px-5 flex justify-between">
           <Link
             href="tel:01716893200"
@@ -45,52 +47,60 @@ const MainNav = () => {
           </div>
         </div>
       </div>
-      <div className="w-full h-10 bg-secondary   py-2 px-5 ">
+      <div className="w-full h-auto bg-secondary   py-4 px-5 ">
         <div className="container mx-auto flex justify-between">
           <div className="text-nav font-semibold text-sm">logo</div>
           <div className="flex  items-center gap-4">
-            <ul className="text-nav flex items-center gap-4">
-              <li>
-                <Link href="/">home</Link>
-              </li>
-              <li>
-                <Link href="/">products</Link>
-              </li>
-              <li>
-                <Link href="">about us</Link>
-              </li>
-              <li>
-                <Link href="/">contact us</Link>
-              </li>
+            <ul className="text-nav flex items-center gap-6">
+              {[
+                { name: "Home", href: "/" },
+                { name: "Products", href: "/" },
+                { name: "About Us", href: "/" },
+                { name: "Contact Us", href: "/" },
+              ].map((item) => (
+                <li key={item.name} className="group relative">
+                  <Link
+                    href={item.href}
+                    className="transition-colors duration-300 hover:text-primary"
+                  >
+                    {item.name}
+                    <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-primary transition-all duration-300 group-hover:w-full" />
+                  </Link>
+                </li>
+              ))}
             </ul>
             <ul className="text-nav flex items-center gap-4">
-              <li>
+              <li className="relative">
                 <Link href="/">
                   <FaHeart className={userIcons} />
                 </Link>
+                <span
+                  style={{
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%,-50%)",
+                  }}
+                  className="absolute text-xs font-bold tabular-nums  leading-none text-secondary"
+                >
+                  5
+                </span>
               </li>
-              <li>
+              <li className="relative">
                 <Link href="/">
                   <FaCartArrowDown className={userIcons} />
                 </Link>
+                <Badge className="h-5 w-5 absolute -top-2 bg-badge text-secondary -right-2 rounded-full font-bold tabular-nums">
+                  10
+                </Badge>
               </li>
               <li>
-                <Link href="/">
-                  <FaUserAlt className={userIcons} />
-                </Link>
+                <UserProfile />
               </li>
-              <div className="relative inline-block">
-                <Badge>
-                  <Link href="/"></Link>
-                </Badge>
-
-                {/* This is the icon you want to place at top right */}
-                <FaUserAlt className="absolute top-0 right-0 text-primary" />
-              </div>
             </ul>
           </div>
         </div>
       </div>
+      <CateNav />
     </nav>
   );
 };
