@@ -138,11 +138,11 @@ const navItems = [
 const CateNav = () => {
   return (
     <NavigationMenu viewport={false} className="container mx-auto w-full">
-      <NavigationMenuList>
+      <NavigationMenuList className="flex flex-wrap w-full">
         {navItems?.map((item, i) => {
           return (
             <NavigationMenuItem key={i}>
-              <NavigationMenuTrigger className="text-secondary/75 data-[state=open]:text-secondary hover:text-secondary font-bold uppercase bg-transparent">
+              <NavigationMenuTrigger className="text-secondary/75 data-[state=open]:text-secondary hover:text-secondary font-bold uppercase bg-transparent dark:text-white ">
                 {item.title}
               </NavigationMenuTrigger>
 

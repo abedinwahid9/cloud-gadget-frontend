@@ -1,4 +1,5 @@
 import MainNav from "@/components/Navbar/MainNav";
+import MobileNav from "@/components/Navbar/MobileNav";
 import React from "react";
 
 const layout = ({
@@ -10,6 +11,7 @@ const layout = ({
     <div className="font-bai-jamjuree">
       <MainNav />
       {children}
+      <MobileNav />
     </div>
   );
 };

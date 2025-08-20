@@ -1,4 +1,3 @@
-import { ThemeBtn } from "@/components/theme/ThemeBtn";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
