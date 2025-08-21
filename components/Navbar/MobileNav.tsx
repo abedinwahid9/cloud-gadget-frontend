@@ -18,10 +18,11 @@ export default function MobileNav() {
   ];
 
   const pathname = usePathname();
+  const iconStyle = "h-8 w-8 transition-colors duration-300 ease-in-out";
 
   return (
     <div className="fixed bottom-0 right-0 w-full  lg:hidden block ">
-      <div className="flex items-center justify-between  rounded-t-3xl py-1.5 px-2 bg-secondary shadow-xl">
+      <div className="flex items-center justify-between  rounded-t-3xl py-2.5 px-2 bg-secondary shadow-xl">
         {navItems.map((item) => {
           const isActive =
             item.href &&
@@ -45,18 +46,15 @@ export default function MobileNav() {
             <Link
               key={item.id}
               href={item.href!}
-              className={`flex items-center justify-center transition-all duration-300 ease-in-out py-1 rounded-full whitespace-nowrap
+              className={`flex items-center justify-center transition-all duration-300 ease-in-out py-1  rounded-full whitespace-nowrap
                   ${
                     isActive
-                      ? "bg-primary text-nav w-24 shadow-md"
+                      ? "bg-primary text-nav w-28 shadow-md "
                       : "bg-transparent text-nav w-12"
                   }
                 `}
             >
-              <Icon
-                css={"h-7 w-7 transition-colors duration-300 ease-in-out"}
-                className="h-7 w-7 transition-colors duration-300 ease-in-out"
-              />
+              <Icon css={iconStyle} className={iconStyle} />
               {isActive && (
                 <span className="text-sm font-semibold ml-2">{item.name}</span>
               )}
