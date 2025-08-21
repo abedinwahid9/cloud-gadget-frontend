@@ -2,15 +2,13 @@
 import Link from "next/link";
 import React from "react";
 import {
-  FaCartArrowDown,
   FaFacebookF,
-  FaHeart,
   FaInstagram,
   FaMobileAlt,
   FaSearch,
 } from "react-icons/fa";
 import { IoLogoYoutube } from "react-icons/io";
-import { Badge } from "../ui/badge";
+
 import UserProfile from "../share/UserProfile/UserProfile";
 import CateNav from "./CateNav";
 import SidebarNav from "./SidebarNav";
