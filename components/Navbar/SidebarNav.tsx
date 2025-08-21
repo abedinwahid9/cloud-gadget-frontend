@@ -99,11 +99,11 @@ const navItems = [
 ];
 const SidebarNav = () => {
   return (
-    <DrawerContent className="w-[300px] h-auto p-4 overflow-y-auto bg-secondary/60">
+    <DrawerContent className="w-[300px] h-auto p-4  bg-secondary/60">
       <DrawerTitle className="text-lg font-semibold mb-4 text-nav">
         Categories
       </DrawerTitle>
-      <Accordion type="multiple" className="w-full overflow-auto">
+      <Accordion type="multiple" className="w-full overflow-y-scroll">
         {navItems.map((item, index) => (
           <AccordionItem value={`item-${index}`} key={index}>
             <AccordionTrigger className="text-nav text-lg">

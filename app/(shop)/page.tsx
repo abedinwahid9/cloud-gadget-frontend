@@ -1,3 +1,4 @@
+import HeroSection from "@/components/HeroSection/HeroSection";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,5 +7,9 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <div>Special deals CYBER MONDAY SALE</div>;
+  return (
+    <main className="container mx-auto">
+      <HeroSection />
+    </main>
+  );
 }
