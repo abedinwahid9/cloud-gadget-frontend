@@ -1,5 +1,3 @@
-import Link from "next/link";
-import React from "react";
 import { FaHeart } from "react-icons/fa";
 
 const Wishlist = ({ css }: { css: string }) => {

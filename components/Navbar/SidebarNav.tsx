@@ -1,7 +1,11 @@
 // components/SidebarDrawer.tsx
 "use client";
 
-import { DrawerClose, DrawerContent } from "@/components/ui/drawer";
+import {
+  DrawerClose,
+  DrawerContent,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -96,7 +100,9 @@ const navItems = [
 const SidebarNav = () => {
   return (
     <DrawerContent className="w-[300px]  p-4 overflow-y-auto bg-secondary/60">
-      <h2 className="text-lg font-semibold mb-4 text-nav">Categories</h2>
+      <DrawerTitle className="text-lg font-semibold mb-4 text-nav">
+        Categories
+      </DrawerTitle>
       <Accordion type="multiple" className="w-full scroll-auto">
         {navItems.map((item, index) => (
           <AccordionItem value={`item-${index}`} key={index}>
