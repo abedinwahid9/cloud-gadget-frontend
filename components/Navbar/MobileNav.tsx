@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Search, Percent, ShoppingCart, User } from "lucide-react";
+import { Home } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeBtn } from "../theme/ThemeBtn";
