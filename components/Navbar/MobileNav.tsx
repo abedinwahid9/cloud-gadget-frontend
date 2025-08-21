@@ -12,9 +12,9 @@ export default function MobileNav() {
   const navItems = [
     { id: "home", name: "Home", icon: Home, href: "/" },
     { id: "shop", name: "Search", icon: IoStorefrontSharp, href: "/products" },
+    { id: "profile", name: "Profile", component: ThemeBtn },
     { id: "wishlist", name: "wishlist", icon: Wishlist, href: "/wishlist" },
     { id: "cart", name: "Cart", icon: Cart, href: "/cart" },
-    { id: "profile", name: "Profile", component: ThemeBtn }, // ✅ custom component instead of link
   ];
 
   const pathname = usePathname();
