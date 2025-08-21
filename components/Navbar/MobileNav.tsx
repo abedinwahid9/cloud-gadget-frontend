@@ -13,7 +13,7 @@ export default function MobileNav() {
     { id: "home", name: "Home", icon: Home, href: "/" },
     { id: "shop", name: "Search", icon: IoStorefrontSharp, href: "/products" },
     { id: "profile", name: "Profile", component: ThemeBtn },
-    { id: "wishlist", name: "wishlist", icon: Wishlist, href: "/wishlist" },
+    { id: "wishlist", name: "Wishlist", icon: Wishlist, href: "/wishlist" },
     { id: "cart", name: "Cart", icon: Cart, href: "/cart" },
   ];
 
@@ -21,7 +21,7 @@ export default function MobileNav() {
 
   return (
     <div className="fixed bottom-0 right-0 w-full  lg:hidden block ">
-      <div className="flex items-center justify-between  rounded-t-3xl py-1 px-2 bg-secondary shadow-xl">
+      <div className="flex items-center justify-between  rounded-t-3xl py-1.5 px-2 bg-secondary shadow-xl">
         {navItems.map((item) => {
           const isActive =
             item.href &&
@@ -45,7 +45,7 @@ export default function MobileNav() {
             <Link
               key={item.id}
               href={item.href!}
-              className={`flex items-center justify-center transition-all duration-300 ease-in-out py-1.5 rounded-full whitespace-nowrap
+              className={`flex items-center justify-center transition-all duration-300 ease-in-out py-1 rounded-full whitespace-nowrap
                   ${
                     isActive
                       ? "bg-primary text-nav w-24 shadow-md"
@@ -54,8 +54,8 @@ export default function MobileNav() {
                 `}
             >
               <Icon
-                css={"h-6 w-6 transition-colors duration-300 ease-in-out"}
-                className="h-6 w-6 transition-colors duration-300 ease-in-out"
+                css={"h-7 w-7 transition-colors duration-300 ease-in-out"}
+                className="h-7 w-7 transition-colors duration-300 ease-in-out"
               />
               {isActive && (
                 <span className="text-sm font-semibold ml-2">{item.name}</span>

@@ -5,9 +5,7 @@ import { FaHeart } from "react-icons/fa";
 const Wishlist = ({ css }: { css: string }) => {
   return (
     <div className="relative">
-      <Link href="/">
-        <FaHeart className={`${css} `} />
-      </Link>
+      <FaHeart className={`${css} `} />{" "}
       <span
         style={{
           top: "50%",

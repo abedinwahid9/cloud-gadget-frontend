@@ -114,10 +114,14 @@ const MainNav = () => {
               {/* User icons */}
               <ul className="text-nav flex items-center gap-4">
                 <li className="hidden lg:block">
-                  <Wishlist css={userIcons} />
+                  <Link href="/wishlist">
+                    <Wishlist css={userIcons} />
+                  </Link>
                 </li>
                 <li className=" hidden lg:block">
-                  <Cart css={userIcons} />
+                  <Link href="/cart">
+                    <Cart css={userIcons} />
+                  </Link>
                 </li>
                 <li>
                   <FaSearch className={userIcons} />
