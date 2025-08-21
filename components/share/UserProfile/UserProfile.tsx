@@ -17,13 +17,13 @@ const UserProfile = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="focus:outline-none cursor-pointer">
+      <DropdownMenuTrigger className="focus:outline-none cursor-pointer ">
         <FaUserAlt className={userIcons} />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         side="bottom"
         align="end" // aligns to the left of trigger
-        alignOffset={-5} // offset from the trigger (downward)
+        sideOffset={15} // offset from the trigger (downward)
         className="bg-primary border-none text-secondary "
       >
         <DropdownMenuLabel className="font-bold">My Account</DropdownMenuLabel>
@@ -52,6 +52,13 @@ const UserProfile = () => {
         <DropdownMenuItem className={menuItemClass}>
           <span className="relative">
             Subscription
+            <span className={underlineClass} />
+          </span>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem className={menuItemClass}>
+          <span className="relative">
+            logout
             <span className={underlineClass} />
           </span>
         </DropdownMenuItem>

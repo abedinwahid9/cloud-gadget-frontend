@@ -18,9 +18,11 @@ import { Drawer, DrawerTrigger } from "../ui/drawer";
 import { RiMenu2Line } from "react-icons/ri";
 import { ThemeBtn } from "../theme/ThemeBtn";
 import { usePathname } from "next/navigation";
+import Cart from "../share/Cart/Cart";
+import Wishlist from "../share/Wishlist/Wishlist";
 
 const MainNav = () => {
-  const socialIconStyle = "md:w-4 md:h-4 w-3 h-[8px] text-secondary";
+  const socialIconStyle = "md:w-4 md:h-4 w-3 h-3 text-secondary";
   const userIcons = "w-6 h-6 text-nav";
 
   const navLink = [
@@ -37,7 +39,7 @@ const MainNav = () => {
       <Drawer direction="left">
         {/* top nav */}
         <div className="w-full bg-primary">
-          <div className="container mx-auto py-2 px-5 flex justify-between">
+          <div className="container mx-auto py-2 lg:px-5 px-1 flex justify-between">
             <Link
               href="tel:01716893200"
               aria-hidden="true"
@@ -69,7 +71,7 @@ const MainNav = () => {
         </div>
 
         {/* main nav */}
-        <div className="w-full bg-secondary py-3 px-5">
+        <div className="w-full bg-secondary py-3 lg:px-5  px-1">
           <div className="container mx-auto flex justify-between items-center">
             {/* Logo + Menu */}
             <div className="flex items-center gap-2">
@@ -111,37 +113,20 @@ const MainNav = () => {
 
               {/* User icons */}
               <ul className="text-nav flex items-center gap-4">
-                <li className="relative">
-                  <Link href="/">
-                    <FaHeart className={`${userIcons} hidden lg:block`} />
-                  </Link>
-                  <span
-                    style={{
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%,-50%)",
-                    }}
-                    className="absolute text-xs font-bold tabular-nums leading-none text-secondary"
-                  >
-                    5
-                  </span>
-                </li>
-                <li className="relative hidden lg:block">
-                  <Link href="/">
-                    <FaCartArrowDown className={userIcons} />
-                  </Link>
-                  <Badge className="h-5 w-5 absolute -top-2 -right-2 bg-badge text-secondary rounded-full font-bold tabular-nums">
-                    10
-                  </Badge>
-                </li>
                 <li className="hidden lg:block">
-                  <UserProfile />
+                  <Wishlist css={userIcons} />
+                </li>
+                <li className=" hidden lg:block">
+                  <Cart css={userIcons} />
                 </li>
                 <li>
                   <FaSearch className={userIcons} />
                 </li>
-                <li>
+                <li className="hidden lg:block">
                   <ThemeBtn />
+                </li>{" "}
+                <li>
+                  <UserProfile />
                 </li>
               </ul>
             </div>
