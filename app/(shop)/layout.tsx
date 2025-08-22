@@ -8,7 +8,7 @@ const layout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <div className="font-bai-jamjuree">
+    <div className="font-bai-jamjuree ">
       <MainNav />
       {children}
       <MobileNav />

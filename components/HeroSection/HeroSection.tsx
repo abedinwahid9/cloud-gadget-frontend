@@ -14,12 +14,15 @@ import cover3 from "@/app/assets/cover3.jpg";
 
 const HeroSection = () => {
   return (
-    <div className="grid grid-cols-12  py-2 relative -z-10">
+    <div className="grid grid-cols-12  md:py-2 py-1 relative z-10">
       <Carousel
         className="col-span-8 "
+        opts={{
+          loop: true,
+        }}
         plugins={[
           Autoplay({
-            delay: 2000,
+            delay: 3000,
           }),
         ]}
       >
@@ -49,17 +52,21 @@ const HeroSection = () => {
         {/* <CarouselPrevious />
         <CarouselNext /> */}
       </Carousel>
-      <div className="col-span-4 flex flex-col pl-2 ">
-        <Image
-          className="w-full h-full object-fill pb-1"
-          src={cover3}
-          alt="cover"
-        />
-        <Image
-          className="w-full h-full object-fill pt-1"
-          src={cover2}
-          alt="cover"
-        />
+      <div className="col-span-4 flex flex-col md:pl-2 pl-1 ">
+        <div className="md:pb-1 pb-0.5">
+          <Image
+            className="w-full h-full object-fill "
+            src={cover3}
+            alt="cover"
+          />
+        </div>
+        <div className="md:pt-1 pt-0.5">
+          <Image
+            className="w-full h-full object-fill "
+            src={cover2}
+            alt="cover"
+          />
+        </div>
       </div>
     </div>
   );

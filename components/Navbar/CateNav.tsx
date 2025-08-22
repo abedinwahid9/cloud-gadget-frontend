@@ -137,8 +137,11 @@ const navItems = [
 
 const CateNav = () => {
   return (
-    <NavigationMenu viewport={false} className="container mx-auto w-full">
-      <NavigationMenuList className="flex flex-wrap w-full">
+    <NavigationMenu
+      viewport={false}
+      className="container mx-auto w-full relative z-50 "
+    >
+      <NavigationMenuList className="flex flex-wrap w-full ">
         {navItems?.map((item, i) => {
           return (
             <NavigationMenuItem key={i}>
@@ -146,7 +149,7 @@ const CateNav = () => {
                 {item.title}
               </NavigationMenuTrigger>
 
-              <NavigationMenuContent className="bg-secondary/85 rounded-md p-4 shadow-lg min-w-[250px]">
+              <NavigationMenuContent className="bg-secondary/85 rounded-md p-4 shadow-lg min-w-[200px]">
                 <ul className="grid gap-2">
                   {item?.subcategories?.map((link, i) => (
                     <li key={i}>
