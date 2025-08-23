@@ -18,6 +18,7 @@ export default function Home() {
       <HeroSection />
       <AdsBanner images={images} />
       <Category />
+      <div className="w-full h-[500px]"></div>
     </main>
   );
 }

@@ -1,6 +1,5 @@
-import * as React from "react";
+"use client";
 
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -12,31 +11,40 @@ import img from "@/app/assets/img1.png";
 import img2 from "@/app/assets/img2.png";
 import img3 from "@/app/assets/img3.png";
 import Image from "next/image";
+import Autoplay from "embla-carousel-autoplay";
 
 const Category = () => {
   return (
     <Carousel
       opts={{
         align: "start",
+        loop: true,
       }}
-      className="w-full p-5 "
+      className="w-full md:p-5 p-2 select-none"
+      plugins={[
+        Autoplay({
+          delay: 2000,
+        }),
+      ]}
     >
       <CarouselContent>
-        {Array.from({ length: 8 }).map((_, index) => (
-          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/8">
-            <div className="w-full rounded-md drop-shadow-2xl inset-shadow-[0px_0px_65px_0px_#00A8A8] flex flex-col items-center justify-center">
+        {Array.from({ length: 10 }).map((_, index) => (
+          <CarouselItem key={index} className="basis-1/5  lg:basis-1/8 ">
+            <div className="w-full rounded-sm drop-shadow-2xl inset-shadow-[0px_0px_80px_0px_#00A8A8] flex flex-col items-center justify-center md:p-2 p-1 cursor-grabbing">
               <Image
                 src={img}
                 alt="cate"
-                className="w-16 h-16 object-contain"
+                className="md:w-16 md:h-16 h-8 w-8 object-contain"
               />
-              <p className="text-sm font-semibold mt-2">Drones</p>
+              <p className="md:text-sm text-[8px] text-secondary dark:text-nav font-semibold ">
+                Drones
+              </p>
             </div>
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      {/* <CarouselPrevious />
+      <CarouselNext /> */}
     </Carousel>
   );
 };
