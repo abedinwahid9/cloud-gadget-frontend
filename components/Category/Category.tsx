@@ -4,8 +4,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+  // CarouselNext,
+  // CarouselPrevious,
 } from "@/components/ui/carousel";
 import img from "@/app/assets/img1.png";
 import img2 from "@/app/assets/img2.png";
