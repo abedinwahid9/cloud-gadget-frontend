@@ -149,7 +149,7 @@ const CateNav = () => {
                 {item.title}
               </NavigationMenuTrigger>
 
-              <NavigationMenuContent className="bg-secondary/85 rounded-md p-4 shadow-lg min-w-[200px]">
+              <NavigationMenuContent className="bg-secondary/85 rounded-md p-4 shadow-lg min-w-[250px]">
                 <ul className="grid gap-2">
                   {item?.subcategories?.map((link, i) => (
                     <li key={i}>

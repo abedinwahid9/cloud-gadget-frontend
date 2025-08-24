@@ -30,7 +30,7 @@ const Category = () => {
       <CarouselContent>
         {Array.from({ length: 10 }).map((_, index) => (
           <CarouselItem key={index} className="basis-1/5  lg:basis-1/8 ">
-            <div className="w-full rounded-sm drop-shadow-2xl inset-shadow-[0px_0px_80px_0px_#00A8A8] flex flex-col items-center justify-center md:p-2 p-1 cursor-grabbing">
+            <div className="w-full rounded-sm drop-shadow-2xl md:inset-shadow-[0px_0px_80px_0px_#00A8A8] inset-shadow-[0px_0px_30px_0px_#00A8A8] flex flex-col items-center justify-center md:p-2 p-1 cursor-grabbing">
               <Image
                 src={img}
                 alt="cate"
