@@ -6,6 +6,8 @@ import cover2 from "@/app/assets/cover2.jpg";
 import AdsBanner from "@/components/share/AdsBanner/AdsBanner";
 import Category from "@/components/Category/Category";
 import TrendingCollection from "@/components/TrendingCollection/TrendingCollection";
+import ProductCard from "@/components/share/ProductCard/ProductCard";
+import img from "@/app/assets/img3.png";
 
 export const metadata: Metadata = {
   title: "Home | Cloudie Gadgets",
@@ -20,6 +22,7 @@ export default function Home() {
       <AdsBanner images={images} />
       <Category />
       <TrendingCollection />
+
       <div className="w-full h-[500px]"></div>
     </main>
   );

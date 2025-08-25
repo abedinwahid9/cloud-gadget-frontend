@@ -8,7 +8,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
+import ProductCard from "../ProductCard/ProductCard";
+import img from "@/app/assets/img3.png";
 
 const Feature = () => {
   const carouselBtn =
@@ -28,12 +29,17 @@ const Feature = () => {
         <CarouselContent>
           {Array.from({ length: 10 }).map((_, i) => {
             return (
-              <CarouselItem key={i} className=" basis-1/2 lg:basis-1/5">
-                <Card>
-                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                    <span className="text-4xl font-semibold">{i + 1}</span>
-                  </CardContent>
-                </Card>
+              <CarouselItem
+                key={i}
+                className=" md:basis-1/3 basis-1/2  lg:basis-1/4 xl:basis-1/5 "
+              >
+                <ProductCard
+                  title="Transparent power bank with headset"
+                  imageUrl={img} // make sure this exists in public/
+                  price={45}
+                  oldPrice={45}
+                  category="headphone"
+                />
               </CarouselItem>
             );
           })}
