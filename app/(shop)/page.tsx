@@ -29,15 +29,15 @@ export default function Home() {
       <AdsBanner images={images} />
       <Category />
       <TrendingCollection />
-      <div className="py-4">
+      <div className="md:py-4 py-2">
         <AdsBanner images={images2} />
       </div>
       <BestCollection />
-      <div className="py-4">
+      <div className="md:py-4 py-2">
         <AdsBanner images={images3} />
       </div>
       <FeatureCollection />
-      <div className="py-4 flex justify-center  overflow-hidden mx-4">
+      <div className="md:py-4 py-2 ">
         <AdsBanner images={images5} />
       </div>
       <FeatureHighlights />

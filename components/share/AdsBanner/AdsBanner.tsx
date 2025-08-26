@@ -19,13 +19,13 @@ const AdsBanner: React.FC<AdsBannerProps> = ({ images }) => {
       : "grid-cols-3"; // fallback for 3, 5, etc.
 
   return (
-    <div className={`grid ${gridCols} md:gap-2 gap-1 `}>
+    <div className={`grid ${gridCols} md:gap-2 gap-1`}>
       {images.map((img, index) => (
         <div key={index} className="relative w-full h-full  overflow-hidden">
           <Image
             src={img}
             alt={`Ad Banner ${index + 1}`}
-            className="object-fill"
+            className="object-fill w-full h-full"
           />
         </div>
       ))}
