@@ -25,7 +25,7 @@ const AdsBanner: React.FC<AdsBannerProps> = ({ images }) => {
           <Image
             src={img}
             alt={`Ad Banner ${index + 1}`}
-            className="object-full"
+            className="object-fill"
           />
         </div>
       ))}

@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer/Footer";
 import MainNav from "@/components/Navbar/MainNav";
 import MobileNav from "@/components/Navbar/MobileNav";
 import React from "react";
@@ -12,6 +13,7 @@ const layout = ({
       <MainNav />
       {children}
       <MobileNav />
+      <Footer />
     </div>
   );
 };

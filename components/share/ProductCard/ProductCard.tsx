@@ -31,7 +31,7 @@ const ProductCard = ({
       <div className="text-sm font-semibold truncate w-full text-center">
         {title}
       </div>
-      <div className="bg-primary/25 capitalize text-xs md:text-base font-medium rounded-4xl px-2 text-secondary">
+      <div className="bg-primary/25 capitalize text-xs md:text-base font-medium rounded-4xl px-2 text-secondary dark:text-nav">
         {category}
       </div>
       <div className="text-center">

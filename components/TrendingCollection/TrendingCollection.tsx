@@ -3,7 +3,7 @@ import Feature from "../share/Feature/Feature";
 const TrendingCollection = () => {
   return (
     <div>
-      <Feature />
+      <Feature title="Trending collection" />
     </div>
   );
 };

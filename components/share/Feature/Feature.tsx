@@ -1,4 +1,3 @@
-import React from "react";
 import Title from "../Title/Title";
 import { Separator } from "@radix-ui/react-separator";
 import {
@@ -11,7 +10,7 @@ import {
 import ProductCard from "../ProductCard/ProductCard";
 import img from "@/app/assets/img3.png";
 
-const Feature = () => {
+const Feature = ({ title }: { title: string }) => {
   const carouselBtn =
     "border-0 bg-primary/50 text-secondary rounded-full dark:text-nav dark:bg-secondary w-5 md:w-8 h-5 md:h-8 font-semibold hover:bg-primary";
 
@@ -19,7 +18,7 @@ const Feature = () => {
     <div className="px-2 py-2">
       <Carousel>
         <div className=" flex justify-between">
-          <Title text="Trending collection" />
+          <Title text={title} />
           <div className="flex gap-2 items-center">
             <CarouselPrevious className={carouselBtn} />
             <CarouselNext className={carouselBtn} />
