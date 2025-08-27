@@ -69,7 +69,7 @@ const MainNav = () => {
         </div>
 
         {/* main nav */}
-        <div className="w-full bg-secondary py-3 lg:px-5  px-1">
+        <div className="w-full bg-secondary py-3 lg:px-5  px-1 ">
           <div className="container mx-auto flex justify-between items-center">
             {/* Logo + Menu */}
             <div className="flex items-center gap-2">

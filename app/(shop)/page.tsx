@@ -11,6 +11,7 @@ import img from "@/app/assets/img3.png";
 import BestCollection from "@/components/BestCollection/BestCollection";
 import FeatureCollection from "@/components/FeatureCollection/FeatureCollection";
 import FeatureHighlights from "@/components/FeatureHighlights/FeatureHighlights";
+import EmailSubscription from "@/components/EmailSubscription/EmailSubscription";
 
 export const metadata: Metadata = {
   title: "Home | Cloudie Gadgets",
@@ -40,6 +41,7 @@ export default function Home() {
       <div className="md:py-4 py-2 ">
         <AdsBanner images={images5} />
       </div>
+      <EmailSubscription />
       <FeatureHighlights />
     </main>
   );
