@@ -6,8 +6,6 @@ import cover2 from "@/app/assets/cover2.jpg";
 import AdsBanner from "@/components/share/AdsBanner/AdsBanner";
 import Category from "@/components/Category/Category";
 import TrendingCollection from "@/components/TrendingCollection/TrendingCollection";
-import ProductCard from "@/components/share/ProductCard/ProductCard";
-import img from "@/app/assets/img3.png";
 import BestCollection from "@/components/BestCollection/BestCollection";
 import FeatureCollection from "@/components/FeatureCollection/FeatureCollection";
 import FeatureHighlights from "@/components/FeatureHighlights/FeatureHighlights";
@@ -20,7 +18,6 @@ export const metadata: Metadata = {
 const images = [cover2, cover3, cover2, cover3];
 const images2 = [cover2, cover3];
 const images3 = [cover3, cover2];
-const images4 = [cover2];
 const images5 = [cover5];
 
 export default function Home() {
