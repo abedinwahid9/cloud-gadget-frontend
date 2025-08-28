@@ -33,10 +33,10 @@ const CustomBreadCrumb = () => {
   const shouldCollapse = crumbLink.length > 3;
 
   return (
-    <Breadcrumb className="my-4 mx-5">
+    <Breadcrumb className="my-4 mx-5 ">
       <BreadcrumbList>
         {/* Always show Home */}
-        <BreadcrumbItem>
+        <BreadcrumbItem className="text-lg font-semibold text-secondary dark:text-nav">
           <BreadcrumbLink asChild>
             <Link href="/">Home</Link>
           </BreadcrumbLink>
@@ -52,10 +52,19 @@ const CustomBreadCrumb = () => {
                   <BreadcrumbEllipsis className="size-4" />
                   <span className="sr-only">Toggle menu</span>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start">
+                <DropdownMenuContent
+                  align="start"
+                  className="bg-primary/75 border-0"
+                >
                   {crumbLink.slice(0, -1).map((item, i) => (
-                    <DropdownMenuItem key={i} asChild>
-                      <Link href={item.path}>{item.name}</Link>
+                    <DropdownMenuItem
+                      className="text-lg font-semibold text-nav  capitalize"
+                      key={i}
+                      asChild
+                    >
+                      <Link className="hover:text-primary" href={item.path}>
+                        {item.name}
+                      </Link>
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
@@ -65,7 +74,7 @@ const CustomBreadCrumb = () => {
 
             {/* Last item (current page) */}
             <BreadcrumbItem>
-              <BreadcrumbPage>
+              <BreadcrumbPage className="text-lg font-semibold text-secondary dark:text-nav capitalize">
                 {crumbLink[crumbLink.length - 1].name}
               </BreadcrumbPage>
             </BreadcrumbItem>
@@ -76,7 +85,9 @@ const CustomBreadCrumb = () => {
             <div key={i}>
               <BreadcrumbItem>
                 {i === crumbLink.length - 1 ? (
-                  <BreadcrumbPage>{path.name}</BreadcrumbPage>
+                  <BreadcrumbPage className="text-lg font-semibold text-secondary dark:text-nav capitalize">
+                    {path.name}
+                  </BreadcrumbPage>
                 ) : (
                   <BreadcrumbLink asChild>
                     <Link href={path.path}>{path.name}</Link>

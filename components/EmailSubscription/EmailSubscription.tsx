@@ -26,7 +26,7 @@ const EmailSubscription = () => {
 
   if (isSubscribed) {
     return (
-      <div className="w-full max-w-md mx-auto p-8">
+      <div className="w-full  mx-auto p-8">
         <div className="relative bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 rounded-3xl p-8 shadow-2xl border border-green-200 overflow-hidden">
           {/* Success Animation Background */}
           <div className="absolute inset-0 bg-gradient-to-r from-green-400/10 to-emerald-400/10 animate-pulse"></div>
@@ -57,25 +57,25 @@ const EmailSubscription = () => {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto p-8">
-      <div className="relative bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 rounded-3xl p-8 shadow-2xl border border-pink-200 overflow-hidden">
+    <div className=" mx-auto  ">
+      <div className="relative bg-gradient-to-br from-primary/25 via-secondary/25 to-indigo-50 p-8 shadow-2xl ow-hidden ">
         {/* Animated Background Elements */}
         <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-pink-300/20 to-purple-300/20 rounded-full blur-xl animate-pulse"></div>
         <div className="absolute bottom-0 right-0 w-28 h-28 bg-gradient-to-br from-purple-300/20 to-indigo-300/20 rounded-full blur-xl animate-pulse animation-delay-1000"></div>
 
         {/* Floating Icons */}
         <div className="absolute top-6 right-6 animate-bounce animation-delay-500">
-          <Heart className="w-5 h-5 text-pink-400" />
+          <Heart className="w-5 h-5 text-badge " />
         </div>
         <div className="absolute top-12 left-8 animate-bounce animation-delay-1000">
-          <Bell className="w-4 h-4 text-purple-400" />
+          <Bell className="w-6 h-6 text-badge" />
         </div>
 
         <div className="relative space-y-6">
           {/* Header Section */}
           <div className="text-center space-y-4">
             {/* Animated Mail Icon */}
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 hover:rotate-3">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 hover:rotate-3">
               <Mail className="w-8 h-8 text-white" />
             </div>
 
@@ -98,10 +98,10 @@ const EmailSubscription = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@youremail.com"
-                className="w-full px-4 py-4 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-pink-500/20 focus:border-pink-500 transition-all duration-300 hover:shadow-md focus:bg-white"
+                className="w-full px-4 py-4 bg-white/80 backdrop-blur-sm border border-secondary rounded-2xl text-secondary placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-300 hover:shadow-md focus:bg-white"
               />
               <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
-                <Mail className="w-5 h-5 text-gray-400 group-focus-within:text-pink-500 transition-colors duration-300" />
+                <Mail className="w-5 h-5 text-gray-400 group-focus-within:text-badge transition-colors duration-300" />
               </div>
             </div>
 

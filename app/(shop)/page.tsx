@@ -35,7 +35,7 @@ export default function Home() {
         <AdsBanner images={images3} />
       </div>
       <FeatureCollection />
-      <div className="md:py-4 py-2 ">
+      <div className="md:pt-4 pt-2 ">
         <AdsBanner images={images5} />
       </div>
       <EmailSubscription />
