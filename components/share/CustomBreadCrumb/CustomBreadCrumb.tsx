@@ -73,8 +73,8 @@ const CustomBreadCrumb = () => {
         ) : (
           /* Normal breadcrumb when <= 3 */
           crumbLink.map((path, i) => (
-            <>
-              <BreadcrumbItem key={i}>
+            <div key={i}>
+              <BreadcrumbItem>
                 {i === crumbLink.length - 1 ? (
                   <BreadcrumbPage>{path.name}</BreadcrumbPage>
                 ) : (
@@ -84,7 +84,7 @@ const CustomBreadCrumb = () => {
                 )}
               </BreadcrumbItem>
               {i !== crumbLink.length - 1 && <BreadcrumbSeparator />}
-            </>
+            </div>
           ))
         )}
       </BreadcrumbList>

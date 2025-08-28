@@ -11,7 +11,7 @@ import Wishlist from "../share/Wishlist/Wishlist";
 export default function MobileNav() {
   const navItems = [
     { id: "home", name: "Home", icon: Home, href: "/" },
-    { id: "shop", name: "Search", icon: IoStorefrontSharp, href: "/products" },
+    { id: "shop", name: "Shop", icon: IoStorefrontSharp, href: "/shop" },
     { id: "profile", name: "Profile", component: ThemeBtn },
     { id: "wishlist", name: "Wishlist", icon: Wishlist, href: "/wishlist" },
     { id: "cart", name: "Cart", icon: Cart, href: "/cart" },
