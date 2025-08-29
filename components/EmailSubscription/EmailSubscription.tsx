@@ -58,7 +58,7 @@ const EmailSubscription = () => {
 
   return (
     <div className=" mx-auto  ">
-      <div className="relative bg-gradient-to-br from-primary/25 via-secondary/25 to-indigo-50 p-8 shadow-2xl ow-hidden ">
+      <div className="relative bg-gradient-to-br from-primary/25 via-secondary/25 to-indigo-50 md:p-8 p-3 shadow-2xl ow-hidden ">
         {/* Animated Background Elements */}
         <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-pink-300/20 to-purple-300/20 rounded-full blur-xl animate-pulse"></div>
         <div className="absolute bottom-0 right-0 w-28 h-28 bg-gradient-to-br from-purple-300/20 to-indigo-300/20 rounded-full blur-xl animate-pulse animation-delay-1000"></div>
@@ -80,10 +80,10 @@ const EmailSubscription = () => {
             </div>
 
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary dark:to-secondary bg-clip-text text-transparent">
                 Subscribe Newsletter
               </h2>
-              <p className="text-gray-600 text-sm leading-relaxed">
+              <p className="text-primary dark:text-nav text-sm leading-relaxed">
                 You will never miss our podcasts, latest news etc. Our
                 newsletter is once a week, every Thursday.
               </p>
@@ -91,63 +91,65 @@ const EmailSubscription = () => {
           </div>
 
           {/* Subscription Form */}
-          <div className="space-y-4">
-            <div className="relative group">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@youremail.com"
-                className="w-full px-4 py-4 bg-white/80 backdrop-blur-sm border border-secondary rounded-2xl text-secondary placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-300 hover:shadow-md focus:bg-white"
-              />
-              <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
-                <Mail className="w-5 h-5 text-gray-400 group-focus-within:text-badge transition-colors duration-300" />
+          <div className="flex justify-center">
+            <div className="space-y-4 w-full md:w-2/3">
+              <div className="relative group ">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@youremail.com"
+                  className="w-full px-4 py-4 bg-white/80 backdrop-blur-sm border border-secondary rounded-2xl text-secondary placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-300 hover:shadow-md focus:bg-white"
+                />
+                <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+                  <Mail className="w-5 h-5 text-gray-400 group-focus-within:text-badge transition-colors duration-300" />
+                </div>
               </div>
+
+              <button
+                onClick={handleSubmit}
+                disabled={isLoading || !email}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                className="w-full relative overflow-hidden bg-gradient-to-r from-primary via-secondary to-badge hover:from-badge hover:via-secondary hover:to-primary text-white font-semibold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none group"
+              >
+                {/* Button Background Animation */}
+                <div
+                  className={`absolute inset-0 bg-gradient-to-r from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                ></div>
+
+                <div className="relative flex items-center justify-center space-x-2">
+                  {isLoading ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      <span>Subscribing...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Subscribe</span>
+                      <Send
+                        className={`w-5 h-5 transition-transform duration-300 ${
+                          isHovered ? "translate-x-1 -translate-y-1" : ""
+                        }`}
+                      />
+                    </>
+                  )}
+                </div>
+              </button>
             </div>
-
-            <button
-              onClick={handleSubmit}
-              disabled={isLoading || !email}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-              className="w-full relative overflow-hidden bg-gradient-to-r from-pink-500 via-pink-600 to-purple-600 hover:from-pink-600 hover:via-pink-700 hover:to-purple-700 text-white font-semibold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none group"
-            >
-              {/* Button Background Animation */}
-              <div
-                className={`absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-              ></div>
-
-              <div className="relative flex items-center justify-center space-x-2">
-                {isLoading ? (
-                  <>
-                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    <span>Subscribing...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Subscribe</span>
-                    <Send
-                      className={`w-5 h-5 transition-transform duration-300 ${
-                        isHovered ? "translate-x-1 -translate-y-1" : ""
-                      }`}
-                    />
-                  </>
-                )}
-              </div>
-            </button>
           </div>
 
           {/* Trust Badge */}
           <div className="text-center">
-            <p className="text-xs text-gray-500 flex items-center justify-center space-x-1">
+            <p className="text-xs text-secondary flex items-center justify-center space-x-1">
               <Heart className="w-3 h-3 text-pink-400" />
               <span>We promise not to spam you!</span>
             </p>
           </div>
 
           {/* Decorative Elements */}
-          <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full opacity-60 animate-pulse"></div>
-          <div className="absolute -top-2 -right-2 w-4 h-4 bg-gradient-to-br from-purple-400 to-indigo-500 rounded-full opacity-60 animate-pulse animation-delay-500"></div>
+          <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-gradient-to-br from-primary to-secondary rounded-full opacity-60 animate-pulse"></div>
+          <div className="absolute -top-4 -right-4 w-10 h-10 bg-gradient-to-br from-primary/50 to-secondary/50 rounded-full opacity-60 animate-pulse animation-delay-500"></div>
         </div>
       </div>
 

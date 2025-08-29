@@ -33,7 +33,7 @@ const CustomBreadCrumb = () => {
   const shouldCollapse = crumbLink.length > 3;
 
   return (
-    <Breadcrumb className="my-4 mx-5 ">
+    <Breadcrumb className="mt-4 mx-5 ">
       <BreadcrumbList>
         {/* Always show Home */}
         <BreadcrumbItem className="text-lg font-semibold text-secondary dark:text-nav">

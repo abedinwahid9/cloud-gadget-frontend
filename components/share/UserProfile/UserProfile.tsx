@@ -17,7 +17,7 @@ const UserProfile = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="focus:outline-none cursor-pointer ">
+      <DropdownMenuTrigger className="focus:outline-none cursor-pointer flex items-center ">
         <FaUserAlt className={userIcons} />
       </DropdownMenuTrigger>
       <DropdownMenuContent

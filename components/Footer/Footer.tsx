@@ -66,13 +66,13 @@ export default function Footer() {
               <FaYoutube />
             </a>
           </div>
-          <form className="mt-2">
+          {/* <form className="mt-2">
             <input
               type="email"
               placeholder="Subscribe for updates"
               className="w-full px-3 py-2 rounded-md bg-gray-800 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          </form>
+          </form> */}
         </div>
       </div>
 
