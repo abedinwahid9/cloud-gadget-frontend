@@ -8,6 +8,7 @@ import Options from "@/components/share/Options/Options";
 import Range from "@/components/share/Range/Range";
 import ProductCard from "@/components/share/ProductCard/ProductCard";
 import img2 from "@/app/assets/img3.png";
+import CheckBoxCustom from "@/components/share/CheckBoxCustom/CheckBoxCustom";
 
 const option = [
   { value: "relevance", label: "Relevance" },
@@ -32,12 +33,16 @@ const page = () => {
                 Filter
               </h2>
               <p className="md:text-base text-xs text-secondary dark:text-nav">
-                search your custom items
+                get own custom items
               </p>
               <Separator className=" bg-secondary dark:bg-nav w-full h-[1px] " />
               <div className="my-2">
                 {/* price range */}
                 <Range className="bg-secondary h-[1px]" />
+              </div>
+              <div>
+                {/* select brand name */}
+                <CheckBoxCustom />
               </div>
             </div>
           </div>
