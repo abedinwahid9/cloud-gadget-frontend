@@ -2,7 +2,15 @@ import AdsBanner from "@/components/share/AdsBanner/AdsBanner";
 import img from "@/app/assets/cover5.png";
 import CustomBreadCrumb from "@/components/share/CustomBreadCrumb/CustomBreadCrumb";
 import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
+import * as React from "react";
+
+import Options from "@/components/share/Options/Options";
+
+const option = [
+  { value: "relevance", label: "Relevance" },
+  { value: "price", label: "Sort by price: low to high" },
+  { value: "price-desc", label: "Sort by price: high to low" },
+];
 
 const page = () => {
   const image = [img];
@@ -17,19 +25,26 @@ const page = () => {
           {/* filter section */}
           <div className="col-span-3 border-4 border-amber-950">
             <div className="my-2 mx-4">
-              <h2 className="text-3xl  font-semibold text-secondary">Filter</h2>
+              <h2 className="text-3xl  font-semibold text-secondary dark:text-nav">
+                Filter
+              </h2>
               <Separator className=" bg-secondary dark:bg-nav w-full h-[1px] " />
             </div>
           </div>
           {/* products section */}
           <div className="col-span-9 border-4 border-amber-950">
-            <div className="my-2 mx-4">
-              <h2 className="text-3xl  font-semibold text-secondary">
-                All Products
-              </h2>
-              <p className="md:text-base text-xs text-secondary">
-                search result (244 items)
-              </p>
+            <div className="flex justify-between items-end">
+              <div className="my-2 mx-4">
+                <h2 className="text-3xl  font-semibold text-secondary dark:text-nav">
+                  All Products
+                </h2>
+                <p className="md:text-base text-xs text-secondary dark:text-nav">
+                  search result (244 items)
+                </p>
+              </div>
+              <div className="relative">
+                <Options items={option} />
+              </div>
             </div>
           </div>
         </div>
