@@ -24,7 +24,7 @@ const page = () => {
         <AdsBanner images={image} />
       </div>
       <CustomBreadCrumb />
-      <main className="pb-5 px-1">
+      <main className="pb-5 px-1.5">
         <div className="grid grid-cols-12 w-full h-full gap-1">
           {/* filter section */}
           <div className="col-span-3 hidden lg:block">
@@ -49,7 +49,7 @@ const page = () => {
           {/* products section */}
           <div className="lg:col-span-9 col-span-12 ">
             {/* top */}
-            <div className="flex justify-between lg:items-end items-start my-2 lg:mx-2 mx-1 flex-col lg:flex-row gap-2">
+            <div className="flex justify-between lg:items-end items-start  py-2  flex-col lg:flex-row gap-2">
               <div>
                 <h2 className="text-3xl  font-semibold text-secondary dark:text-nav">
                   All Products
@@ -58,12 +58,12 @@ const page = () => {
                   search result (244 items)
                 </p>
               </div>
-              <div className="relative">
+              <div className="relative pr-1.5">
                 <Options items={option} />
               </div>
             </div>
             {/* all card */}
-            <div className="grid lg:grid-cols-3 grid-cols-2  gap-2 lg:pr-1 pr-0">
+            <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2  gap-2 lg:pr-1 pr-0">
               {Array.from({ length: 20 }).map((_, i) => {
                 return (
                   <ProductCard

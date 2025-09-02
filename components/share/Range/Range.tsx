@@ -23,10 +23,8 @@ const Range = ({ className, ...props }: SliderProps) => {
     });
   };
 
-  console.log(priceRange);
-
   return (
-    <div className="p-2 bg-primary/10 rounded-md shadow-2xl shadow-amber-400 select-none">
+    <div className="p-2 bg-primary/10 rounded-md shadow-[0px_0px_5px_2px_#00a8a8] select-none">
       <p className="pb-4 font-semibold text-secondary dark:text-nav">Price</p>
       <Slider
         onValueChange={handleChange}
