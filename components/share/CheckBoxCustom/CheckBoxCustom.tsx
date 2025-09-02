@@ -4,34 +4,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 
-const items = [
-  {
-    id: "recents",
-    label: "Recents",
-  },
-  {
-    id: "home",
-    label: "Home",
-  },
-  {
-    id: "applications",
-    label: "Applications",
-  },
-  {
-    id: "desktop",
-    label: "Desktop",
-  },
-  {
-    id: "downloads",
-    label: "Downloads",
-  },
-  {
-    id: "documents",
-    label: "Documents",
-  },
-] as const;
+interface Item {
+  id: string;
+  label: string;
+}
 
-const CheckBoxCustom = () => {
+const CheckBoxCustom = ({ items, title }: { items: Item[]; title: string }) => {
   const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
 
   const handleCheckedChange = (
@@ -50,8 +28,8 @@ const CheckBoxCustom = () => {
   };
 
   return (
-    <div className="p-2 bg-primary/10 rounded-md shadow-[0px_0px_5px_2px_#00a8a8] select-none">
-      <p className="pb-4 font-semibold text-secondary dark:text-nav">Brand</p>
+    <div className="p-2 bg-primary/10 rounded-md shadow-[0px_0px_10px_0px_#00a8a8] select-none">
+      <p className="pb-4 font-semibold text-secondary dark:text-nav">{title}</p>
       <div className="flex flex-col gap-1">
         {items.map((item) => (
           <div key={item.id} className="flex items-center space-x-1.5">
@@ -63,7 +41,10 @@ const CheckBoxCustom = () => {
                 handleCheckedChange(checked, item.id)
               }
             />
-            <Label className="font-semibold text-secondary" htmlFor={item.id}>
+            <Label
+              className="font-semibold text-secondary dark:text-nav"
+              htmlFor={item.id}
+            >
               {item.label}
             </Label>
           </div>

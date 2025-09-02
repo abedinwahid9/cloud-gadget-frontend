@@ -38,7 +38,7 @@ const Options: React.FC<OptionsProps> = ({ items, onChange }) => {
             placeholder="Select option"
           />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-white dark:bg-secondary">
           <SelectGroup className="bg-primary/45 rounded-lg p-1 text-secondary dark:text-nav ">
             {items.map((item) => (
               <SelectItem key={item.value} value={item.value}>
