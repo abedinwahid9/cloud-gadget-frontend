@@ -36,19 +36,18 @@ const Shop = () => {
               <div className="relative ">
                 <Options items={option} />
               </div>
-              <div className="overflow-auto">
-                <Drawer direction="right">
-                  <DrawerTrigger asChild>
-                    <Button className="bg-primary/35 text-secondary dark:text-nav">
-                      <span className=" font-semibold ">Filter</span>
-                      <BsSliders className=" font-semibold" />
-                    </Button>
-                  </DrawerTrigger>
-                  <DrawerContent>
-                    <FilterSideBar />
-                  </DrawerContent>
-                </Drawer>
-              </div>
+
+              <Drawer direction="right">
+                <DrawerTrigger asChild>
+                  <Button className="bg-primary/35 text-secondary dark:text-nav">
+                    <span className=" font-semibold ">Filter</span>
+                    <BsSliders className=" font-semibold" />
+                  </Button>
+                </DrawerTrigger>
+                <DrawerContent className="w-[300px] h-auto   overflow-y-auto ">
+                  <FilterSideBar />
+                </DrawerContent>
+              </Drawer>
             </div>
           </div>
           {/* all card */}
