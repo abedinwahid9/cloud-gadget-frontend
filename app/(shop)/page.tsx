@@ -10,6 +10,7 @@ import BestCollection from "@/components/BestCollection/BestCollection";
 import FeatureCollection from "@/components/FeatureCollection/FeatureCollection";
 import FeatureHighlights from "@/components/FeatureHighlights/FeatureHighlights";
 import EmailSubscription from "@/components/EmailSubscription/EmailSubscription";
+import BrandCarousel from "@/components/share/BrandCarousel/BrandCarousel";
 
 export const metadata: Metadata = {
   title: "Home | Cloudie Gadgets",
@@ -40,6 +41,7 @@ export default function Home() {
       </div>
       <EmailSubscription />
       <FeatureHighlights />
+      <BrandCarousel />
     </main>
   );
 }

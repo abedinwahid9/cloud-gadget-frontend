@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { SheetTitle } from "@/components/ui/sheet";
 
 type Option = {
   value: string;
@@ -32,13 +33,13 @@ const Options: React.FC<OptionsProps> = ({ items, onChange }) => {
   return (
     <div>
       <Select value={value} onValueChange={handleChange}>
-        <SelectTrigger className="w-[220px] border-secondary dark:border-nav">
+        <SelectTrigger className="md:w-[220px] w-full border-secondary dark:border-nav">
           <SelectValue
             className="text-secondary dark:text-nav placeholder:text-primary"
             placeholder="Select option"
           />
         </SelectTrigger>
-        <SelectContent className="bg-white dark:bg-secondary">
+        <SelectContent className="bg-white dark:bg-secondary w-full">
           <SelectGroup className="bg-primary/45 rounded-lg p-1 text-secondary dark:text-nav ">
             {items.map((item) => (
               <SelectItem key={item.value} value={item.value}>

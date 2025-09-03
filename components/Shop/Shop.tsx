@@ -1,10 +1,12 @@
+"use client";
 import Options from "@/components/share/Options/Options";
 
 import ProductsSection from "../ProductsSection/ProductsSection";
 import FilterSideBar from "../share/FilterSideBar/FilterSideBar";
 import { Button } from "../ui/button";
 import { BsSliders } from "react-icons/bs";
-import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
+
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
 
 const option = [
   { value: "relevance", label: "Relevance" },
@@ -32,22 +34,26 @@ const Shop = () => {
                 search result (244 items)
               </p>
             </div>
-            <div className="pr-1.5 flex gap-1 justify-between">
-              <div className="relative ">
+            <div className="lg:pr-1.5 pr-0 flex lg:gap-1 gap-2  justify-between lg:w-auto w-full">
+              <div className="relative basis-full w-full">
                 <Options items={option} />
               </div>
 
-              <Drawer direction="right">
-                <DrawerTrigger asChild>
-                  <Button className="bg-primary/35 text-secondary dark:text-nav">
-                    <span className=" font-semibold ">Filter</span>
-                    <BsSliders className=" font-semibold" />
-                  </Button>
-                </DrawerTrigger>
-                <DrawerContent className="w-[300px] h-auto   overflow-y-auto ">
-                  <FilterSideBar />
-                </DrawerContent>
-              </Drawer>
+              <div className="lg:hidden block basis-full w-full">
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button className="bg-primary/35 text-secondary dark:text-nav w-full">
+                      <SheetTitle className=" font-semibold ">
+                        Filter
+                      </SheetTitle>
+                      <BsSliders className=" font-semibold" />
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent className="w-[300px] h-auto   overflow-y-auto ">
+                    <FilterSideBar />
+                  </SheetContent>
+                </Sheet>
+              </div>
             </div>
           </div>
           {/* all card */}
