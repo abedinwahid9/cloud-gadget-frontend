@@ -4,12 +4,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  // CarouselNext,
-  // CarouselPrevious,
 } from "@/components/ui/carousel";
 import img from "@/app/assets/img1.png";
-import img2 from "@/app/assets/img2.png";
-import img3 from "@/app/assets/img3.png";
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
 
@@ -43,8 +39,6 @@ const Category = () => {
           </CarouselItem>
         ))}
       </CarouselContent>
-      {/* <CarouselPrevious />
-      <CarouselNext /> */}
     </Carousel>
   );
 };

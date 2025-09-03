@@ -19,7 +19,7 @@ const ProductCard = ({
 }: ProductCardProps) => {
   // shadow-[0px_0px_50px_15px_00A8A8]
   return (
-    <div className="rounded-xl border-[1px] border-secondary dark:border-nav p-2 hover:shadow-[0px_0px_5px_2px_#00a8a8] relative flex flex-col items-center gap-1 select-none">
+    <div className="rounded-xl border-[1px] hover:border-0 border-secondary dark:border-nav p-2 hover:shadow-[0px_0px_5px_2px_#00a8a8] relative flex flex-col items-center gap-1 select-none">
       <Image
         src={imageUrl}
         alt={title}
