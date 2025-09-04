@@ -70,10 +70,10 @@ const CartTotals = () => {
             </div>
           </RadioGroup>
           <div className="mt-2 text-sm text-right">
-            <p>
+            <h4>
               Shipping to{" "}
               {shipping.id === "insideDhaka" ? "Dhaka" : "Outside Dhaka"}.
-            </p>
+            </h4>
           </div>
         </div>
         <hr className="my-2" />

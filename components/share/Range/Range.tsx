@@ -36,8 +36,8 @@ const Range = ({ className, ...props }: SliderProps) => {
         {...props}
       />
       <div className="font-semibold text-secondary dark:text-nav pt-4 flex justify-between">
-        <p>৳ {priceRange?.min}</p>
-        <p>৳ {priceRange?.max}</p>
+        <h4>৳ {priceRange?.min}</h4>
+        <h4>৳ {priceRange?.max}</h4>
       </div>
     </div>
   );

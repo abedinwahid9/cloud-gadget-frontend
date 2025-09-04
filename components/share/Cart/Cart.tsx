@@ -5,7 +5,6 @@ import { FaCartArrowDown } from "react-icons/fa";
 
 const Cart = ({ css }: { css: string }) => {
   const cartLength = useAppSelector((state) => state.cart.totalQuantity);
-  console.log(cartLength);
 
   return (
     <div className="relative">

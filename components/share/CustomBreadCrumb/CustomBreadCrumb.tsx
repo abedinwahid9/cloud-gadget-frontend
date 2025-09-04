@@ -58,7 +58,7 @@ const CustomBreadCrumb = () => {
                 >
                   {crumbLink.slice(0, -1).map((item, i) => (
                     <DropdownMenuItem
-                      className="text-lg font-semibold text-nav  capitalize"
+                      className="text-lg font-semibold text-secondary dark:text-nav capitalize"
                       key={i}
                       asChild
                     >
@@ -74,7 +74,7 @@ const CustomBreadCrumb = () => {
 
             {/* Last item (current page) */}
             <BreadcrumbItem>
-              <BreadcrumbPage className="text-lg font-semibold text-secondary dark:text-nav capitalize">
+              <BreadcrumbPage className="text-lg  font-semibold text-secondary dark:text-nav capitalize underline">
                 {crumbLink[crumbLink.length - 1].name}
               </BreadcrumbPage>
             </BreadcrumbItem>
@@ -82,10 +82,13 @@ const CustomBreadCrumb = () => {
         ) : (
           /* Normal breadcrumb when <= 3 */
           crumbLink.map((path, i) => (
-            <div key={i}>
+            <div
+              className="text-lg flex items-center font-semibold text-secondary dark:text-nav"
+              key={i}
+            >
               <BreadcrumbItem>
                 {i === crumbLink.length - 1 ? (
-                  <BreadcrumbPage className="text-lg font-semibold text-secondary dark:text-nav capitalize">
+                  <BreadcrumbPage className="text-lg font-semibold text-secondary dark:text-nav capitalize underline">
                     {path.name}
                   </BreadcrumbPage>
                 ) : (
