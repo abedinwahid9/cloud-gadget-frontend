@@ -4,7 +4,6 @@ import React from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -19,7 +18,7 @@ const CartPage = () => {
   }
 
   return (
-    <div className="flex justify-center w-2/3">
+    <div className="flex justify-center lg:w-2/3 w-full">
       <Table>
         <TableHeader>
           <TableRow>
@@ -31,7 +30,7 @@ const CartPage = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {Array.from({ length: 5 }).map((_, i) => {
+          {cartItmes.map((_, i) => {
             return (
               <TableRow key={i}>
                 <TableCell className="font-medium">

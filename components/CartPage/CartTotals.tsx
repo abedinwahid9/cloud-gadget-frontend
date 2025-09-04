@@ -1,5 +1,3 @@
-// src/components/CartTotals.jsx
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -7,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const CartTotals = () => {
   return (
-    <Card className="w-1/3 bg-primary/10">
+    <Card className="lg:w-1/3 w-full bg-primary/10">
       <CardHeader>
         <CardTitle>CART TOTALS</CardTitle>
       </CardHeader>

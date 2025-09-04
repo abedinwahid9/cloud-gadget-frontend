@@ -33,6 +33,7 @@ const Feature = ({ title }: { title: string }) => {
                 className=" md:basis-1/3 basis-1/2  lg:basis-1/4 xl:basis-1/5 "
               >
                 <ProductCard
+                  id={i}
                   title="Transparent power bank with headset"
                   imageUrl={img} // make sure this exists in public/
                   price={45}
