@@ -76,6 +76,7 @@ const ProductsSection = () => {
     <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-2 lg:pr-1 pr-0 h-auto">
       {posts.map((post, i) => (
         <ProductCard
+          id={i}
           title={post.title}
           imageUrl={img2}
           price={45}

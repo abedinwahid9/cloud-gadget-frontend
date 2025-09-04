@@ -1,8 +1,12 @@
+"use client";
 import Image, { StaticImageData } from "next/image";
 import { Button } from "@/components/ui/button"; // shadcn button
 import { FaHeart, FaStar } from "react-icons/fa";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { addToCart } from "@/lib/redux/slices/cartSlices";
 
 interface ProductCardProps {
+  id: number;
   title: string;
   imageUrl: StaticImageData;
   price: number;
@@ -11,13 +15,15 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({
+  id,
   title,
   imageUrl,
   price,
   oldPrice,
   category,
 }: ProductCardProps) => {
-  // shadow-[0px_0px_50px_15px_00A8A8]
+  const dispatch = useAppDispatch();
+
   return (
     <div className="rounded-xl border-[1px] hover:border-0 border-secondary dark:border-nav p-2 hover:shadow-[0px_0px_5px_2px_#00a8a8] relative flex flex-col items-center gap-1 select-none">
       <Image
@@ -56,6 +62,7 @@ const ProductCard = ({
       </div>
 
       <Button
+        onClick={() => dispatch(addToCart({ id: id, name: title, qnt: 1 }))}
         className="w-full mt-2 rounded-b-xl rounded-t-none bg-primary  hover:bg-secondary hover:text-nav text-secondary font-semibold md:text-lg text-sm
       "
       >
