@@ -66,7 +66,7 @@ export default function ProductGallery() {
   );
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="lg:w-1/2 w-full">
       {/* Main Product Image */}
       <div
         ref={sliderRef}
@@ -91,7 +91,7 @@ export default function ProductGallery() {
       {/* Thumbnails */}
       <div
         ref={thumbnailRef}
-        className="keen-slider mt-4 thumbnail cursor-pointer"
+        className="keen-slider mt-2 thumbnail cursor-pointer p-2"
       >
         {images.map((src, i) => (
           <div

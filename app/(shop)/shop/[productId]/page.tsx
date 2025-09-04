@@ -6,11 +6,11 @@ const page = async ({ params }: { params: Promise<{ productId: string }> }) => {
   const { productId } = await params;
 
   return (
-    <div>
+    <main className="container mx-auto md:px-5 px-2 ">
       <CustomBreadCrumb />
       page :{productId}
       <ProductPage />
-    </div>
+    </main>
   );
 };
 

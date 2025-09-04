@@ -6,6 +6,10 @@
   display: none;
 }
 
+.thumbnail .keen-slider__slide.active {
+  @apply ring-2 ring-primary rounded-lg;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
