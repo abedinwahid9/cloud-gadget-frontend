@@ -62,7 +62,9 @@ const ProductCard = ({
       </div>
 
       <Button
-        onClick={() => dispatch(addToCart({ id: id, name: title, qnt: 1 }))}
+        onClick={() =>
+          dispatch(addToCart({ id: id, name: title, qnt: 1, price: 100 * id }))
+        }
         className="w-full mt-2 rounded-b-xl rounded-t-none bg-primary  hover:bg-secondary hover:text-nav text-secondary font-semibold md:text-lg text-sm
       "
       >
