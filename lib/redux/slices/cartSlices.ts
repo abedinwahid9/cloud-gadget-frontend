@@ -1,25 +1,27 @@
-import { createSlice } from "@reduxjs/toolkit";
-//  "id": "p1",
-//         "title": "Wireless Earbuds",
-//         "price": 49.99,
-//         "qnt": 2,
-//         "imageUrl": "/images/earbuds.png",
-//         "category": "electronics",
-//         "variant": "black",
-// "addedAt": 1693640183521
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface CartItem {
+// Cart item type
+export interface CartItem {
   id: number;
   name: string;
   qnt: number;
   price: number;
   imageUrl?: string;
-  category: string;
-  variant: string;
+  category?: string;
+  variant?: string;
   addedAt?: number;
 }
-interface PersistedData<T> {
-  data: T;
+
+// Cart state with totals
+interface CartState {
+  items: CartItem[];
+  totalQuantity: number;
+  totalPrice: number;
+}
+
+// Persisted data in localStorage
+interface PersistedData {
+  data: CartItem[];
   totalQuantity: number;
   totalPrice: number;
   expiry: number;
@@ -28,86 +30,118 @@ interface PersistedData<T> {
 const EXPIRY_DAYS = 30;
 const EXPIRY_MS = 1000 * 60 * 60 * 24 * EXPIRY_DAYS;
 
+// Calculate totals
 const calculateTotals = (items: CartItem[]) => {
-  const totalPrice = items.reduce((acc, item) => acc + item.price, 0);
+  const totalPrice = items.reduce(
+    (acc, item) => acc + item.price * item.qnt,
+    0
+  );
   const totalQuantity = items.reduce((acc, item) => acc + item.qnt, 0);
-
   return { totalPrice, totalQuantity };
 };
 
-const saveCart = (cart: CartItem[]) => {
-  const { totalPrice, totalQuantity } = calculateTotals(cart);
-  const payload: PersistedData<CartItem[]> = {
-    data: cart,
-    totalPrice,
-    totalQuantity,
+// Save cart to localStorage
+const saveCart = (state: CartState) => {
+  const payload: PersistedData = {
+    data: state.items,
+    totalPrice: state.totalPrice,
+    totalQuantity: state.totalQuantity,
     expiry: Date.now() + EXPIRY_MS,
   };
   localStorage.setItem("cart", JSON.stringify(payload));
 };
 
-const loadCart = (): CartItem[] => {
+// Load initial state from localStorage
+const loadInitialState = (): CartState => {
+  if (typeof window === "undefined") {
+    return { items: [], totalQuantity: 0, totalPrice: 0 };
+  }
+
   try {
     const raw = localStorage.getItem("cart");
+    if (!raw) return { items: [], totalQuantity: 0, totalPrice: 0 };
 
-    if (!raw) return [];
-    const parsed: PersistedData<CartItem[]> = JSON.parse(raw);
+    const parsed: PersistedData = JSON.parse(raw);
+
     if (Date.now() > parsed.expiry) {
       localStorage.removeItem("cart");
-      return [];
+      return { items: [], totalQuantity: 0, totalPrice: 0 };
     }
-    return parsed.data;
+
+    return {
+      items: parsed.data,
+      totalQuantity: parsed.totalQuantity,
+      totalPrice: parsed.totalPrice,
+    };
   } catch {
-    return [];
+    return { items: [], totalQuantity: 0, totalPrice: 0 };
   }
 };
 
-const initialState: CartItem[] =
-  typeof window !== "undefined" ? loadCart() : [];
+// Initial state
+const initialState: CartState = loadInitialState();
 
-const cartSlices = createSlice({
+// Redux slice
+const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    // add to cart
-    addToCart: (state, action) => {
-      const exists = state.find((item) => item.id === action.payload.id);
+    addToCart: (state, action: PayloadAction<CartItem>) => {
+      const exists = state.items.find((item) => item.id === action.payload.id);
       if (exists) {
         exists.qnt += action.payload.qnt;
       } else {
-        state.push(action.payload);
-      }
-      saveCart(state);
-    },
-    // remover cart
-    removeCart: (state, action) => {},
-    // increment quantity by id
-    incrementQnt: (state, action) => {
-      const exists = state.find((item) => item.id === action.payload.id);
-      if (exists) {
-        exists.qnt += 1;
-      }
-      saveCart(state);
-    },
-    // decrement quantity by id
-    decrementQnt: (state, action) => {
-      const exists = state.find((item) => item.id === action.payload.id);
-
-      if (exists && exists.qnt <= 1) {
-        const updated = state.filter((item) => item.id !== action.payload.id);
-        saveCart(updated);
-        return updated;
+        state.items.push(action.payload);
       }
 
-      if (exists) {
-        exists.qnt -= 1;
+      // Update totals
+      const totals = calculateTotals(state.items);
+      state.totalPrice = totals.totalPrice;
+      state.totalQuantity = totals.totalQuantity;
+
+      saveCart(state);
+    },
+
+    removeCart: (state, action: PayloadAction<number>) => {
+      state.items = state.items.filter((item) => item.id !== action.payload);
+
+      const totals = calculateTotals(state.items);
+      state.totalPrice = totals.totalPrice;
+      state.totalQuantity = totals.totalQuantity;
+
+      saveCart(state);
+    },
+
+    incrementQnt: (state, action: PayloadAction<{ id: number }>) => {
+      const item = state.items.find((i) => i.id === action.payload.id);
+      if (item) item.qnt += 1;
+
+      const totals = calculateTotals(state.items);
+      state.totalPrice = totals.totalPrice;
+      state.totalQuantity = totals.totalQuantity;
+
+      saveCart(state);
+    },
+
+    decrementQnt: (state, action: PayloadAction<{ id: number }>) => {
+      const item = state.items.find((i) => i.id === action.payload.id);
+      if (item) {
+        if (item.qnt <= 1) {
+          state.items = state.items.filter((i) => i.id !== action.payload.id);
+        } else {
+          item.qnt -= 1;
+        }
       }
+
+      const totals = calculateTotals(state.items);
+      state.totalPrice = totals.totalPrice;
+      state.totalQuantity = totals.totalQuantity;
 
       saveCart(state);
     },
   },
 });
 
-export const { addToCart, incrementQnt, decrementQnt } = cartSlices.actions;
-
-export default cartSlices.reducer;
+export const { addToCart, removeCart, incrementQnt, decrementQnt } =
+  cartSlice.actions;
+export default cartSlice.reducer;

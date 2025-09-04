@@ -8,10 +8,7 @@ const page = () => {
       <div className="text-center pb-5">
         <Title text="my shopping cart" />
       </div>
-      <div className="flex justify-between px-3 flex-col lg:flex-row gap-3">
-        <CartPage />
-        <CartTotals />
-      </div>
+      <CartPage />
     </main>
   );
 };

@@ -15,7 +15,7 @@ export default function QuantitySelector({
   onDecrement,
 }: QuantitySelectorProps) {
   return (
-    <div className="flex items-center md:flex-row flex-col justify-center">
+    <div className="flex items-center md:flex-row flex-col justify-center text-secondary dark:text-nav">
       {/* Decrement */}
       <Button
         variant="outline"

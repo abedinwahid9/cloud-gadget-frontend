@@ -1,9 +1,32 @@
+"use client";
+
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { useAppSelector } from "@/lib/redux/hooks";
+import Link from "next/link";
 
 const CartTotals = () => {
+  const subtotal = useAppSelector((state) => state.cart.totalPrice);
+
+  // Shipping state
+  const [shipping, setShipping] = useState<{ id: string; price: number }>({
+    id: "insideDhaka",
+    price: 70,
+  });
+
+  const handleShippingChange = (value: string) => {
+    if (value === "insideDhaka") {
+      setShipping({ id: "insideDhaka", price: 70 });
+    } else if (value === "outsideDhaka") {
+      setShipping({ id: "outsideDhaka", price: 130 });
+    }
+  };
+
+  const total = subtotal + shipping.price;
+
   return (
     <Card className="lg:w-1/3 w-full bg-primary/10">
       <CardHeader>
@@ -11,17 +34,24 @@ const CartTotals = () => {
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Subtotal */}
-        <div className="flex justify-between items-center">
-          <span className="text-muted-foreground">Subtotal</span>
-          <span>৳ 5,469</span>
+        <div className="flex justify-between items-center text-secondary dark:text-nav font-semibold">
+          <span className="text-secondary dark:text-nav">Subtotal</span>
+          <span>৳ {subtotal.toFixed(2)}</span>
         </div>
         <hr className="my-2" />
+
         {/* Shipping */}
         <div>
-          <span className="text-muted-foreground block mb-2">Shipping</span>
-          <RadioGroup defaultValue="insideDhaka" className="space-y-2">
+          <span className=" block mb-2 font-semibold text-secondary dark:text-nav">
+            Shipping
+          </span>
+          <RadioGroup
+            defaultValue="insideDhaka"
+            className="space-y-2 text-secondary dark:text-nav"
+            onValueChange={handleShippingChange}
+          >
             <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 ">
                 <RadioGroupItem value="insideDhaka" id="inside-dhaka" />
                 <Label htmlFor="inside-dhaka" className="font-normal">
                   Inside Dhaka
@@ -40,20 +70,29 @@ const CartTotals = () => {
             </div>
           </RadioGroup>
           <div className="mt-2 text-sm text-right">
-            <p>Shipping to Dhaka.</p>
-            <a href="#" className="text-blue-500 hover:underline">
-              Change address
-            </a>
+            <p>
+              Shipping to{" "}
+              {shipping.id === "insideDhaka" ? "Dhaka" : "Outside Dhaka"}.
+            </p>
           </div>
         </div>
         <hr className="my-2" />
+
         {/* Total */}
-        <div className="flex justify-between items-center font-bold text-lg">
+        <div className="flex justify-between items-center font-bold text-lg text-secondary dark:text-nav">
           <span>Total</span>
-          <span>৳ 5,539</span>
+          <span>৳ {total.toFixed(2)}</span>
         </div>
+
         {/* Checkout Button */}
-        <Button className="w-full">PROCEED TO CHECKOUT</Button>
+        <Link href="/cart/checkout">
+          <Button
+            className="w-full mt-2 rounded-b-xl rounded-t-none bg-primary  hover:bg-secondary hover:text-nav text-secondary font-semibold md:text-lg text-sm
+      "
+          >
+            PROCEED TO CHECKOUT
+          </Button>
+        </Link>
       </CardContent>
     </Card>
   );
