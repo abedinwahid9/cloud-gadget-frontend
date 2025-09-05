@@ -12,8 +12,16 @@ import Image from "next/image";
 import img from "@/app/assets/img2.png";
 
 import QuantitySelector from "../share/QuantitySelector/QuantitySelector";
-import { decrementQnt, incrementQnt } from "@/lib/redux/slices/cartSlices";
+import {
+  allCartClear,
+  decrementQnt,
+  incrementQnt,
+  removeCart,
+} from "@/lib/redux/slices/cartSlices";
 import CartTotals from "./CartTotals";
+import Link from "next/link";
+import { Button } from "../ui/button";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const CartPage = () => {
   const cartItmes = useAppSelector((state) => state.cart.items);
@@ -25,7 +33,7 @@ const CartPage = () => {
 
   return (
     <div className="flex justify-between px-3 flex-col lg:flex-row gap-3">
-      <div className="flex justify-center lg:w-2/3 w-full">
+      <div className="flex justify-between lg:w-2/3 w-full flex-col">
         <Table>
           <TableHeader>
             <TableRow>
@@ -41,9 +49,11 @@ const CartPage = () => {
                   <TableCell className="flex items-start md:items-center gap-2 md:flex-row flex-col ">
                     <Image className="w-16 h-16" src={img} alt="img" />
                     <div>
-                      <h3 className="md:text-lg text-sm capitalize font-semibold truncate w-28 text-secondary dark:text-nav">
-                        {item.id} smart watch
-                      </h3>
+                      <Link href={`/shop/${item.id}`}>
+                        <h3 className="md:text-lg text-sm capitalize font-semibold truncate w-28 text-secondary dark:text-nav hover:underline">
+                          {item.id} smart watch
+                        </h3>
+                      </Link>
                       <p className="text-secondary dark:text-nav">
                         price: ৳ {item.price}
                       </p>
@@ -61,13 +71,32 @@ const CartPage = () => {
                     />
                   </TableCell>
                   <TableCell className="text-center text-secondary dark:text-nav text-lg font-semibold ">
-                    ৳ {(item.qnt * item.price).toFixed(2)}
+                    <div className=" flex justify-center items-center  flex-col md:flex-row gap-3">
+                      <span className="md:w-3/4 w-full">
+                        {" "}
+                        ৳ {(item.qnt * item.price).toFixed(2)}
+                      </span>
+                      <div
+                        onClick={() => dispatch(removeCart(item.id))}
+                        className="md:w-1/4 w-full flex justify-end"
+                      >
+                        <RiDeleteBin6Line className=" cursor-pointer text-badge w-5 h-5" />
+                      </div>
+                    </div>
                   </TableCell>
                 </TableRow>
               );
             })}
           </TableBody>
         </Table>
+        <div className="w-full flex justify-end">
+          <Button
+            onClick={() => dispatch(allCartClear())}
+            className="bg-badge text-white font-bold"
+          >
+            Clear <RiDeleteBin6Line /> All
+          </Button>
+        </div>
       </div>
       <CartTotals />
     </div>

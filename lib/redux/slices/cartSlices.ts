@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 
 // Cart item type
 export interface CartItem {
@@ -139,9 +139,20 @@ const cartSlice = createSlice({
 
       saveCart(state);
     },
+    allCartClear: (state) => {
+      state.items = [];
+      state.totalPrice = 0;
+      state.totalQuantity = 0;
+      saveCart(state);
+    },
   },
 });
 
-export const { addToCart, removeCart, incrementQnt, decrementQnt } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  removeCart,
+  incrementQnt,
+  decrementQnt,
+  allCartClear,
+} = cartSlice.actions;
 export default cartSlice.reducer;
