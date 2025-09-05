@@ -25,7 +25,7 @@ const Feature = ({ title }: { title: string }) => {
           </div>
         </div>
         <Separator className="md:my-[15px] my-[8px] bg-secondary dark:bg-nav w-full h-[1px] " />
-        <CarouselContent>
+        <CarouselContent className="p-1">
           {Array.from({ length: 10 }).map((_, i) => {
             return (
               <CarouselItem

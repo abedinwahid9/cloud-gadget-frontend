@@ -2,6 +2,7 @@ import React from "react";
 import ProductCarosul from "../share/ProductCarosul/ProductCarosul";
 import ProductDetails from "../ProductDetails/ProductDetails";
 import SpecificationSection from "../share/SpecificationSection/SpecificationSection";
+import Feature from "../share/Feature/Feature";
 
 const ProductPage = () => {
   const quillOutput = `
@@ -76,6 +77,9 @@ const ProductPage = () => {
       </div>
       <div className="pb-5">
         <SpecificationSection title="Specifications" content={quillOutput} />
+      </div>
+      <div className="py-3">
+        <Feature title="relevant collection" />
       </div>
     </>
   );

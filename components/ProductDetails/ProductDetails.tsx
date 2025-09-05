@@ -2,10 +2,14 @@
 
 import { useState } from "react";
 import { FaFacebookF, FaTwitter, FaLinkedinIn } from "react-icons/fa";
+import { Button } from "../ui/button";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { addToCart } from "@/lib/redux/slices/cartSlices";
 
 const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState("black");
+  const dispatch = useAppDispatch();
 
   const handleQuantity = (type: "inc" | "dec") => {
     if (type === "dec" && quantity > 1) {
@@ -18,13 +22,13 @@ const ProductDetails = () => {
   return (
     <div className="lg:w-1/2 w-full space-y-2">
       {/* Title */}
-      <h1 className="text-xl md:text-2xl font-semibold">
+      <h1 className="text-xl md:text-2xl font-semibold text-secondary dark:text-nav">
         JBL Tune Flex 2 Ghost Edition ANC True Wireless Earbuds
       </h1>
 
       {/* Price */}
       <div className="flex items-center gap-3">
-        <span className="text-2xl font-bold text-gray-900">11,990৳</span>
+        <span className="text-2xl font-bold text-primary">11,990৳</span>
         <span className="text-lg text-gray-400 line-through">13,990৳</span>
       </div>
 
@@ -33,7 +37,7 @@ const ProductDetails = () => {
         <button className="border rounded-full p-2 hover:bg-gray-100">
           ❤️
         </button>
-        <span className="text-gray-500">Share :</span>
+        <span className="text-secondary dark:text-nav">Share :</span>
         <div className="flex gap-2">
           <FaFacebookF className="cursor-pointer text-gray-600 hover:text-blue-600" />
           <FaTwitter className="cursor-pointer text-gray-600 hover:text-sky-500" />
@@ -42,7 +46,7 @@ const ProductDetails = () => {
       </div>
 
       {/* Highlights */}
-      <div className="space-y-1 text-sm text-gray-700">
+      <div className="space-y-1 text-sm text-secondary dark:text-nav">
         <h3 className="font-semibold">Product Highlights</h3>
         <ul className="list-disc list-inside space-y-1">
           <li>Brand: JBL</li>
@@ -58,8 +62,8 @@ const ProductDetails = () => {
       </div>
 
       {/* Stock */}
-      <div className="flex items-center gap-2 text-green-600 font-medium">
-        <span className="w-3 h-3 bg-green-600 rounded-full"></span> In Stock
+      <div className="flex items-center gap-2 text-primary font-medium">
+        <span className="w-3 h-3 bg-primary rounded-full"></span> In Stock
       </div>
 
       {/* Colors */}
@@ -106,12 +110,17 @@ const ProductDetails = () => {
         </div>
 
         {/* Buttons */}
-        <button className="bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800">
+        <Button
+          onClick={() =>
+            dispatch(
+              addToCart({ id: 0, name: "title", qnt: quantity, price: 100 * 1 })
+            )
+          }
+          className="   rounded-md bg-primary/50 py-5  hover:bg-secondary hover:text-nav text-secondary font-semibold md:text-lg text-sm
+      "
+        >
           Add to Cart
-        </button>
-        <button className="bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800">
-          Order Now
-        </button>
+        </Button>
       </div>
     </div>
   );

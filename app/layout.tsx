@@ -2,6 +2,7 @@ import StoreProvider from "@/lib/redux/StoreProvider";
 import { baiJamjuree, geistMono } from "./fonts/fonts";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function RootLayout({
   children,
@@ -22,6 +23,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <Toaster />
           </ThemeProvider>
         </StoreProvider>
       </body>
