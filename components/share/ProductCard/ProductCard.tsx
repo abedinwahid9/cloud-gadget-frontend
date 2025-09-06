@@ -35,12 +35,15 @@ const ProductCard = ({
         <Image
           src={imageUrl}
           alt={title}
-          className="object-contain  w-full h-20  md:h-[200px] border-amber-300 border-2 "
+          className="object-contain  w-full h-20  md:h-[200px]  "
         />
 
-        <div className="md:text-base text-xs font-semibold w-full text-center hover:underline h-8">
-          {title.slice(0, 20)}
-          {title.length > 20 && "..."}
+        <div className="md:text-base text-xs font-semibold w-full text-center hover:underline ">
+          <span>
+            {" "}
+            {title.slice(0, 20)}
+            {title.length > 20 && "..."}
+          </span>
         </div>
       </Link>{" "}
       <div className="bg-primary/25 capitalize text-xs md:text-base font-medium rounded-4xl px-2 md:my-1 my-0 text-secondary dark:text-nav">
