@@ -4,9 +4,10 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+
 import { useAppSelector } from "@/lib/redux/hooks";
 import Link from "next/link";
+import CustomBtn from "../share/CustomBtn/CustomBtn";
 
 const CartTotals = () => {
   const subtotal = useAppSelector((state) => state.cart.totalPrice);
@@ -86,12 +87,7 @@ const CartTotals = () => {
 
         {/* Checkout Button */}
         <Link href="/cart/checkout">
-          <Button
-            className="w-full mt-2 rounded-b-xl rounded-t-none bg-primary  hover:bg-secondary hover:text-nav text-secondary font-semibold md:text-lg text-sm
-      "
-          >
-            PROCEED TO CHECKOUT
-          </Button>
+          <CustomBtn title="proceed to checkout" className="w-full" />
         </Link>
       </CardContent>
     </Card>

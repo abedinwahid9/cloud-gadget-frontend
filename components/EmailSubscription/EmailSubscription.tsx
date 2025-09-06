@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Mail, Send, Check, Heart, Sparkles, Bell } from "lucide-react";
+import { Button } from "../ui/button";
 
 const EmailSubscription = () => {
   const [email, setEmail] = useState("");
@@ -106,7 +107,7 @@ const EmailSubscription = () => {
                 </div>
               </div>
 
-              <button
+              <Button
                 onClick={handleSubmit}
                 disabled={isLoading || !email}
                 onMouseEnter={() => setIsHovered(true)}
@@ -135,7 +136,7 @@ const EmailSubscription = () => {
                     </>
                   )}
                 </div>
-              </button>
+              </Button>
             </div>
           </div>
 

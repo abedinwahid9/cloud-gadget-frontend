@@ -1,12 +1,10 @@
 "use client";
 import Image, { StaticImageData } from "next/image";
-import { Button } from "@/components/ui/button"; // shadcn button
 import { FaHeart, FaStar } from "react-icons/fa";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { useAppDispatch } from "@/lib/redux/hooks";
 import { addToCart } from "@/lib/redux/slices/cartSlices";
 import Link from "next/link";
-import { toast } from "sonner";
-import ToastCustom from "../ToastCustom/ToastCustom";
+import CustomBtn from "../CustomBtn/CustomBtn";
 
 interface ProductCardProps {
   id: number;
@@ -33,18 +31,19 @@ const ProductCard = ({
 
   return (
     <div className="rounded-xl border-[1px] hover:border-0 border-secondary dark:border-nav p-2 hover:shadow-[0px_0px_5px_2px_#00a8a8] relative flex flex-col items-center gap-1 select-none">
-      <Link href={`/shop/${id}`}>
+      <Link className="w-full" href={`/shop/${id}`}>
         <Image
           src={imageUrl}
           alt={title}
-          className="object-contain  w-full h-16  md:h-[200px]"
-        />{" "}
-        <div className="md:text-base text-sm font-semibold w-full text-center hover:underline">
+          className="object-contain  w-full h-20  md:h-[200px] border-amber-300 border-2 "
+        />
+
+        <div className="md:text-base text-xs font-semibold w-full text-center hover:underline h-8">
           {title.slice(0, 20)}
           {title.length > 20 && "..."}
         </div>
       </Link>{" "}
-      <div className="bg-primary/25 capitalize text-xs md:text-base font-medium rounded-4xl px-2 text-secondary dark:text-nav">
+      <div className="bg-primary/25 capitalize text-xs md:text-base font-medium rounded-4xl px-2 md:my-1 my-0 text-secondary dark:text-nav">
         {category}
       </div>
       <div className="text-center">
@@ -67,13 +66,11 @@ const ProductCard = ({
       <div className="absolute top-4 right-4">
         <FaHeart className=" md:text-xl  text-lg cursor-pointer text-red-500 transition" />
       </div>
-      <Button
-        onClick={() => handleBtn()}
-        className="w-full mt-2 rounded-b-xl rounded-t-none bg-primary  hover:bg-secondary hover:text-nav text-secondary font-semibold md:text-lg text-sm
-      "
-      >
-        Add to Cart
-      </Button>
+      <CustomBtn
+        title="add to cart"
+        className="w-full rounded-t-none"
+        handleBtn={() => handleBtn()}
+      />
     </div>
   );
 };

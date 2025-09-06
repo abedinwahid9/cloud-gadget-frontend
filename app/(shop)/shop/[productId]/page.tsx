@@ -8,7 +8,7 @@ const page = async ({ params }: { params: Promise<{ productId: string }> }) => {
   return (
     <main className="container mx-auto md:px-5 px-2 ">
       <CustomBreadCrumb />
-      page :{productId}
+
       <ProductPage />
     </main>
   );
