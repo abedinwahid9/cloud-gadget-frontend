@@ -14,10 +14,11 @@ import CateNav from "./CateNav";
 import SidebarNav from "./SidebarNav";
 import { Drawer, DrawerTrigger } from "../ui/drawer";
 import { RiMenu2Line } from "react-icons/ri";
-import { ThemeBtn } from "../theme/ThemeBtn";
+
 import { usePathname } from "next/navigation";
 import Cart from "../share/Cart/Cart";
 import Wishlist from "../share/Wishlist/Wishlist";
+import { ThemeBtn } from "../theme/ThemeBtn";
 
 const MainNav = () => {
   const socialIconStyle = "md:w-4 md:h-4 w-3 h-3 text-secondary";

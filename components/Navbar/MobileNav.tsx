@@ -3,10 +3,11 @@
 import { Home } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ThemeBtn } from "../theme/ThemeBtn";
+
 import { IoStorefrontSharp } from "react-icons/io5";
 import Cart from "../share/Cart/Cart";
 import Wishlist from "../share/Wishlist/Wishlist";
+import { ThemeBtn } from "../theme/ThemeBtn";
 
 export default function MobileNav() {
   const navItems = [
