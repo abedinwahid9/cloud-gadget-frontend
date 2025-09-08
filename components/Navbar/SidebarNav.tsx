@@ -1,4 +1,3 @@
-// components/SidebarDrawer.tsx
 "use client";
 
 import {
@@ -16,7 +15,19 @@ import {
 
 import Link from "next/link";
 
-const navItems = [
+interface SubCategories {
+  title: string;
+  href: string;
+}
+
+interface NavItems {
+  title: string;
+  href: string;
+  description: string;
+  subcategories: SubCategories[];
+}
+
+const navItems: NavItems[] = [
   {
     title: "Phones & Tablets",
     href: "/category/phones-and-tablets",
@@ -97,6 +108,7 @@ const navItems = [
     ],
   },
 ];
+
 const SidebarNav = () => {
   return (
     <DrawerContent className="w-[300px] h-auto p-4  bg-secondary/60">

@@ -6,13 +6,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
+
 import { FaUserAlt } from "react-icons/fa";
 
 const UserProfile = () => {
   const userIcons: string = "w-6 h-6 text-nav";
-  const menuItemClass =
+  const menuItemclassName =
     "group relative text-md font-semibold transition-colors duration-300 hover:text-secondary";
-  const underlineClass =
+  const underlineclassName =
     "absolute left-0 -bottom-1 h-[2px] w-0 bg-secondary transition-all duration-300 group-hover:w-full";
 
   return (
@@ -28,38 +30,40 @@ const UserProfile = () => {
       >
         <DropdownMenuLabel className="font-bold">My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className={menuItemClass}>
-          <span className="relative">
-            Profile
-            <span className={underlineClass} />
-          </span>
+        <DropdownMenuItem className={menuItemclassName}>
+          <Link href="/my-account">
+            <span className="relative">
+              Profile
+              <span className={underlineclassName} />
+            </span>
+          </Link>
         </DropdownMenuItem>
 
-        <DropdownMenuItem className={menuItemClass}>
+        <DropdownMenuItem className={menuItemclassName}>
           <span className="relative">
             Billing
-            <span className={underlineClass} />
+            <span className={underlineclassName} />
           </span>
         </DropdownMenuItem>
 
-        <DropdownMenuItem className={menuItemClass}>
+        <DropdownMenuItem className={menuItemclassName}>
           <span className="relative">
             Team
-            <span className={underlineClass} />
+            <span className={underlineclassName} />
           </span>
         </DropdownMenuItem>
 
-        <DropdownMenuItem className={menuItemClass}>
+        <DropdownMenuItem className={menuItemclassName}>
           <span className="relative">
             Subscription
-            <span className={underlineClass} />
+            <span className={underlineclassName} />
           </span>
         </DropdownMenuItem>
 
-        <DropdownMenuItem className={menuItemClass}>
+        <DropdownMenuItem className={menuItemclassName}>
           <span className="relative">
             logout
-            <span className={underlineClass} />
+            <span className={underlineclassName} />
           </span>
         </DropdownMenuItem>
       </DropdownMenuContent>
