@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const orders = [
   {
@@ -94,9 +95,11 @@ const OrderHistory = () => {
                   <TableCell className="text-primary">{order.items}</TableCell>
                   <TableCell className="text-primary">{order.total}</TableCell>
                   <TableCell className="text-right">
-                    <Button variant="outline" size="sm" className="mr-2">
-                      View
-                    </Button>
+                    <Link href={`/my-account/orders-history/order-view/1`}>
+                      <Button variant="outline" size="sm" className="mr-2">
+                        View
+                      </Button>
+                    </Link>
                     <Button size="sm">Reorder</Button>
                   </TableCell>
                 </TableRow>
