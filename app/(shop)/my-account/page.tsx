@@ -1,7 +1,9 @@
+import ProfileCard from "@/components/share/ProfileCard/ProfileCard";
+
 const page = () => {
   return (
     <div>
-      <h2>my account</h2>
+      <ProfileCard />
     </div>
   );
 };
