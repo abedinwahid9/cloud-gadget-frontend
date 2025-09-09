@@ -1,7 +1,12 @@
+import OrderView from "@/components/dashboard/(user)/OrderView/OrderView";
 import React from "react";
 
 const page = () => {
-  return <div>page 1</div>;
+  return (
+    <div>
+      <OrderView />
+    </div>
+  );
 };
 
 export default page;
