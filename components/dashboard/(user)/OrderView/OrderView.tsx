@@ -41,9 +41,9 @@ const order = {
 
 const OrderView = () => {
   return (
-    <div className=" space-y-2">
+    <div className=" space-y-4">
       {/* Order Info */}
-      <Card className="bg-primary/20 dark:bg-blue-300/20 shadow-lg border border-gray-200 dark:border-gray-700">
+      <Card className="bg-primary/20 dark:bg-blue-300/20 shadow-[0px_0px_10px_0px_#00a8a8] border border-gray-200 dark:border-gray-700">
         <CardHeader>
           <CardTitle className="text-xl font-bold text-primary">
             Order #{order.id}
@@ -58,10 +58,10 @@ const OrderView = () => {
             <Badge
               className={`ml-2 ${
                 order.status === "Delivered"
-                  ? "bg-green-500"
+                  ? "bg-green-200 text-green-700"
                   : order.status === "Shipped"
-                  ? "bg-blue-500"
-                  : "bg-yellow-500"
+                  ? "bg-blue-200 text-blue-700"
+                  : "bg-yellow-200 text-yellow-700"
               }`}
             >
               {order.status}
@@ -74,7 +74,7 @@ const OrderView = () => {
       </Card>
 
       {/* Address */}
-      <Card>
+      <Card className="shadow-[0px_0px_10px_0px_#00a8a8]">
         <CardHeader>
           <CardTitle className="text-lg font-bold text-primary">
             Delivery Address
@@ -92,7 +92,7 @@ const OrderView = () => {
       </Card>
 
       {/* Items */}
-      <Card>
+      <Card className="shadow-[0px_0px_10px_0px_#00a8a8]">
         <CardHeader>
           <CardTitle className="text-lg font-bold text-primary">
             Ordered Items
@@ -133,7 +133,7 @@ const OrderView = () => {
       </Card>
 
       {/* Summary */}
-      <Card>
+      <Card className="shadow-[0px_0px_10px_0px_#00a8a8]">
         <CardHeader>
           <CardTitle className="text-lg font-bold text-primary">
             Order Summary

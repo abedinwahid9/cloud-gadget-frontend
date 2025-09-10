@@ -22,7 +22,13 @@ type AddressFormValues = {
   note?: string;
 };
 
-const Address = () => {
+const Address = ({
+  title,
+  isNote = false,
+}: {
+  title: string;
+  isNote?: true | false;
+}) => {
   const {
     register,
     handleSubmit,
@@ -34,10 +40,10 @@ const Address = () => {
   };
 
   return (
-    <Card className="bg-primary/20 dark:bg-blue-300/20 shadow-lg border border-gray-200 dark:border-gray-700">
+    <Card className="bg-primary/20 dark:bg-blue-300/20 border border-gray-200 dark:border-gray-700 shadow-[0px_0px_10px_0px_#00a8a8]">
       <CardHeader>
         <CardTitle className="text-xl font-bold text-primary">
-          Delivery Address
+          {title}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -204,20 +210,22 @@ const Address = () => {
           </div>
 
           {/* Note */}
-          <div className="space-y-1">
-            <Label
-              htmlFor="note"
-              className="text-secondary font-bold dark:text-nav underline"
-            >
-              Delivery Note (Optional)
-            </Label>
-            <Textarea
-              id="note"
-              className="text-primary"
-              placeholder="Any specific delivery instruction..."
-              {...register("note")}
-            />
-          </div>
+          {isNote && (
+            <div className="space-y-1">
+              <Label
+                htmlFor="note"
+                className="text-secondary font-bold dark:text-nav underline"
+              >
+                Delivery Note (Optional)
+              </Label>
+              <Textarea
+                id="note"
+                className="text-primary"
+                placeholder="Any specific delivery instruction..."
+                {...register("note")}
+              />
+            </div>
+          )}
 
           {/* Submit */}
           <CustomBtn

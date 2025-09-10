@@ -38,13 +38,19 @@ const orders = [
   },
 ];
 
-const OrderHistory = () => {
+const OrderHistory = ({
+  title,
+  reOrder = false,
+}: {
+  title: string;
+  reOrder?: true | false;
+}) => {
   return (
-    <div className="max-w-5xl mx-auto py-8">
-      <Card className="bg-primary/20 dark:bg-blue-300/20 shadow-lg border border-gray-200 dark:border-gray-700">
+    <div className="max-w-5xl mx-auto ">
+      <Card className="bg-primary/20 dark:bg-blue-300/20  border border-gray-200 dark:border-gray-700 shadow-[0px_0px_10px_0px_#00a8a8]">
         <CardHeader>
-          <CardTitle className="text-xl font-bold text-primary">
-            Order History
+          <CardTitle className="text-xl font-bold text-primary capitalize">
+            {title}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -100,7 +106,7 @@ const OrderHistory = () => {
                         View
                       </Button>
                     </Link>
-                    <Button size="sm">Reorder</Button>
+                    {reOrder && <Button size="sm">Reorder</Button>}
                   </TableCell>
                 </TableRow>
               ))}

@@ -21,16 +21,16 @@ const resellerLinks = [
 
 const LayoutCom = ({ children }: { children: React.ReactNode }) => {
   // ⚡ later you can fetch role from session / db
-  const role: "user" | "reseller" = "reseller";
-  const links = role === "reseller" ? resellerLinks : userLinks;
+  const role: "user" | "reseller" = "user";
+  const links = role === "user" ? resellerLinks : userLinks;
 
   const [toggle, setToggle] = useState(false);
   const pathname = usePathname();
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] min-h-screen">
+    <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] ">
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:block border-r bg-primary/20 dark:bg-gray-900 p-4 border-r-secondary/50">
+      <aside className="hidden lg:block border-r bg-primary/20 dark:bg-gray-900 p-3 border-r-secondary/50">
         <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
           My Account
         </h2>
@@ -110,7 +110,7 @@ const LayoutCom = ({ children }: { children: React.ReactNode }) => {
                       key={item.href}
                       href={item.href}
                       onClick={() => setToggle(false)}
-                      className="relative group block px-3 py-2"
+                      className="relative group block px-1 py-2"
                     >
                       <span
                         className={`capitalize font-semibold text-base transition-colors duration-300 ${

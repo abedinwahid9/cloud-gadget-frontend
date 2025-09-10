@@ -6,6 +6,8 @@ import { useAppSelector } from "@/lib/redux/hooks";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Address from "../dashboard/(user)/Address/Address";
+import CustomBtn from "../share/CustomBtn/CustomBtn";
 
 const CheckoutPage = () => {
   const router = useRouter();
@@ -52,59 +54,15 @@ const CheckoutPage = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 flex flex-col lg:flex-row gap-6">
+    <div className=" px-4 py-5 flex flex-col lg:flex-row gap-6">
       {/* Billing Form */}
-      <Card className="lg:w-2/3 w-full">
-        <CardHeader>
-          <CardTitle>Billing & Shipping Details</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input
-              name="name"
-              placeholder="Full Name"
-              value={form.name}
-              onChange={handleInputChange}
-            />
-            <Input
-              name="email"
-              type="email"
-              placeholder="Email"
-              value={form.email}
-              onChange={handleInputChange}
-            />
-            <Input
-              name="phone"
-              type="tel"
-              placeholder="Phone Number"
-              value={form.phone}
-              onChange={handleInputChange}
-            />
-            <Input
-              name="city"
-              placeholder="City"
-              value={form.city}
-              onChange={handleInputChange}
-            />
-            <Input
-              name="postalCode"
-              placeholder="Postal Code"
-              value={form.postalCode}
-              onChange={handleInputChange}
-            />
-          </div>
-          <Input
-            name="address"
-            placeholder="Full Address"
-            value={form.address}
-            onChange={handleInputChange}
-            className="w-full"
-          />
-        </CardContent>
-      </Card>
+      <div className="lg:w-2/3 w-full">
+        <Address title="Billing & Shipping Details " isNote={true} />
+      </div>
 
       {/* Order Summary */}
-      <Card className="lg:w-1/3 w-full bg-primary/10">
+
+      <Card className="lg:w-1/3 w-full  bg-primary/10 shadow-[0px_0px_10px_0px_#00a8a8]">
         <CardHeader>
           <CardTitle>Order Summary</CardTitle>
         </CardHeader>
@@ -122,9 +80,12 @@ const CheckoutPage = () => {
             <span>Total</span>
             <span>৳ {total.toFixed(2)}</span>
           </div>
-          <Button className="w-full mt-4" onClick={handleCheckout}>
-            Proceed to Payment
-          </Button>
+
+          <CustomBtn
+            handleBtn={handleCheckout}
+            className="w-full mt-4"
+            title="Proceed to Payment"
+          />
         </CardContent>
       </Card>
     </div>
