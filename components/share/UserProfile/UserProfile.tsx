@@ -41,27 +41,6 @@ const UserProfile = () => {
 
         <DropdownMenuItem className={menuItemclassName}>
           <span className="relative">
-            Billing
-            <span className={underlineclassName} />
-          </span>
-        </DropdownMenuItem>
-
-        <DropdownMenuItem className={menuItemclassName}>
-          <span className="relative">
-            Team
-            <span className={underlineclassName} />
-          </span>
-        </DropdownMenuItem>
-
-        <DropdownMenuItem className={menuItemclassName}>
-          <span className="relative">
-            Subscription
-            <span className={underlineclassName} />
-          </span>
-        </DropdownMenuItem>
-
-        <DropdownMenuItem className={menuItemclassName}>
-          <span className="relative">
             logout
             <span className={underlineclassName} />
           </span>

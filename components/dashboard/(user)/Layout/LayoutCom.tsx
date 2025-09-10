@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { RiMenu2Line, RiCloseLine } from "react-icons/ri";
@@ -11,6 +10,7 @@ const userLinks = [
   { title: "Profile", href: "/my-account" },
   { title: "Address", href: "/my-account/address" },
   { title: "Order History", href: "/my-account/orders-history" },
+  { title: "Setting", href: "/my-account/setting" },
 ];
 
 const resellerLinks = [
@@ -22,7 +22,7 @@ const resellerLinks = [
 const LayoutCom = ({ children }: { children: React.ReactNode }) => {
   // ⚡ later you can fetch role from session / db
   const role: "user" | "reseller" = "user";
-  const links = role === "user" ? resellerLinks : userLinks;
+  const links = role === "user" ? userLinks : resellerLinks;
 
   const [toggle, setToggle] = useState(false);
   const pathname = usePathname();
@@ -87,12 +87,10 @@ const LayoutCom = ({ children }: { children: React.ReactNode }) => {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", stiffness: 120, damping: 20 }}
-              className="absolute inset-y-0 left-0 w-[250px] bg-secondary/80 dark:bg-gray-900 shadow-xl p-4 "
+              className="absolute inset-y-0 left-0 w-[250px] bg-primary/90 dark:bg-gray-900 shadow-xl p-4 z-40 "
             >
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-                  My Account
-                </h2>
+                <h2 className="text-lg font-semibold text-nav ">My Account</h2>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -115,8 +113,8 @@ const LayoutCom = ({ children }: { children: React.ReactNode }) => {
                       <span
                         className={`capitalize font-semibold text-base transition-colors duration-300 ${
                           isActive
-                            ? "text-primary"
-                            : "text-gray-700 dark:text-gray-200 hover:text-primary"
+                            ? "text-secondary dark:text-primary"
+                            : "text-nav  hover:text-primary"
                         }`}
                       >
                         {item.title}
