@@ -4,7 +4,7 @@ import React from "react";
 
 interface Btn {
   title: string;
-  className: string;
+  className?: string;
   handleBtn?: () => void;
   type?: "button" | "submit" | "reset" | undefined;
 }
