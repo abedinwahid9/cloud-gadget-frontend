@@ -8,7 +8,7 @@ import SalesChart from "@/components/share/SalesChart/SalesChart";
 
 const Dashboard = () => {
   return (
-    <div className="p-6 space-y-6">
+    <div className=" space-y-5">
       {/* Profile and Quick Stats */}
       <div className="grid md:grid-cols-4 gap-6">
         {/* <ProfileCard /> */}

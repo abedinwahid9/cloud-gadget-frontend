@@ -35,7 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </header>
 
           {/* Page Content */}
-          <main className="flex-1 overflow-y-auto p-6">{children}</main>
+          <main className="flex-1 overflow-y-auto p-3">{children}</main>
         </div>
       </div>
     </SidebarProvider>
