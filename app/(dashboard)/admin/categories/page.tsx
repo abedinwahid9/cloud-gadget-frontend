@@ -1,4 +1,5 @@
 import CategoryPage from "@/components/dashboard/(admin)/CategoryPage/CategoryPage";
+
 import Title from "@/components/share/Title/Title";
 
 const page = () => {

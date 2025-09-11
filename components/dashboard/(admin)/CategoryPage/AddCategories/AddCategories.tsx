@@ -8,20 +8,24 @@ import { Button } from "@/components/ui/button";
 import CustomBtn from "@/components/share/CustomBtn/CustomBtn";
 import { X } from "lucide-react";
 
-// ✅ Define type for form data
 type FormValues = {
   categories: { name: string }[];
-  required: boolean;
 };
 
-const AddCategories = ({
-  setCategory,
-}: {
-  setCategory: (cats: string[]) => void;
-}) => {
+// ✅ Shared type for Category
+export interface Cats {
+  value: string;
+  label: string;
+}
+
+interface AddCategoriesProps {
+  setCategory: React.Dispatch<React.SetStateAction<Cats[]>>;
+}
+
+const AddCategories: React.FC<AddCategoriesProps> = ({ setCategory }) => {
   const { control, register, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      categories: [{ name: "" }], // initial one empty category
+      categories: [{ name: "" }],
     },
   });
 
@@ -34,7 +38,12 @@ const AddCategories = ({
     const filtered = data.categories
       .map((c) => c.name.trim())
       .filter((name) => name !== "");
-    setCategory(filtered);
+
+    // ✅ push new categories properly
+    setCategory((prev) => [
+      ...prev,
+      ...filtered.map((item) => ({ value: item, label: item })),
+    ]);
   };
 
   return (
@@ -49,11 +58,11 @@ const AddCategories = ({
           {fields.map((field, index) => (
             <div key={field.id} className="flex gap-2 items-center">
               <Input
-                {...(register(`categories.${index}.name` as const),
-                { required: true })}
+                {...register(`categories.${index}.name`, { required: true })}
                 placeholder="Add Category"
                 className="text-secondary placeholder:text-primary"
               />
+
               <Button
                 type="button"
                 className="bg-transparent hover:bg-badge hover:text-white font-bold"
@@ -66,16 +75,12 @@ const AddCategories = ({
           ))}
 
           <div className="flex gap-3">
-            <div>
-              <CustomBtn
-                handleBtn={() => append({ name: "" })}
-                title="Add Category +"
-                type="button"
-              />
-            </div>
-            <div>
-              <CustomBtn title="Save Categories" type="submit" />
-            </div>
+            <CustomBtn
+              handleBtn={() => append({ name: "" })}
+              title="Add Category +"
+              type="button"
+            />
+            <CustomBtn title="Save Categories" type="submit" />
           </div>
         </form>
       </CardContent>
