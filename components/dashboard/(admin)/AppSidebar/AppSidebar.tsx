@@ -46,7 +46,7 @@ const menuItems = [
   },
   {
     title: "Categories",
-    url: "/admin/products",
+    url: "/admin/categories",
     icon: TbCategoryPlus,
   },
   {
