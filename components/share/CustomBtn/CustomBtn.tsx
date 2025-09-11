@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
 import React from "react";
