@@ -132,6 +132,51 @@ const navItems = [
       { title: "TV Boxes", href: "/category/smart-electronics/tv-boxes" },
     ],
   },
+  {
+    title: "Smart Electronics",
+    href: "/category/smart-electronics",
+    description: "Innovative smart devices and electronics",
+    subcategories: [
+      {
+        title: "Smart Home Devices",
+        href: "/category/smart-electronics/smart-home-devices",
+      },
+      { title: "Drones", href: "/category/smart-electronics/drones" },
+      { title: "Cameras", href: "/category/smart-electronics/cameras" },
+      { title: "Projectors", href: "/category/smart-electronics/projectors" },
+      { title: "TV Boxes", href: "/category/smart-electronics/tv-boxes" },
+    ],
+  },
+  {
+    title: "Smart Electronics",
+    href: "/category/smart-electronics",
+    description: "Innovative smart devices and electronics",
+    subcategories: [
+      {
+        title: "Smart Home Devices",
+        href: "/category/smart-electronics/smart-home-devices",
+      },
+      { title: "Drones", href: "/category/smart-electronics/drones" },
+      { title: "Cameras", href: "/category/smart-electronics/cameras" },
+      { title: "Projectors", href: "/category/smart-electronics/projectors" },
+      { title: "TV Boxes", href: "/category/smart-electronics/tv-boxes" },
+    ],
+  },
+  {
+    title: "Smart Electronics",
+    href: "/category/smart-electronics",
+    description: "Innovative smart devices and electronics",
+    subcategories: [
+      {
+        title: "Smart Home Devices",
+        href: "/category/smart-electronics/smart-home-devices",
+      },
+      { title: "Drones", href: "/category/smart-electronics/drones" },
+      { title: "Cameras", href: "/category/smart-electronics/cameras" },
+      { title: "Projectors", href: "/category/smart-electronics/projectors" },
+      { title: "TV Boxes", href: "/category/smart-electronics/tv-boxes" },
+    ],
+  },
 ];
 
 const CateNav = () => {
@@ -140,8 +185,8 @@ const CateNav = () => {
       viewport={false}
       className="container mx-auto w-full relative z-50 "
     >
-      <NavigationMenuList className="flex flex-wrap w-full ">
-        {navItems?.map((item, i) => {
+      <NavigationMenuList className="flex flex-wrap  w-full ">
+        {navItems?.slice(0, 6).map((item, i) => {
           return (
             <NavigationMenuItem key={i}>
               <NavigationMenuTrigger className="text-secondary/75 data-[state=open]:text-secondary hover:text-secondary font-bold uppercase bg-transparent dark:text-white ">
