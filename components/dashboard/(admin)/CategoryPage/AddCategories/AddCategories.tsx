@@ -23,7 +23,7 @@ interface AddCategoriesProps {
 }
 
 const AddCategories: React.FC<AddCategoriesProps> = ({ setCategory }) => {
-  const { control, register, handleSubmit } = useForm<FormValues>({
+  const { control, register, handleSubmit, reset } = useForm<FormValues>({
     defaultValues: {
       categories: [{ name: "" }],
     },
@@ -39,11 +39,11 @@ const AddCategories: React.FC<AddCategoriesProps> = ({ setCategory }) => {
       .map((c) => c.name.trim())
       .filter((name) => name !== "");
 
-    // ✅ push new categories properly
     setCategory((prev) => [
       ...prev,
       ...filtered.map((item) => ({ value: item, label: item })),
     ]);
+    reset();
   };
 
   return (

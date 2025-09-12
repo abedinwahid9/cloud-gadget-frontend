@@ -21,6 +21,16 @@ const CategoryPage = () => {
       name: "Laptops",
       subCategories: [{ id: "sub3", name: "Gaming Laptops" }],
     },
+    {
+      id: "cat3",
+      name: "Laptops",
+      subCategories: [],
+    },
+    {
+      id: "cat4",
+      name: "Laptops",
+      subCategories: [],
+    },
   ];
 
   return (
