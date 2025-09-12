@@ -35,6 +35,7 @@ const AddSubCate: React.FC<AddSubCateProps> = ({ category }) => {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
@@ -57,6 +58,7 @@ const AddSubCate: React.FC<AddSubCateProps> = ({ category }) => {
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     console.log("Submitted:", data.subCategories);
+    reset();
   };
 
   return (
