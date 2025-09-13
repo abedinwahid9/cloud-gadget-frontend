@@ -18,10 +18,11 @@ import {
 } from "@/components/ui/table";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { MoreHorizontal, Search } from "lucide-react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
+import img1 from "@/app/assets/img1.png";
+import { Switch } from "@/components/ui/switch";
 
 // --- Product type ---
 type Product = {
@@ -29,20 +30,22 @@ type Product = {
   name: string;
   category: string;
   stock: string;
-  price: string;
+  price: number;
+  discountPercentage: number;
   status: string;
-  image: string;
+  image: StaticImageData;
 };
 
-// --- Sample data (same as yours, repeated for demo) ---
+// --- Sample data ---
 const products: Product[] = Array.from({ length: 100 }, (_, i) => ({
   id: i + 1,
   name: `Product ${i + 1}`,
   category: i % 2 === 0 ? "Clothes" : "Gadget",
   stock: i % 3 === 0 ? "Out of Stock" : "124 Low Stock",
-  price: "$47",
+  price: 47 * (i + 1),
+  discountPercentage: 15,
   status: i % 2 === 0 ? "Published" : "Inactive",
-  image: "/images/tshirt.png",
+  image: img1,
 }));
 
 // --- Helpers ---
@@ -52,23 +55,22 @@ const getStockClass = (stock: string) => {
   return "text-green-500 font-medium";
 };
 
-const getStatusClass = (status: string) => {
-  switch (status) {
-    case "Published":
-      return "bg-green-100 text-green-700";
-    case "Inactive":
-      return "bg-red-100 text-red-700";
-    case "Draft":
-      return "bg-yellow-100 text-yellow-700";
-    case "Stock Out":
-      return "bg-orange-100 text-orange-700";
-    default:
-      return "bg-gray-100 text-gray-700";
-  }
+const calculateDiscountPrice = ({
+  value,
+  percentage,
+}: {
+  value: number;
+  percentage: number;
+}) => {
+  const discountAmount = value * (percentage / 100);
+  return Math.floor(value - discountAmount);
 };
 
-// --- Columns ---
-const columns: ColumnDef<Product>[] = [
+// --- Columns generator ---
+const getColumns = (
+  switchStates: Record<number, boolean>,
+  handleSwitchChange: (id: number, checked: boolean) => void
+): ColumnDef<Product>[] => [
   {
     accessorKey: "name",
     header: "Product Name",
@@ -77,8 +79,8 @@ const columns: ColumnDef<Product>[] = [
         <Image
           src={row.original.image}
           alt={row.original.name}
-          width={32}
-          height={32}
+          width={42}
+          height={42}
           className="rounded-md"
         />
         <span className="font-medium">{row.original.name}</span>
@@ -86,6 +88,20 @@ const columns: ColumnDef<Product>[] = [
     ),
   },
   { accessorKey: "category", header: "Category" },
+  { accessorKey: "price", header: "Price" },
+  {
+    accessorKey: "discountPercentage",
+    header: "Discount Price",
+    cell: ({ row }) => (
+      <span>
+        {calculateDiscountPrice({
+          value: row.original.price,
+          percentage: row.original.discountPercentage,
+        })}{" "}
+        ({row.original.discountPercentage}%)
+      </span>
+    ),
+  },
   {
     accessorKey: "stock",
     header: "Stock",
@@ -95,14 +111,17 @@ const columns: ColumnDef<Product>[] = [
       </span>
     ),
   },
-  { accessorKey: "price", header: "Price" },
   {
-    accessorKey: "status",
+    id: "status",
     header: "Status",
     cell: ({ row }) => (
-      <Badge className={`${getStatusClass(row.original.status)} px-3 py-1`}>
-        {row.original.status}
-      </Badge>
+      <Switch
+        checked={!!switchStates[row.original.id]}
+        onCheckedChange={(checked) =>
+          handleSwitchChange(row.original.id, checked)
+        }
+        id={`switch-${row.original.id}`}
+      />
     ),
   },
   {
@@ -122,9 +141,28 @@ const columns: ColumnDef<Product>[] = [
 const ProductListPage = ({ title }: { title: string }) => {
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
-    pageSize: 10, // show 10 per page
+    pageSize: 10,
   });
 
+  // --- Switch state per row ---
+  const [switchStates, setSwitchStates] = React.useState<
+    Record<number, boolean>
+  >({});
+
+  const handleSwitchChange = (id: number, checked: boolean) => {
+    setSwitchStates((prev) => ({
+      ...prev,
+      [id]: checked,
+    }));
+  };
+
+  // --- Columns ---
+  const columns = React.useMemo(
+    () => getColumns(switchStates, handleSwitchChange),
+    [switchStates]
+  );
+
+  // --- React Table ---
   const table = useReactTable({
     data: products,
     columns,
