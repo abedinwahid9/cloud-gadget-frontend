@@ -5,6 +5,7 @@ import ProductCard from "@/components/share/ProductCard/ProductCard";
 import img2 from "@/app/assets/img3.png";
 import { useState, useEffect, useRef } from "react";
 import { Skeleton } from "../ui/skeleton";
+import { data } from "@/public/data";
 
 type Post = {
   userId: number;
@@ -18,22 +19,24 @@ const ProductsSection = () => {
   const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const proructs = data;
+
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
-  const getData = async () => {
-    setLoading(true);
-    const res = await fetch(
-      `https://jsonplaceholder.typicode.com/posts?_page=${page}&_limit=8`
-    );
-    const data = await res.json();
+  // const getData = async () => {
+  //   setLoading(true);
+  //   const res = await fetch(
+  //     `https://jsonplaceholder.typicode.com/posts?_page=${page}&_limit=8`
+  //   );
+  //   const data = await res.json();
 
-    setPosts((prev) => [...prev, ...data]); // append data
-    setLoading(false);
-  };
+  //   setPosts((prev) => [...prev, ...data]); // append data
+  //   setLoading(false);
+  // };
 
-  useEffect(() => {
-    getData();
-  }, [page]);
+  // useEffect(() => {
+  //   getData();
+  // }, [page]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -74,17 +77,8 @@ const ProductsSection = () => {
 
   return (
     <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-2 lg:pr-1 pr-0 h-auto">
-      {posts.map((post, i) => (
-        <ProductCard
-          id={i}
-          title={post.title}
-          imageUrl={img2}
-          price={45}
-          oldPrice={50}
-          category="headphone"
-          // key={post.id || i}
-          key={i}
-        />
+      {proructs?.map((post, i) => (
+        <ProductCard {...post} key={i} />
       ))}
 
       {/* ✅ Sentinel div for IntersectionObserver */}

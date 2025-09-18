@@ -12,9 +12,9 @@ import cover3 from "@/app/assets/cover3.jpg";
 
 const HeroSection = () => {
   return (
-    <div className="grid grid-cols-12  md:py-2 py-1 relative z-10">
+    <div className="grid grid-cols-12  md:py-2 py-1 relative z-10 md:px-2 px-1">
       <Carousel
-        className="col-span-8 "
+        className="col-span-8  rounded-lg overflow-hidden"
         opts={{
           loop: true,
         }}
@@ -28,21 +28,21 @@ const HeroSection = () => {
         <CarouselContent>
           <CarouselItem>
             <Image
-              className="w-full h-full object-fill"
+              className="w-full h-full object-fill "
               src={cover}
               alt="cover"
             />
           </CarouselItem>
           <CarouselItem>
             <Image
-              className="w-full h-full object-fill"
+              className="w-full h-full object-fill "
               src={cover2}
               alt="cover"
             />
           </CarouselItem>
           <CarouselItem>
             <Image
-              className="w-full h-full object-fill"
+              className="w-full h-full object-fill "
               src={cover3}
               alt="cover"
             />
@@ -52,16 +52,16 @@ const HeroSection = () => {
         <CarouselNext /> */}
       </Carousel>
       <div className="col-span-4 flex flex-col md:pl-2 pl-1 ">
-        <div className="md:pb-1 pb-0.5">
+        <div className="md:pb-1 pb-0.5 ">
           <Image
-            className="w-full h-full object-fill "
+            className="w-full h-full object-fill  rounded-lg"
             src={cover3}
             alt="cover"
           />
         </div>
-        <div className="md:pt-1 pt-0.5">
+        <div className="md:pt-1 pt-0.5 ">
           <Image
-            className="w-full h-full object-fill "
+            className="w-full h-full object-fill  rounded-lg"
             src={cover2}
             alt="cover"
           />

@@ -10,20 +10,20 @@ import style from "./productcard.module.css";
 interface ProductCardProps {
   id: number;
   title: string;
-  imageUrl: StaticImageData;
+  images: StaticImageData[] | string[];
   price: number;
   oldPrice?: number;
   category?: string;
 }
 
-const ProductCard = ({
+const ProductCard: React.FC<ProductCardProps> = ({
   id,
   title,
-  imageUrl,
+  images,
   price,
   oldPrice,
   category,
-}: ProductCardProps) => {
+}) => {
   const dispatch = useAppDispatch();
 
   const handleBtn = () => {
@@ -31,32 +31,46 @@ const ProductCard = ({
   };
 
   return (
-    <div className="relative w-full max-w-[250px] mx-auto rounded-xl   shadow-sm  bg-primary/10  transition flex flex-col">
+    <div className="relative w-full max-w-[250px] mx-auto rounded-xl shadow-sm bg-primary/10 transition flex flex-col group">
       {/* Category Badge */}
       {category && (
         <div>
           <div
-            className={`${style.tag} relative inline-block -top-1 -left-1 bg-gradient-to-r from-primary/60 via-secondary/60 to-badge/60 text-[10px] sm:text-xs md:text-base rounded-xl border-8  border-background py-0.5 px-3 text-secondary dark:text-nav  font-semibold uppercase tracking-wide `}
+            className={`${style.tag} relative inline-block -top-1 -left-1 bg-gradient-to-r from-primary/60 via-secondary/60 to-badge/60 text-[10px] sm:text-xs md:text-base rounded-xl border-8 border-background py-0.5 px-3 text-secondary dark:text-nav font-semibold uppercase tracking-wide`}
           >
             {category}
           </div>
         </div>
       )}
 
-      {/* Product Image */}
+      {/* Product Image with hover effect */}
       <Link
         href={`/shop/${id}`}
-        className="flex-1 flex items-center justify-center p-2"
+        className="flex-1 flex items-center justify-center p-2 relative"
       >
+        {/* Image 1 */}
         <Image
-          src={imageUrl}
+          src={typeof images[0] === "string" ? images[0] : images[0].src}
           alt={title}
-          className="object-contain  w-full h-28 sm:h-36 md:h-44"
+          width={300}
+          height={300}
+          className="object-contain w-full h-28 sm:h-36 md:h-44 transition-opacity duration-500 ease-in-out group-hover:opacity-0"
         />
+
+        {/* Image 2 (hover) */}
+        {images[1] && (
+          <Image
+            src={typeof images[1] === "string" ? images[1] : images[1].src}
+            alt={title}
+            width={300}
+            height={300}
+            className="object-contain w-full h-28 sm:h-36 md:h-44 absolute top-0 left-0 opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
+          />
+        )}
       </Link>
 
       {/* Product Info */}
-      <div className="px-2  flex flex-col gap-1">
+      <div className="px-2 flex flex-col gap-1">
         {/* Title */}
         <Link href={`/shop/${id}`}>
           <p className="text-xs sm:text-sm md:text-base font-medium hover:underline truncate text-secondary dark:text-nav">
@@ -65,13 +79,13 @@ const ProductCard = ({
         </Link>
 
         {/* Price + Rating */}
-        <div className="flex items-start flex-col  w-full">
+        <div className="flex items-start flex-col w-full">
           <div className="text-primary">
             <span className="text-sm sm:text-base md:text-lg font-bold">
               ৳ {price.toFixed(2)}
             </span>
             {oldPrice && (
-              <span className="text-[10px] sm:text-xs  text-gray-500 line-through ml-1.5">
+              <span className="text-[10px] sm:text-xs text-gray-500 line-through ml-1.5">
                 ৳ {oldPrice.toFixed(2)}
               </span>
             )}
@@ -90,7 +104,7 @@ const ProductCard = ({
       </div>
 
       {/* Footer (Wishlist + Button) */}
-      <div className="flex items-center justify-between  w-full pt-1">
+      <div className="flex items-center justify-between w-full pt-1">
         {/* Wishlist Heart */}
         <div className="w-1/4 flex items-center justify-center">
           <FaHeart className="text-red-500 cursor-pointer text-lg sm:text-2xl transition" />
@@ -98,12 +112,12 @@ const ProductCard = ({
 
         {/* Add to Cart Button */}
         <div
-          className={`${style.tag_btn} inline-block border-8 relative -bottom-1 -right-1 border-background   w-3/4 rounded-xl`}
+          className={`${style.tag_btn} inline-block border-8 relative -bottom-1 -right-1 border-background w-3/4 rounded-xl`}
         >
           <div className="rounded-[6px] overflow-hidden">
             <CustomBtn
               title="Add To Cart"
-              className="bg-gradient-to-r from-primary/70 via-secondary/70 to-badge/70 text-white  text-xs sm:text-sm md:text-base font-semibold shadow-md  hover:opacity-90 w-full rounded-none"
+              className="bg-gradient-to-r from-primary/70 via-secondary/70 to-badge/70 text-white text-xs sm:text-sm md:text-base font-semibold shadow-md hover:opacity-90 w-full rounded-none"
               handleBtn={handleBtn}
             />
           </div>
