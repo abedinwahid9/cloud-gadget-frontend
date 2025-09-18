@@ -27,7 +27,7 @@ const MainNav = () => {
   const navLink = [
     { name: "Home", href: "/" },
     { name: "Shop", href: "/shop" },
-    { name: "About Us", href: "/about" },
+    { name: "About Us", href: "/about-us" },
     { name: "Contact Us", href: "/contact" },
   ];
 
