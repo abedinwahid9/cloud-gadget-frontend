@@ -1,0 +1,64 @@
+/* Right ribbon */
+.tag::after {
+  width: 1.125rem;
+  height: 1.125rem;
+  content: "";
+  position: absolute;
+  background-color: transparent;
+  top: -0.255rem;
+  right: -1.58rem;
+  border-top-left-radius: 0.625rem;
+  box-shadow: -0.375rem -0.375rem var(--color-background);
+}
+
+/* Left ribbon */
+.tag::before {
+  width: 1.125rem;
+  height: 1.25rem;
+  content: "";
+  position: absolute;
+  background-color: transparent;
+  bottom: -1.726rem;
+  left: -0.255rem;
+  border-top-left-radius: 0.625rem;
+  box-shadow: -0.375rem -0.375rem var(--color-background);
+}
+/* Right ribbon */
+.tag_btn::after {
+  width: 1.125rem;
+  height: 1.125rem;
+  content: "";
+  position: absolute;
+  background-color: transparent;
+  top: -1.6rem;
+  right: -0.3rem;
+  border-bottom-right-radius: 0.625rem;
+  box-shadow: 0.375rem 0.375rem var(--color-background);
+}
+
+/* Left ribbon */
+.tag_btn::before {
+  width: 1.125rem;
+  height: 1.25rem;
+  content: "";
+  position: absolute;
+  background-color: transparent;
+  bottom: -0.25rem;
+  left: -1.595rem;
+  border-bottom-right-radius: 0.625rem;
+  box-shadow: 0.375rem 0.375rem var(--color-background);
+}
+
+@media screen and (max-width: 768px) {
+  /* Right ribbon */
+  .tag::after {
+    top: -0.255rem;
+    right: -1.62rem;
+  }
+
+  /* Left ribbon */
+  .tag::before {
+    bottom: -1.726rem;
+    left: -0.255rem;
+  }
+}
