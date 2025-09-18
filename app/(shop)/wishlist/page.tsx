@@ -9,7 +9,7 @@ const page = () => {
         <Title text="my wishlist" />
       </div>
       <div className="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-2 gap-2 px-2  h-auto">
-        {Array.from({ length: 5 }).map((post, i) => (
+        {/* {Array.from({ length: 5 }).map((post, i) => (
           <ProductCard
             id={i}
             title={"title"}
@@ -20,7 +20,7 @@ const page = () => {
             // key={post.id || i}
             key={i}
           />
-        ))}
+        ))} */}
       </div>
     </main>
   );
