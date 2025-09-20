@@ -28,7 +28,7 @@ interface ComboBoxProps {
   title: string;
   categories: Categories[];
   value: string;
-  onChange: (value: string) => void; // ✅ new prop
+  onChange?: (value: string) => void;
 }
 
 const ComboBox: React.FC<ComboBoxProps> = ({
@@ -46,7 +46,7 @@ const ComboBox: React.FC<ComboBoxProps> = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full bg-transparent justify-between"
+          className="w-full bg-transparent justify-between rounded-lg"
         >
           {value
             ? categories.find((category) => category.value === value)?.label
@@ -54,7 +54,7 @@ const ComboBox: React.FC<ComboBoxProps> = ({
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[250px] bg-gradient-to-b from-primary to-secondary p-0">
+      <PopoverContent className="w-[250px] bg-gradient-to-b from-primary to-secondary p-0 ">
         <Command>
           <CommandInput placeholder={`Search ${title}...`} className="h-9" />
           <CommandList>
@@ -66,7 +66,9 @@ const ComboBox: React.FC<ComboBoxProps> = ({
                   className="text-nav text-base font-semibold data-[selected=true]:text-primary"
                   value={category.value}
                   onSelect={(currentValue) => {
-                    onChange(currentValue === value ? "" : currentValue); // ✅ controlled by parent
+                    if (onChange) {
+                      onChange(currentValue === value ? "" : currentValue);
+                    }
                     setOpen(false);
                   }}
                 >

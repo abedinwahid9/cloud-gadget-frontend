@@ -2,36 +2,60 @@
 "use client";
 
 import { useState } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Title from "@/components/share/Title/Title";
 import Image from "next/image";
+import ComboBox from "@/components/share/ComboBox/ComboBox";
+import CustomBtn from "@/components/share/CustomBtn/CustomBtn";
+import { IoIosCloudUpload } from "react-icons/io";
+
+type Variant = { name: string; options: string };
+
+type FormValues = {
+  title: string;
+  description: string;
+  price: string;
+  discountedPrice?: string;
+  stock: string;
+  tags: string;
+  category: string;
+  subcategory?: string;
+  variants: Variant[];
+};
 
 const AddProductPage = () => {
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    images: [],
-    price: "",
-    discountedPrice: "",
-    stock: "",
-    variants: [{ name: "", options: "" }],
-    category: "",
-    subcategory: "",
-    tags: "",
+  const [images, setImages] = useState<File[]>([]);
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: {
+      title: "",
+      description: "",
+      price: "",
+      discountedPrice: "",
+      stock: "",
+      tags: "",
+      category: "",
+      subcategory: "",
+      variants: [{ name: "", options: "" }],
+    },
   });
 
-  const [images, setImages] = useState<File[]>([]);
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "variants",
+  });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -39,320 +63,319 @@ const AddProductPage = () => {
     }
   };
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const onSubmit = (data: FormValues) => {
+    console.log("Submitting product:", { ...data, images });
   };
 
-  const handleVariantChange = (
-    index: number,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newVariants = [...formData.variants];
-    newVariants[index][e.target.name] = e.target.value;
-    setFormData({ ...formData, variants: newVariants });
-  };
+  const categories = [
+    { category: "Electronics", value: "electronics", label: "Electronics" },
+    {
+      category: "Apparel & Accessories",
+      value: "apparel-accessories",
+      label: "Apparel & Accessories",
+    },
+    { category: "Home & Garden", value: "home-garden", label: "Home & Garden" },
+    {
+      category: "Health & Beauty",
+      value: "health-beauty",
+      label: "Health & Beauty",
+    },
+    { category: "Books & Media", value: "books-media", label: "Books & Media" },
+  ];
 
-  const addVariant = () => {
-    setFormData({
-      ...formData,
-      variants: [...formData.variants, { name: "", options: "" }],
-    });
-  };
+  const CartStyle =
+    "bg-primary/20 dark:bg-blue-300/20 border border-gray-200 dark:border-gray-700 shadow-[0px_0px_10px_0px_#00a8a8]";
 
-  const removeVariant = (index: number) => {
-    const newVariants = formData.variants.filter((_, i) => i !== index);
-    setFormData({ ...formData, variants: newVariants });
-  };
-
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Submitting product:", formData);
-  };
+  const variantOptions = [
+    { category: "color", value: "color", label: "color" },
+    { category: "size", value: "size", label: "size" },
+    { category: "material", value: "material", label: "material" },
+  ];
 
   return (
     <div>
       <Title text="Add New Product" />
-      <form onSubmit={handleFormSubmit} className="space-y-2 pt-2">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 pt-2">
         {/* Basic Info */}
-        <Card>
-          <CardContent className="space-y-6 px-2">
-            <div className="grid gap-2">
-              <Label htmlFor="title">Product Title</Label>
-              <Input
-                id="title"
-                name="title"
-                placeholder="e.g., Wireless Noise-Canceling Headphones"
-                value={formData.title}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-
-            {/* image */}
-            <div className="grid gap-2">
-              <Label htmlFor="images">Product Images</Label>
-
-              {/* When no image uploaded → Show 1st design */}
-              {images.length === 0 ? (
-                <label
-                  htmlFor="images"
-                  className="flex h-64 w-full cursor-pointer items-center justify-center rounded-md border border-dashed border-gray-400 text-sm text-gray-500"
+        <div className="flex gap-2 md:flex-row flex-col">
+          <Card className={`w-full md:w-2/3 ${CartStyle}`}>
+            <CardContent className="space-y-6 px-2">
+              {/* Title */}
+              <div className="grid gap-2">
+                <Label
+                  htmlFor="title"
+                  className="text-secondary font-bold dark:text-nav underline"
                 >
-                  <div className="flex flex-col items-center space-y-1">
-                    <button
-                      type="button"
-                      className="rounded bg-gray-200 px-2 py-1 text-xs font-medium text-gray-700"
-                    >
-                      Upload new
-                    </button>
-                    <span className="text-xs">Select existing</span>
-                    <p className="text-xs">Accepts images</p>
-                  </div>
-                </label>
-              ) : (
-                <div className="grid gap-2 h-64 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 auto-rows-fr">
-                  {/* First image → big preview */}
-                  <div className="md:col-span-2 col-span-1 row-span-2">
-                    <div className="h-full w-full overflow-hidden rounded-md border">
-                      <Image
-                        width={0}
-                        height={0}
-                        src={URL.createObjectURL(images[0])}
-                        alt="preview"
-                        className="h-full w-full object-contain"
-                      />
-                    </div>
-                  </div>
+                  Product Title
+                </Label>
+                <Input
+                  id="title"
+                  className="text-primary"
+                  placeholder="e.g., Wireless Noise-Canceling Headphones"
+                  {...register("title", { required: "Title is required" })}
+                />
+                {errors.title && (
+                  <p className="text-red-500 text-sm">{errors.title.message}</p>
+                )}
+              </div>
 
-                  {/* Other images */}
-                  {images.slice(1).map((file, idx) => (
-                    <div
-                      key={idx}
-                      className="overflow-hidden rounded-md border"
-                    >
-                      <Image
-                        width={0}
-                        height={0}
-                        src={URL.createObjectURL(file)}
-                        alt="preview"
-                        className="h-full w-full object-contain"
-                      />
-                    </div>
-                  ))}
-
-                  {/* Add new button */}
+              {/* Image Upload */}
+              <div className="grid gap-2">
+                <Label
+                  htmlFor="images"
+                  className="text-secondary font-bold dark:text-nav underline"
+                >
+                  Product Images
+                </Label>
+                {images.length === 0 ? (
                   <label
                     htmlFor="images"
-                    className="flex cursor-pointer items-center justify-center rounded-md border border-dashed border-gray-400 text-2xl text-gray-400"
+                    className="flex h-64 w-full cursor-pointer items-center justify-center rounded-md border border-dashed border-gray-400 text-sm text-gray-500"
                   >
-                    +
+                    <div className="flex flex-col items-center space-y-1">
+                      <span className="rounded text-secondary px-2 py-1 text-md flex flex-col items-center font-medium">
+                        <IoIosCloudUpload className="w-7 h-7" />
+                        Upload new
+                      </span>
+                      <span className="text-xs">Select existing</span>
+                      <p className="text-xs">Accepts images</p>
+                    </div>
                   </label>
-                </div>
-              )}
+                ) : (
+                  <div className="grid gap-2 h-64 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 auto-rows-fr">
+                    <div className="md:col-span-2 col-span-1 row-span-2">
+                      <div className="h-full w-full overflow-hidden rounded-md border">
+                        <Image
+                          width={0}
+                          height={0}
+                          src={URL.createObjectURL(images[0])}
+                          alt="preview"
+                          className="h-full w-full object-contain"
+                        />
+                      </div>
+                    </div>
+                    {images.slice(1).map((file, idx) => (
+                      <div
+                        key={idx}
+                        className="overflow-hidden rounded-md border"
+                      >
+                        <Image
+                          width={0}
+                          height={0}
+                          src={URL.createObjectURL(file)}
+                          alt="preview"
+                          className="h-full w-full object-contain"
+                        />
+                      </div>
+                    ))}
+                    <label
+                      htmlFor="images"
+                      className="flex cursor-pointer items-center justify-center rounded-md border border-dashed border-gray-400 text-2xl text-gray-400"
+                    >
+                      +
+                    </label>
+                  </div>
+                )}
+                <input
+                  type="file"
+                  multiple
+                  id="images"
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+              </div>
 
-              {/* hidden input */}
-              <input
-                type="file"
-                multiple
-                id="images"
-                name="images"
-                className="hidden"
-                onChange={handleFileChange}
-              />
+              {/* Description */}
+              <div className="grid gap-2">
+                <Label
+                  htmlFor="description"
+                  className="text-secondary font-bold dark:text-nav underline"
+                >
+                  Product Description
+                </Label>
+                <Textarea
+                  id="description"
+                  className="text-primary"
+                  placeholder="Describe your product features and specifications."
+                  rows={6}
+                  {...register("description", {
+                    required: "Description is required",
+                  })}
+                />
+                {errors.description && (
+                  <p className="text-red-500 text-sm">
+                    {errors.description.message}
+                  </p>
+                )}
+              </div>
+            </CardContent>
+          </Card>
 
-              <p className="text-sm text-muted-foreground">
-                Upload multiple images to showcase your product.
-              </p>
-            </div>
-            {/* product description */}
-            <div className="grid gap-2">
-              <Label htmlFor="description">Product Description</Label>
-              <Textarea
-                id="description"
-                name="description"
-                placeholder="Describe your product features and specifications."
-                value={formData.description}
-                onChange={handleInputChange}
-                rows={6}
-                required
-              />
-            </div>
-          </CardContent>
-        </Card>
+          {/* Organization */}
+          <Card className={`${CartStyle} w-full md:w-1/3`}>
+            <CardHeader>
+              <CardTitle>Organization</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid gap-2">
+                <Label className="text-secondary font-bold dark:text-nav underline">
+                  Categories
+                </Label>
+                <ComboBox
+                  title="Categories"
+                  categories={categories}
+                  value="demo"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label className="text-secondary font-bold dark:text-nav underline">
+                  Subcategory (Optional)
+                </Label>
+                <ComboBox
+                  title="Categories"
+                  categories={categories}
+                  value="demo"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label
+                  htmlFor="tags"
+                  className="text-secondary font-bold dark:text-nav underline"
+                >
+                  Tags
+                </Label>
+                <Input
+                  id="tags"
+                  className="text-primary"
+                  placeholder="e.g., bluetooth, 5g, gaming"
+                  {...register("tags")}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Pricing & Stock */}
-        <Card>
+        <Card className={CartStyle}>
           <CardHeader>
             <CardTitle>Pricing & Inventory</CardTitle>
           </CardHeader>
-          <CardContent className="grid gap-6">
+          <CardContent className="grid grid-cols-3   gap-6">
             <div className="grid gap-2">
-              <Label htmlFor="price">Price ($)</Label>
+              <Label
+                htmlFor="price"
+                className="text-secondary font-bold dark:text-nav underline"
+              >
+                Price ($)
+              </Label>
               <Input
                 id="price"
-                name="price"
                 type="number"
                 step="0.01"
+                className="text-primary"
                 placeholder="0.00"
-                value={formData.price}
-                onChange={handleInputChange}
-                required
+                {...register("price", { required: "Price is required" })}
               />
+              {errors.price && (
+                <p className="text-red-500 text-sm">{errors.price.message}</p>
+              )}
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="discountedPrice">
+              <Label
+                htmlFor="discountedPrice"
+                className="text-secondary font-bold dark:text-nav underline"
+              >
                 Compare at Price (Optional)
               </Label>
               <Input
                 id="discountedPrice"
-                name="discountedPrice"
                 type="number"
                 step="0.01"
+                className="text-primary"
                 placeholder="0.00"
-                value={formData.discountedPrice}
-                onChange={handleInputChange}
+                {...register("discountedPrice")}
               />
-              <p className="text-sm text-muted-foreground">
-                Shows a discount by striking through the old price.
-              </p>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="stock">Stock Quantity</Label>
+              <Label
+                htmlFor="stock"
+                className="text-secondary font-bold dark:text-nav underline"
+              >
+                Stock Quantity
+              </Label>
               <Input
                 id="stock"
-                name="stock"
                 type="number"
+                className="text-primary"
                 placeholder="100"
-                value={formData.stock}
-                onChange={handleInputChange}
-                required
+                {...register("stock", { required: "Stock is required" })}
               />
+              {errors.stock && (
+                <p className="text-red-500 text-sm">{errors.stock.message}</p>
+              )}
             </div>
           </CardContent>
         </Card>
 
         {/* Variants */}
-        <Card>
+        <Card className={CartStyle}>
           <CardHeader>
             <CardTitle>Variants & Options</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <p className="text-sm text-muted-foreground">
-              Add variants like color, size, or storage. Separate multiple
-              options with commas.
-            </p>
-            {formData.variants.map((variant, index) => (
+            {fields.map((field, index) => (
               <div
-                key={index}
-                className="grid sm:grid-cols-2 gap-4 border p-4 rounded-md relative"
+                key={field.id}
+                className="grid sm:grid-cols-2 gap-4 border p-4 rounded-md"
               >
                 <div className="grid gap-2">
-                  <Label htmlFor={`variant-name-${index}`}>Option Name</Label>
-                  <Input
-                    id={`variant-name-${index}`}
-                    name="name"
-                    placeholder="e.g., Color"
-                    value={variant.name}
-                    onChange={(e) => handleVariantChange(index, e)}
+                  <Label>Option Name</Label>
+                  <ComboBox
+                    title="variants"
+                    categories={variantOptions}
+                    value={watch(`variants.${index}.name`) || ""}
+                    onChange={(val) => setValue(`variants.${index}.name`, val)}
                   />
                 </div>
+
                 <div className="grid gap-2">
-                  <Label htmlFor={`variant-options-${index}`}>
-                    Option Values
-                  </Label>
+                  <Label>Option Values</Label>
                   <Input
-                    id={`variant-options-${index}`}
-                    name="options"
                     placeholder="e.g., Black, Silver, Blue"
-                    value={variant.options}
-                    onChange={(e) => handleVariantChange(index, e)}
+                    {...register(`variants.${index}.options` as const)}
                   />
                 </div>
+
                 <div className="flex items-end">
                   <Button
                     type="button"
                     variant="destructive"
                     size="sm"
-                    onClick={() => removeVariant(index)}
+                    onClick={() => remove(index)}
                   >
                     Remove
                   </Button>
                 </div>
               </div>
             ))}
-            <Button type="button" variant="secondary" onClick={addVariant}>
+
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => append({ name: "", options: "" })}
+            >
               Add Another Option
             </Button>
           </CardContent>
         </Card>
 
-        {/* Organization */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Organization</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="grid gap-2">
-              <Label htmlFor="category">Category</Label>
-              <Select
-                onValueChange={(value) =>
-                  setFormData({ ...formData, category: value })
-                }
-                value={formData.category}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="smartphones">Smartphones</SelectItem>
-                  <SelectItem value="laptops">Laptops</SelectItem>
-                  <SelectItem value="audio">Audio Devices</SelectItem>
-                  <SelectItem value="accessories">Accessories</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="subcategory">Subcategory (Optional)</Label>
-              <Select
-                onValueChange={(value) =>
-                  setFormData({ ...formData, subcategory: value })
-                }
-                value={formData.subcategory}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a subcategory" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="headphones">Headphones</SelectItem>
-                  <SelectItem value="earbuds">Earbuds</SelectItem>
-                  <SelectItem value="smartwatches">Smartwatches</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="tags">Tags</Label>
-              <Input
-                id="tags"
-                name="tags"
-                placeholder="e.g., bluetooth, 5g, gaming"
-                value={formData.tags}
-                onChange={handleInputChange}
-              />
-              <p className="text-sm text-muted-foreground">
-                Separate tags with commas for better search visibility.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Submit Button */}
-        <div className="flex justify-end">
-          <Button type="submit" className="px-8">
-            Save Product
-          </Button>
+        {/* Submit */}
+        <div className="flex justify-end w-full">
+          <CustomBtn
+            title="Save Product"
+            type="submit"
+            className="rounded-lg"
+          />
         </div>
       </form>
     </div>
