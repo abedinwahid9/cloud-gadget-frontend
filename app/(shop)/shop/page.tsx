@@ -7,7 +7,7 @@ const page = () => {
   const image = [img];
   return (
     <div className="w-full  container mx-auto ">
-      <div className="">
+      <div className="pt-2">
         <AdsBanner images={image} />
       </div>
       <CustomBreadCrumb />

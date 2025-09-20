@@ -19,10 +19,14 @@ import {
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MoreHorizontal, Search } from "lucide-react";
+import { MoreHorizontal, Search, Sheet } from "lucide-react";
 import Image, { StaticImageData } from "next/image";
 import img1 from "@/app/assets/img1.png";
 import { Switch } from "@/components/ui/switch";
+import CustomBtn from "@/components/share/CustomBtn/CustomBtn";
+
+import AddProduct from "../AddProduct/AddProduct";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 // --- Product type ---
 type Product = {
@@ -73,14 +77,14 @@ const getColumns = (
 ): ColumnDef<Product>[] => [
   {
     accessorKey: "name",
-    header: "Product Name",
+    header: "Product",
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <Image
           src={row.original.image}
           alt={row.original.name}
-          width={42}
-          height={42}
+          width={40}
+          height={40}
           className="rounded-md"
         />
         <span className="font-medium">{row.original.name}</span>
@@ -88,17 +92,24 @@ const getColumns = (
     ),
   },
   { accessorKey: "category", header: "Category" },
-  { accessorKey: "price", header: "Price" },
+  {
+    accessorKey: "price",
+    header: "Price",
+    cell: ({ row }) => <span>${row.original.price}</span>,
+  },
   {
     accessorKey: "discountPercentage",
-    header: "Discount Price",
+    header: "Discounted Price",
     cell: ({ row }) => (
-      <span>
+      <span className="text-green-600 font-semibold">
+        $
         {calculateDiscountPrice({
           value: row.original.price,
           percentage: row.original.discountPercentage,
         })}{" "}
-        ({row.original.discountPercentage}%)
+        <span className="text-gray-500 text-xs">
+          ({row.original.discountPercentage}% off)
+        </span>
       </span>
     ),
   },
@@ -120,19 +131,16 @@ const getColumns = (
         onCheckedChange={(checked) =>
           handleSwitchChange(row.original.id, checked)
         }
-        id={`switch-${row.original.id}`}
       />
     ),
   },
   {
     id: "actions",
-    header: () => <div className="text-right">Action</div>,
+    header: "Actions",
     cell: () => (
-      <div className="text-right">
-        <Button variant="ghost" size="icon">
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
-      </div>
+      <Button variant="ghost" size="icon">
+        <MoreHorizontal className="h-4 w-4" />
+      </Button>
     ),
   },
 ];
@@ -144,7 +152,6 @@ const ProductListPage = ({ title }: { title: string }) => {
     pageSize: 10,
   });
 
-  // --- Switch state per row ---
   const [switchStates, setSwitchStates] = React.useState<
     Record<number, boolean>
   >({});
@@ -156,13 +163,11 @@ const ProductListPage = ({ title }: { title: string }) => {
     }));
   };
 
-  // --- Columns ---
   const columns = React.useMemo(
     () => getColumns(switchStates, handleSwitchChange),
     [switchStates]
   );
 
-  // --- React Table ---
   const table = useReactTable({
     data: products,
     columns,
@@ -174,26 +179,33 @@ const ProductListPage = ({ title }: { title: string }) => {
   });
 
   return (
-    <div>
-      <Card className="bg-primary/20 border border-gray-200 dark:border-gray-700 shadow-md">
+    <div className="p-4">
+      <Card className="border shadow-sm">
+        {/* Header */}
         <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-          <CardTitle className="text-xl font-bold text-primary capitalize">
+          <CardTitle className="text-lg md:text-xl font-bold text-primary">
             {title}
           </CardTitle>
+
           <div className="flex gap-2">
-            <Button variant="outline" size="sm">
-              Import
-            </Button>
-            <Button variant="outline" size="sm">
-              Export
-            </Button>
-            <Button size="sm" className="bg-primary text-white">
-              Add Product
-            </Button>
+            <CustomBtn className="rounded-md" title="Import" />
+            <CustomBtn className="rounded-md" title="Export" />
+            {/* <Dialog>
+              <DialogTrigger>
+                <CustomBtn
+                  type="button"
+                  className="rounded-md"
+                  title="add product"
+                />
+              </DialogTrigger>
+              <DialogContent className="bg-white absolute top-0 left w-full h-full bg-none"> */}
+
+            {/* </DialogContent>
+            </Dialog> */}
           </div>
         </CardHeader>
 
-        {/* Filter bar */}
+        {/* Search & Filters */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-3 px-6 pb-4">
           <div className="relative w-full md:w-1/3">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
@@ -219,55 +231,58 @@ const ProductListPage = ({ title }: { title: string }) => {
           </div>
         </div>
 
+        {/* Table */}
         <CardContent>
-          <Table>
-            <TableHeader className="bg-secondary/40 dark:bg-gray-800">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id} className="font-semibold">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  className="hover:bg-secondary/50 dark:hover:bg-gray-800"
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <div className="w-full overflow-x-auto">
+            <Table className="min-w-[900px]">
+              <TableHeader className="bg-gray-100 dark:bg-gray-800">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <TableHead key={header.id} className="font-semibold">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    className="hover:bg-gray-50 dark:hover:bg-gray-800"
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
 
-          {/* Pagination Controls */}
+          {/* Pagination */}
           {products.length > 10 && (
-            <div className="flex items-center justify-between px-2 py-4 border-t mt-2">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 px-2 py-4 border-t mt-4">
               <div className="text-sm text-gray-500">
                 Showing {pagination.pageIndex * pagination.pageSize + 1}–
                 {Math.min(
                   (pagination.pageIndex + 1) * pagination.pageSize,
                   products.length
                 )}{" "}
-                of {products.length} results
+                of {products.length} products
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <Button
                   variant="outline"
                   size="sm"

@@ -57,8 +57,8 @@ const EmailSubscription = () => {
   }
 
   return (
-    <div className=" mx-auto  overflow-hidden">
-      <div className="relative bg-gradient-to-br from-primary/25 via-secondary/25 to-indigo-50 md:p-8 p-3 shadow-2xl ow-hidden ">
+    <div className=" mx-auto  overflow-hidden  md:px-2 px-1">
+      <div className="relative bg-gradient-to-br from-primary/25 via-secondary/25 to-indigo-50 md:p-8 p-3 shadow-2xl ow-hidden rounded-lg">
         {/* Animated Background Elements */}
         <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-pink-300/20 to-purple-300/20 rounded-full blur-xl animate-pulse"></div>
         <div className="absolute bottom-0 right-0 w-28 h-28 bg-gradient-to-br from-purple-300/20 to-indigo-300/20 rounded-full blur-xl animate-pulse animation-delay-1000"></div>

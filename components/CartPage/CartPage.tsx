@@ -92,7 +92,7 @@ const CartPage = () => {
         <div className="w-full flex justify-end">
           <Button
             onClick={() => dispatch(allCartClear())}
-            className="bg-badge text-white font-bold"
+            className="bg-badge text-white font-bold rounded-md"
           >
             Clear <RiDeleteBin6Line /> All
           </Button>

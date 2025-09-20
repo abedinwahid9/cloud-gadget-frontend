@@ -24,7 +24,7 @@ export default function FeatureHighlights() {
   ];
 
   return (
-    <section className="bg-primary/50 text-secondary dark:text-nav py-6 md:py-10">
+    <section className="bg-primary/50 text-secondary dark:text-nav py-6 md:py-10 rounded-lg my-2 md:mx-2 mx-1">
       <div className="grid grid-cols-3  text-center">
         {features.map((feature, index) => (
           <div key={index} className="flex flex-col  items-center ">

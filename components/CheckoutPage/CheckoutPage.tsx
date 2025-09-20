@@ -83,7 +83,7 @@ const CheckoutPage = () => {
 
           <CustomBtn
             handleBtn={handleCheckout}
-            className="w-full mt-4"
+            className="w-full mt-4 rounded-md"
             title="Proceed to Payment"
           />
         </CardContent>
