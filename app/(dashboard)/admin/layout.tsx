@@ -7,7 +7,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full overflow-hidden bg-background text-foreground">
+      <div className="flex min-h-screen w-full  bg-background text-foreground">
         {/* Sidebar */}
         <AppSidebar />
 
@@ -35,7 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </header>
 
           {/* Page Content */}
-          <main className="flex-1 w-full md:p-3 p-1">{children}</main>
+          <div className=" md:p-3 p-1 flex-1">{children}</div>
         </div>
       </div>
     </SidebarProvider>

@@ -231,7 +231,7 @@ const Address = ({
           <CustomBtn
             title="Save Address"
             type="submit"
-            className="w-full mt-2"
+            className="w-full mt-2 rounded-md"
           />
         </form>
       </CardContent>

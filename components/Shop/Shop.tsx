@@ -42,7 +42,7 @@ const Shop = () => {
               <div className="lg:hidden block basis-full w-full">
                 <Sheet>
                   <SheetTrigger asChild>
-                    <Button className="bg-primary/35 text-secondary dark:text-nav w-full">
+                    <Button className="bg-primary/35 text-secondary dark:text-nav w-full rounded-md">
                       <SheetTitle className=" font-semibold ">
                         Filter
                       </SheetTitle>

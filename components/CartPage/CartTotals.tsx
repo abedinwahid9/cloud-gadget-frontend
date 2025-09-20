@@ -87,7 +87,10 @@ const CartTotals = () => {
 
         {/* Checkout Button */}
         <Link href="/cart/checkout">
-          <CustomBtn title="proceed to checkout" className="w-full" />
+          <CustomBtn
+            title="proceed to checkout"
+            className="w-full rounded-md"
+          />
         </Link>
       </CardContent>
     </Card>
