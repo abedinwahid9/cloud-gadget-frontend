@@ -14,6 +14,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Title from "@/components/share/Title/Title";
+import Image from "next/image";
 
 const AddProductPage = () => {
   const [formData, setFormData] = useState({
@@ -28,6 +30,14 @@ const AddProductPage = () => {
     subcategory: "",
     tags: "",
   });
+
+  const [images, setImages] = useState<File[]>([]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setImages([...images, ...Array.from(e.target.files)]);
+    }
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -63,16 +73,12 @@ const AddProductPage = () => {
   };
 
   return (
-    <div className="container mx-auto max-w-5xl py-12">
-      <h1 className="text-3xl font-bold mb-8">Add New Product</h1>
-
-      <form onSubmit={handleFormSubmit} className="space-y-10">
+    <div>
+      <Title text="Add New Product" />
+      <form onSubmit={handleFormSubmit} className="space-y-2 pt-2">
         {/* Basic Info */}
         <Card>
-          <CardHeader>
-            <CardTitle>Basic Information</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 px-2">
             <div className="grid gap-2">
               <Label htmlFor="title">Product Title</Label>
               <Input
@@ -84,6 +90,84 @@ const AddProductPage = () => {
                 required
               />
             </div>
+
+            {/* image */}
+            <div className="grid gap-2">
+              <Label htmlFor="images">Product Images</Label>
+
+              {/* When no image uploaded → Show 1st design */}
+              {images.length === 0 ? (
+                <label
+                  htmlFor="images"
+                  className="flex h-64 w-full cursor-pointer items-center justify-center rounded-md border border-dashed border-gray-400 text-sm text-gray-500"
+                >
+                  <div className="flex flex-col items-center space-y-1">
+                    <button
+                      type="button"
+                      className="rounded bg-gray-200 px-2 py-1 text-xs font-medium text-gray-700"
+                    >
+                      Upload new
+                    </button>
+                    <span className="text-xs">Select existing</span>
+                    <p className="text-xs">Accepts images</p>
+                  </div>
+                </label>
+              ) : (
+                <div className="grid gap-2 h-64 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 auto-rows-fr">
+                  {/* First image → big preview */}
+                  <div className="md:col-span-2 col-span-1 row-span-2">
+                    <div className="h-full w-full overflow-hidden rounded-md border">
+                      <Image
+                        width={0}
+                        height={0}
+                        src={URL.createObjectURL(images[0])}
+                        alt="preview"
+                        className="h-full w-full object-contain"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Other images */}
+                  {images.slice(1).map((file, idx) => (
+                    <div
+                      key={idx}
+                      className="overflow-hidden rounded-md border"
+                    >
+                      <Image
+                        width={0}
+                        height={0}
+                        src={URL.createObjectURL(file)}
+                        alt="preview"
+                        className="h-full w-full object-contain"
+                      />
+                    </div>
+                  ))}
+
+                  {/* Add new button */}
+                  <label
+                    htmlFor="images"
+                    className="flex cursor-pointer items-center justify-center rounded-md border border-dashed border-gray-400 text-2xl text-gray-400"
+                  >
+                    +
+                  </label>
+                </div>
+              )}
+
+              {/* hidden input */}
+              <input
+                type="file"
+                multiple
+                id="images"
+                name="images"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+
+              <p className="text-sm text-muted-foreground">
+                Upload multiple images to showcase your product.
+              </p>
+            </div>
+            {/* product description */}
             <div className="grid gap-2">
               <Label htmlFor="description">Product Description</Label>
               <Textarea
@@ -95,13 +179,6 @@ const AddProductPage = () => {
                 rows={6}
                 required
               />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="images">Product Images</Label>
-              <Input type="file" multiple id="images" name="images" />
-              <p className="text-sm text-muted-foreground">
-                Upload multiple images to showcase your product.
-              </p>
             </div>
           </CardContent>
         </Card>
