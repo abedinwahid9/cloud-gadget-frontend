@@ -48,9 +48,7 @@ const ComboBox: React.FC<ComboBoxProps> = ({
           aria-expanded={open}
           className="w-full bg-transparent justify-between rounded-lg"
         >
-          {value
-            ? categories.find((category) => category.value === value)?.label
-            : `Select ${title}...`}
+          {value ? value : `Select ${title}...`}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
