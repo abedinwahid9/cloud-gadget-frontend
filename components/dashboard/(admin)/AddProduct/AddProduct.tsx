@@ -1,7 +1,7 @@
 // pages/dashboard/add-product.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm, useFieldArray, FormProvider } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -9,11 +9,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Title from "@/components/share/Title/Title";
-import Image from "next/image";
 import ComboBox from "@/components/share/ComboBox/ComboBox";
 import CustomBtn from "@/components/share/CustomBtn/CustomBtn";
 import { IoIosCloudUpload } from "react-icons/io";
 import InputColor from "../Components/InputColor";
+import FormImage from "../Components/FormImage";
+import InputText from "../Components/InputText";
 
 type Variant = { name: string; options: string | string[] };
 
@@ -103,6 +104,12 @@ const AddProductPage = () => {
     { category: "Books & Media", value: "books-media", label: "Books & Media" },
   ];
 
+  // preview image delete
+  const handleDelete = (id: number) => {
+    const filter = images.filter((_, i) => i !== id);
+    setImages(filter);
+  };
+
   const CartStyle =
     "bg-primary/20 dark:bg-blue-300/20 border border-gray-200 dark:border-gray-700 shadow-[0px_0px_10px_0px_#00a8a8]";
 
@@ -161,29 +168,17 @@ const AddProductPage = () => {
                   ) : (
                     <div className="grid gap-2 h-64 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 auto-rows-fr">
                       <div className="md:col-span-2 col-span-1 row-span-2">
-                        <div className="h-full w-full overflow-hidden rounded-md border">
-                          <Image
-                            width={0}
-                            height={0}
-                            src={URL.createObjectURL(images[0])}
-                            alt="preview"
-                            className="h-full w-full object-contain"
-                          />
-                        </div>
+                        <FormImage
+                          src={URL.createObjectURL(images[0])}
+                          onDelete={() => handleDelete(0)}
+                        />
                       </div>
                       {images.slice(1).map((file, idx) => (
-                        <div
+                        <FormImage
                           key={idx}
-                          className="overflow-hidden rounded-md border"
-                        >
-                          <Image
-                            width={0}
-                            height={0}
-                            src={URL.createObjectURL(file)}
-                            alt="preview"
-                            className="h-full w-full object-contain"
-                          />
-                        </div>
+                          src={URL.createObjectURL(file)}
+                          onDelete={() => handleDelete(idx + 1)}
+                        />
                       ))}
                       <label
                         htmlFor="images"
@@ -194,6 +189,7 @@ const AddProductPage = () => {
                     </div>
                   )}
                   <input
+                    accept=".jpg, .jpeg, .png, .gif"
                     type="file"
                     multiple
                     id="images"
@@ -357,9 +353,10 @@ const AddProductPage = () => {
                       title="variants"
                       categories={filterData()}
                       value={watch(`variants.${index}.name`) || ""}
-                      onChange={(val) =>
-                        setValue(`variants.${index}.name`, val)
-                      }
+                      onChange={(val) => {
+                        setValue(`variants.${index}.name`, val);
+                        setValue(`variants.${index}.options`, []);
+                      }}
                     />
                   </div>
 
@@ -369,7 +366,11 @@ const AddProductPage = () => {
                         "OPTION"}{" "}
                       VALUES
                     </Label>
-                    <InputColor index={index} />
+                    {watch(`variants.${index}.name`) === "color" ? (
+                      <InputColor index={index} />
+                    ) : (
+                      <InputText index={index} />
+                    )}
                   </div>
 
                   <div className="flex items-end">
