@@ -2,6 +2,14 @@
 
 import React from "react";
 import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { Button } from "@/components/ui/button";
+import { Edit, Trash2 } from "lucide-react";
+import {
   Table,
   TableBody,
   TableCell,
@@ -9,18 +17,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Edit, Trash2 } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@radix-ui/react-popover";
+import { toast } from "sonner";
+
+interface SubCategory {
+  id: string;
+  name: string;
+}
 
 interface Category {
   id: string;
   name: string;
-  subCategories: { id: string; name: string }[];
+  subCategories: SubCategory[];
 }
 
 interface CategoryTableProps {
@@ -38,71 +45,189 @@ const CategoryTable: React.FC<CategoryTableProps> = ({
   onEditSubCategory,
   onDeleteSubCategory,
 }) => {
-  return (
-    <Table className="w-full">
-      <TableHeader>
-        <TableRow>
-          <TableHead>Category</TableHead>
-          <TableHead>Sub-Categories</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {data.map((cat) => (
-          <TableRow key={cat.id}>
-            <TableCell className="flex items-center gap-2">
-              <span>{cat.name}</span>
-              <div className="flex gap-1">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="hover:bg-primary"
-                  onClick={() => onEditCategory(cat.id)}
-                >
-                  <Edit className="h-4 w-4" />
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="hover:bg-primary"
-                  onClick={() => onDeleteCategory(cat.id)}
-                >
-                  <Trash2 className="h-4 w-4 text-red-500" />
-                </Button>
-              </div>
-            </TableCell>
-            <TableCell>
-              {cat.subCategories.map((sub) => (
-                <div key={sub.id} className="flex items-center gap-2 pt-1">
-                  <span>{sub.name}</span>
-                  <div className="flex gap-0.5">
-                    <Popover>
-                      <PopoverTrigger
-                        className="hover:bg-primary py-1.5 px-2.5 rounded-md border-2"
-                        onClick={() => onEditSubCategory(cat.id, sub.id)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </PopoverTrigger>
-                      <PopoverContent className="bg-primary">
-                        Place content for the popover here.
-                      </PopoverContent>
-                    </Popover>
+  // ✅ Confirm toast helper
+  const confirmToast = (
+    message: string,
+    onConfirm: () => void,
+    onCancel?: () => void
+  ) => {
+    toast.custom(
+      (id) => (
+        <div className="bg-white text-gray-900 rounded-lg shadow-lg p-4 w-[320px] flex flex-col gap-3 border">
+          <p className="font-semibold">{message}</p>
+          <div className="flex justify-end gap-2">
+            <button
+              onClick={() => {
+                toast.dismiss(id);
+                onCancel?.();
+                toast("Cancelled ❌", {
+                  position: "top-center",
+                  style: {
+                    backgroundColor: "#aacec8",
+                    color: "#004030",
+                  },
+                  action: {
+                    label: "Undo",
+                    onClick: () => console.log("Undo"),
+                  },
+                });
+              }}
+              className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-300 text-sm"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => {
+                toast.dismiss(id);
+                onConfirm();
+                toast.success("Deleted ✅", {
+                  position: "top-center",
+                  style: {
+                    backgroundColor: "#aacec8",
+                    color: "#004030",
+                  },
+                  action: {
+                    label: "Undo",
+                    onClick: () => console.log("Undo"),
+                  },
+                });
+              }}
+              className="px-3 py-1 rounded-md bg-red-600 text-white hover:bg-red-500 text-sm"
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
+      ),
+      { position: "top-center" }
+    );
+  };
 
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="hover:bg-primary"
-                      onClick={() => onDeleteSubCategory(cat.id, sub.id)}
-                    >
-                      <Trash2 className="h-4 w-4 text-red-500" />
-                    </Button>
-                  </div>
+  const columns: ColumnDef<Category>[] = [
+    {
+      accessorKey: "name",
+      header: "Category",
+      cell: ({ row }) => {
+        const cat = row.original;
+        return (
+          <div className="flex items-center gap-2">
+            <span className="font-medium">{cat.name}</span>
+            <div className="flex gap-1">
+              <Button
+                size="sm"
+                variant="outline"
+                className="hover:bg-primary"
+                onClick={() => onEditCategory(cat.id)}
+              >
+                <Edit className="h-4 w-4" />
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                className="hover:bg-primary"
+                onClick={() =>
+                  confirmToast("Delete this category?", () =>
+                    onDeleteCategory(cat.id)
+                  )
+                }
+              >
+                <Trash2 className="h-4 w-4 text-red-500" />
+              </Button>
+            </div>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "subCategories",
+      header: "Sub-Categories",
+      cell: ({ row }) => {
+        const cat = row.original;
+        return (
+          <div className="flex flex-col gap-1">
+            {cat.subCategories.map((sub) => (
+              <div
+                key={sub.id}
+                className="flex items-center justify-between gap-2 border p-1 rounded-md bg-primary/20"
+              >
+                <span>{sub.name}</span>
+                <div className="flex gap-1">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="hover:bg-primary"
+                    onClick={() => onEditSubCategory(cat.id, sub.id)}
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="hover:bg-primary"
+                    onClick={() =>
+                      confirmToast("Delete this sub-category?", () =>
+                        onDeleteSubCategory(cat.id, sub.id)
+                      )
+                    }
+                  >
+                    <Trash2 className="h-4 w-4 text-red-500" />
+                  </Button>
                 </div>
+              </div>
+            ))}
+          </div>
+        );
+      },
+    },
+  ];
+
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  return (
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader className="bg-primary/20">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <TableHead
+                  className="text-secondary font-semibold text-lg dark:text-nav underline"
+                  key={header.id}
+                >
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                </TableHead>
               ))}
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow className="text-secondary  dark:text-nav " key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="text-center py-6">
+                No categories found.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
 

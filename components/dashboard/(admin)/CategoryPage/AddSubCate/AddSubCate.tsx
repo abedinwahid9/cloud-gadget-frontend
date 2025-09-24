@@ -144,8 +144,13 @@ const AddSubCate: React.FC<AddSubCateProps> = ({ category }) => {
               }
               title="Add Sub-Category +"
               type="button"
+              className="rounded-md"
             />
-            <CustomBtn title="Save Sub-Categories" type="submit" />
+            <CustomBtn
+              title="Save Sub-Categories"
+              className="rounded-md"
+              type="submit"
+            />
           </div>
         </form>
       </CardContent>

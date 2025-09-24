@@ -46,7 +46,7 @@ const ComboBox: React.FC<ComboBoxProps> = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full bg-transparent justify-between rounded-lg"
+          className="w-full bg-transparent justify-between rounded-lg text-primary hover:text-primary"
         >
           {value ? value : `Select ${title}...`}
           <ChevronsUpDown className="opacity-50" />

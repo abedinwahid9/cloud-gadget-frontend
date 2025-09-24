@@ -1,7 +1,8 @@
 import { Input } from "@/components/ui/input";
 import React from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { MdFormatColorFill } from "react-icons/md";
+
+import { TbCategoryPlus } from "react-icons/tb";
 
 const InputText = ({ index }: { index: number }) => {
   const { register, control } = useFormContext();
@@ -38,7 +39,7 @@ const InputText = ({ index }: { index: number }) => {
         onClick={() => append(" ")}
         className="   border-2 border-secondary flex justify-center w-full p-2 rounded-lg bg-primary/30"
       >
-        <MdFormatColorFill className="w-5 h-5" />
+        <TbCategoryPlus className="w-5 h-5" />
       </button>
     </div>
   );
