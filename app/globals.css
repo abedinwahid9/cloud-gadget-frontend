@@ -2,8 +2,16 @@
 @import "tw-animate-css";
 
 /* For Chrome, Safari, and Opera */
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   display: none;
+} */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: oklch(0.3303 0.0656 169.69);
+  border-radius: 5px;
 }
 
 .thumbnail .keen-slider__slide.active {
