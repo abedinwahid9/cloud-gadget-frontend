@@ -1,11 +1,10 @@
-import AddProductPage from "@/components/dashboard/(admin)/AddProduct/AddProduct";
+import OrdersHistory from "@/components/dashboard/(admin)/OrdersHistory/OrdersHistory";
 import React from "react";
 
 const page = () => {
   return (
     <div>
-      {" "}
-      <AddProductPage />
+      <OrdersHistory />
     </div>
   );
 };
