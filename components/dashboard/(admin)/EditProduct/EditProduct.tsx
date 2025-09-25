@@ -14,6 +14,7 @@ import { IoIosCloudUpload } from "react-icons/io";
 import InputColor from "../Components/InputColor";
 import FormImage from "../Components/FormImage";
 import InputText from "../Components/InputText";
+import { useParams } from "next/navigation";
 
 type Variant = { name: string; options: string | string[] };
 
@@ -31,8 +32,10 @@ type FormValues = {
 
 type Variants = { category: string; value: string; label: string };
 
-const AddProductPage = () => {
+const EditProduct = () => {
   const [images, setImages] = useState<File[]>([]);
+
+  const { productId } = useParams();
 
   const methods = useForm<FormValues>({
     defaultValues: {
@@ -84,7 +87,7 @@ const AddProductPage = () => {
   };
 
   const onSubmit = (data: FormValues) => {
-    console.log("Submitting product:", { ...data, images, status: true });
+    console.log("Submitting product:", { ...data, images });
   };
 
   const categories = [
@@ -115,7 +118,7 @@ const AddProductPage = () => {
   return (
     <div>
       <FormProvider {...methods}>
-        <Title text="Add New Product" />
+        <Title text={`Edit Product: ${productId}`} />
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 pt-2">
           {/* Basic Info */}
           <div className="flex gap-2 md:flex-row flex-col">
@@ -409,4 +412,4 @@ const AddProductPage = () => {
   );
 };
 
-export default AddProductPage;
+export default EditProduct;

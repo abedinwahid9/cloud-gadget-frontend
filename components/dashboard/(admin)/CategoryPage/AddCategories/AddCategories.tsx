@@ -65,7 +65,7 @@ const AddCategories: React.FC<AddCategoriesProps> = ({ setCategory }) => {
 
               <Button
                 type="button"
-                className="bg-transparent hover:bg-badge hover:text-white font-bold"
+                className="bg-transparent  hover:bg-badge hover:text-white font-bold"
                 size="sm"
                 onClick={() => remove(index)}
               >
@@ -78,9 +78,14 @@ const AddCategories: React.FC<AddCategoriesProps> = ({ setCategory }) => {
             <CustomBtn
               handleBtn={() => append({ name: "" })}
               title="Add Category +"
+              className=" rounded-md"
               type="button"
             />
-            <CustomBtn title="Save Categories" type="submit" />
+            <CustomBtn
+              title="Save Categories"
+              className="rounded-md"
+              type="submit"
+            />
           </div>
         </form>
       </CardContent>
