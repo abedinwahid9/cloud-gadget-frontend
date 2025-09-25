@@ -64,7 +64,6 @@
   --color-foreground: var(--foreground);
   --font-bai-jamjuree: var(--font-bai-jamjuree);
   --font-mono: var(--font-geist-mono);
-
   --color-chart-5: var(--chart-5);
   --color-chart-4: var(--chart-4);
   --color-chart-3: var(--chart-3);
@@ -119,7 +118,6 @@
   --card: oklch(0.21 0.006 285.885);
   --card-foreground: oklch(0.985 0 0);
   --text-color: oklch(0.8573 0.0547 93.32);
-
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(73.572% 0.00435 286.012);
   --primary-foreground: oklch(0.21 0.006 285.885);

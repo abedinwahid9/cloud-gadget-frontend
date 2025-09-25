@@ -6,14 +6,14 @@ const page = () => {
   return (
     <>
       <div className="grid grid-cols-4 gap-3 py-2">
-        <SummaryCard title="Today Sales" value={2000} />
-        <SummaryCard title="Total Order" value={2000} />
-        <SummaryCard title="Total Cancel" value={2000} />
-        <SummaryCard title="Pending Order" value={2000} />
-        <SummaryCard title="Processing Order" value={2000} />
+        <SummaryCard title="Today Order" value={2000} />
+        <SummaryCard title="Complete Order" value={2000} />
+        <SummaryCard title="In Delivery Cancel" value={2000} />
+        <SummaryCard title="Cancel Order" value={2000} />
       </div>
-
-      <OrdersHistory />
+      <div>
+        <OrdersHistory />
+      </div>
     </>
   );
 };

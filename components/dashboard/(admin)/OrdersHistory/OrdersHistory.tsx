@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import Title from "@/components/share/Title/Title";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Image from "next/image";
+import Link from "next/link";
 
 type Order = {
   id: string;
@@ -165,12 +166,15 @@ const columns: ColumnDef<Order>[] = [
     header: "Action",
     cell: () => (
       <div className="flex gap-2">
-        <Button variant="outline" size="icon">
-          <Eye className="w-4 h-4" />
-        </Button>
+        <Link href={`/admin/orders/order-details/jkfgj`}>
+          <Button variant="outline" size="icon">
+            <Eye className="w-4 h-4" />
+          </Button>
+        </Link>
         <Button variant="outline" size="icon">
           <Edit className="w-4 h-4" />
         </Button>
+
         <Button variant="outline" size="icon">
           <Trash2 className="w-4 h-4 text-red-500" />
         </Button>
@@ -187,7 +191,7 @@ const OrdersHistory = () => {
   });
 
   return (
-    <Card className=" w-full   mx-auto bg-primary/20 ">
+    <Card className=" w-full min-h-screen mx-auto bg-primary/20 ">
       <CardHeader>
         <Title text="Orders History" />
       </CardHeader>
