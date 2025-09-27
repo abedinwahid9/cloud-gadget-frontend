@@ -19,6 +19,8 @@ import { Eye, Edit, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Title from "@/components/share/Title/Title";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import Image from "next/image";
+import Link from "next/link";
 
 type Order = {
   id: string;
@@ -114,15 +116,19 @@ const columns: ColumnDef<Order>[] = [
     accessorKey: "name",
     header: "Customer Name",
     cell: ({ row }) => (
-      <div className="flex items-center gap-2">
-        <img
+      <div className="flex items-center gap-2 w-[200px]">
+        <Image
+          width={0}
+          height={0}
           src={row.original.avatar}
-          alt={row.original.name}
           className="w-8 h-8 rounded-full"
+          alt="avator"
         />
         <div>
           <p className="font-medium">{row.original.name}</p>
-          <p className="text-xs text-gray-500">{row.original.email}</p>
+          <p className="text-xs text-gray-500 text-wrap">
+            {row.original.email}
+          </p>
         </div>
       </div>
     ),
@@ -160,12 +166,15 @@ const columns: ColumnDef<Order>[] = [
     header: "Action",
     cell: () => (
       <div className="flex gap-2">
-        <Button variant="outline" size="icon">
-          <Eye className="w-4 h-4" />
-        </Button>
+        <Link href={`/admin/orders/order-details/jkfgj`}>
+          <Button variant="outline" size="icon">
+            <Eye className="w-4 h-4" />
+          </Button>
+        </Link>
         <Button variant="outline" size="icon">
           <Edit className="w-4 h-4" />
         </Button>
+
         <Button variant="outline" size="icon">
           <Trash2 className="w-4 h-4 text-red-500" />
         </Button>
@@ -182,7 +191,7 @@ const OrdersHistory = () => {
   });
 
   return (
-    <Card className=" w-full min-w-screen-2xl mx-auto bg-primary/20 ">
+    <Card className=" w-full min-h-screen mx-auto bg-primary/20 ">
       <CardHeader>
         <Title text="Orders History" />
       </CardHeader>
@@ -193,7 +202,7 @@ const OrdersHistory = () => {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead
-                    className="text-secondary font-semibold text-lg dark:text-nav underline"
+                    className="text-secondary font-semibold text-lg dark:text-nav underline text-center"
                     key={header.id}
                   >
                     {flexRender(
@@ -207,7 +216,7 @@ const OrdersHistory = () => {
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
+              <TableRow className="text-center" key={row.id}>
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

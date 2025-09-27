@@ -35,7 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </header>
 
           {/* Page Content */}
-          <div className=" md:p-3 p-1 flex-1">{children}</div>
+          <div className=" max-w-screen md:p-3 p-1 flex-1">{children}</div>
         </div>
       </div>
     </SidebarProvider>
