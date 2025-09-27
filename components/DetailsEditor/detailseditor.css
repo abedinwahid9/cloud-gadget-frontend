@@ -1,0 +1,12 @@
+.ql-toolbar .ql-formats button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.ql-toolbar {
+  background-color: oklch(66.24% 0.11309 194.807 / 0.315);
+}
+
+.ql-editor {
+  font-size: 20px;
+}

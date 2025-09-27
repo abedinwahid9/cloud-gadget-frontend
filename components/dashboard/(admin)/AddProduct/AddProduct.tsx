@@ -14,6 +14,7 @@ import { IoIosCloudUpload } from "react-icons/io";
 import InputColor from "../Components/InputColor";
 import FormImage from "../Components/FormImage";
 import InputText from "../Components/InputText";
+import DetailsEditor from "@/components/DetailsEditor/DetailsEditor";
 
 type Variant = { name: string; options: string | string[] };
 
@@ -205,15 +206,7 @@ const AddProductPage = () => {
                   >
                     Product Description
                   </Label>
-                  <Textarea
-                    id="description"
-                    className="text-primary"
-                    placeholder="Describe your product features and specifications."
-                    rows={6}
-                    {...register("description", {
-                      required: "Description is required",
-                    })}
-                  />
+                  <DetailsEditor />
                   {errors.description && (
                     <p className="text-red-500 text-sm">
                       {errors.description.message}
