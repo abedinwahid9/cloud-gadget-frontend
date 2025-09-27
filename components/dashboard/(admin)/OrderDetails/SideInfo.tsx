@@ -1,18 +1,19 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Image from "next/image";
 import React from "react";
 
 const SideInfo = () => {
   return (
     <>
-      {" "}
-      {/* Customer */}
-      <Card>
+      <Card className="bg-primary/20">
         <CardHeader>
           <CardTitle>Customer Details</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-3">
-            <img
+            <Image
+              width={0}
+              height={0}
               src="https://i.pravatar.cc/100?img=5"
               alt="customer"
               className="w-14 h-14 rounded-full"
@@ -43,7 +44,7 @@ const SideInfo = () => {
         </CardContent>
       </Card>
       {/* Address */}
-      <Card>
+      <Card className="bg-primary/20">
         <CardHeader>
           <CardTitle>Address</CardTitle>
         </CardHeader>
@@ -65,7 +66,7 @@ const SideInfo = () => {
         </CardContent>
       </Card>
       {/* Payment */}
-      <Card>
+      <Card className="bg-primary/20">
         <CardHeader>
           <CardTitle>Payment Details</CardTitle>
         </CardHeader>

@@ -18,6 +18,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import SideInfo from "./SideInfo";
+import OrderStatus from "./OrderStatus";
 
 type OrderItem = {
   id: number;
@@ -116,7 +117,7 @@ const OrderDetails = () => {
 
       <div className="flex flex-col lg:flex-row gap-2">
         {/* Order Table */}
-        <Card className="lg:w-2/3 w-full">
+        <Card className="lg:w-2/3 w-full bg-primary/20">
           <CardHeader>
             <CardTitle>Order Details</CardTitle>
           </CardHeader>
@@ -201,6 +202,7 @@ const OrderDetails = () => {
           <SideInfo />
         </div>
       </div>
+      <OrderStatus />
     </div>
   );
 };
