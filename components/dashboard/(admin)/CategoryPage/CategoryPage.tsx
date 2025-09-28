@@ -1,16 +1,18 @@
 "use client";
 import { useState } from "react";
-import AddCategories, { Cats } from "./AddCategories/AddCategories";
+import AddCategories, { Cates } from "./AddCategories/AddCategories";
 import AddSubCate from "./AddSubCate/AddSubCate";
 import CategoryTable from "@/components/share/CategoryTable/CategoryTable";
+import img from "@/app/assets/img6.png";
 
 const CategoryPage = () => {
-  const [category, setCategory] = useState<Cats[]>([]);
+  const [category, setCategory] = useState<Cates[]>([]);
 
   const categoriesData = [
     {
       id: "cat1",
       name: "Phones & Tablets",
+      image: img,
       subCategories: [
         { id: "sub1", name: "Smartphones" },
         { id: "sub2", name: "Tablets" },
@@ -19,11 +21,13 @@ const CategoryPage = () => {
     {
       id: "cat2",
       name: "Laptops",
+      image: img,
       subCategories: [{ id: "sub3", name: "Gaming Laptops" }],
     },
     {
       id: "cat3",
       name: "Laptops",
+      image: img,
       subCategories: [],
     },
     {
