@@ -79,6 +79,7 @@ const AddProductPage = () => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(images);
     if (e.target.files) {
       setImages([...images, ...Array.from(e.target.files)]);
     }

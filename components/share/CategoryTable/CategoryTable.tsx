@@ -18,6 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
+import Image, { StaticImageData } from "next/image";
 
 interface SubCategory {
   id: string;
@@ -28,6 +29,7 @@ interface Category {
   id: string;
   name: string;
   subCategories: SubCategory[];
+  image?: string | StaticImageData;
 }
 
 interface CategoryTableProps {
@@ -111,6 +113,9 @@ const CategoryTable: React.FC<CategoryTableProps> = ({
         const cat = row.original;
         return (
           <div className="flex items-center gap-2">
+            {cat.image && (
+              <Image src={cat.image} width={70} height={30} alt="category" />
+            )}
             <span className="font-medium">{cat.name}</span>
             <div className="flex gap-1">
               <Button

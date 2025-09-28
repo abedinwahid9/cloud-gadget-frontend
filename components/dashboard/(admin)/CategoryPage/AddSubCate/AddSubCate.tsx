@@ -13,7 +13,8 @@ import { Button } from "@/components/ui/button";
 import CustomBtn from "@/components/share/CustomBtn/CustomBtn";
 import { X } from "lucide-react";
 import ComboBox from "@/components/share/ComboBox/ComboBox";
-import { Cats } from "../AddCategories/AddCategories"; // shared type
+import { Cates } from "../AddCategories/AddCategories"; // shared type
+import { generateSlug } from "@/lib/utils/generateSlug";
 
 // Form data type
 type FormValues = {
@@ -26,7 +27,7 @@ type FormValues = {
 };
 
 interface AddSubCateProps {
-  category: Cats[];
+  category: Cates[];
 }
 
 const AddSubCate: React.FC<AddSubCateProps> = ({ category }) => {
@@ -47,14 +48,6 @@ const AddSubCate: React.FC<AddSubCateProps> = ({ category }) => {
     control,
     name: "subCategories",
   });
-
-  // Slug generator
-  const generateSlug = (val: string) =>
-    val
-      .toLowerCase()
-      .trim()
-      .replace(/[^\w\s-]/g, "")
-      .replace(/\s+/g, "-");
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     console.log("Submitted:", data.subCategories);

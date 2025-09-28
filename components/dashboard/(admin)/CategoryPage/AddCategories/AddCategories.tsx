@@ -1,34 +1,53 @@
-"use client";
-
 import React from "react";
-import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
+import {
+  useForm,
+  useFieldArray,
+  SubmitHandler,
+  FormProvider,
+} from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import CustomBtn from "@/components/share/CustomBtn/CustomBtn";
 import { X } from "lucide-react";
+import UploadImages from "@/components/share/UploadImages/UploadImages";
+import { generateSlug } from "@/lib/utils/generateSlug";
 
+// Form type
 type FormValues = {
-  categories: { name: string }[];
+  categories: {
+    value: string;
+    label: string;
+    slug: string;
+    images?: File[];
+  }[];
 };
 
-// ✅ Shared type for Category
-export interface Cats {
+// ✅ Shared type for Category state
+export interface Cates {
   value: string;
   label: string;
+  slug: string;
+  images?: File[];
 }
 
 interface AddCategoriesProps {
-  setCategory: React.Dispatch<React.SetStateAction<Cats[]>>;
+  setCategory: React.Dispatch<React.SetStateAction<Cates[]>>;
 }
 
 const AddCategories: React.FC<AddCategoriesProps> = ({ setCategory }) => {
-  const { control, register, handleSubmit, reset } = useForm<FormValues>({
+  const methods = useForm<FormValues>({
     defaultValues: {
-      categories: [{ name: "" }],
+      categories: [{ value: "", label: "", slug: "", images: [] }],
     },
   });
 
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = methods;
   const { fields, append, remove } = useFieldArray({
     control,
     name: "categories",
@@ -36,14 +55,21 @@ const AddCategories: React.FC<AddCategoriesProps> = ({ setCategory }) => {
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     const filtered = data.categories
-      .map((c) => c.name.trim())
-      .filter((name) => name !== "");
+      .map((c) => {
+        const val = c.value.trim();
+        if (!val) return null;
+        return {
+          value: val,
+          label: val,
+          slug: generateSlug(val),
+          images: c.images ?? [],
+        };
+      })
+      .filter(Boolean) as Cates[];
 
-    setCategory((prev) => [
-      ...prev,
-      ...filtered.map((item) => ({ value: item, label: item })),
-    ]);
-    reset();
+    setCategory((prev) => [...prev, ...filtered]);
+    console.log("Final Categories:", filtered);
+    // reset();
   };
 
   return (
@@ -53,41 +79,63 @@ const AddCategories: React.FC<AddCategoriesProps> = ({ setCategory }) => {
           Add Categories
         </CardTitle>
       </CardHeader>
+
       <CardContent className="space-y-3">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-          {fields.map((field, index) => (
-            <div key={field.id} className="flex gap-2 items-center">
-              <Input
-                {...register(`categories.${index}.name`, { required: true })}
-                placeholder="Add Category"
-                className="text-secondary placeholder:text-primary"
-              />
-
-              <Button
-                type="button"
-                className="bg-transparent  hover:bg-badge hover:text-white font-bold"
-                size="sm"
-                onClick={() => remove(index)}
+        <FormProvider {...methods}>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+            {fields.map((field, index) => (
+              <div
+                key={field.id}
+                className="flex gap-2 items-center flex-col border p-2 rounded-md"
               >
-                <X />
-              </Button>
-            </div>
-          ))}
+                {/* Upload images for each category */}
+                <UploadImages index={index} />
+                {/* Category Input */}
+                <div className="flex gap-2 items-center w-full">
+                  <Input
+                    {...register(`categories.${index}.value`, {
+                      required: "category must be required",
+                    })}
+                    placeholder="Category Name"
+                    className="text-secondary placeholder:text-primary"
+                  />
+                  <Button
+                    type="button"
+                    className="bg-transparent hover:bg-badge hover:text-white font-bold"
+                    size="sm"
+                    onClick={() => remove(index)}
+                  >
+                    <X />
+                  </Button>{" "}
+                </div>{" "}
+                <div className="w-full text-start">
+                  {errors.categories?.[index]?.value && (
+                    <p className="text-red-500 text-sm in">
+                      {errors?.categories?.[index].value.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ))}
 
-          <div className="flex gap-3">
-            <CustomBtn
-              handleBtn={() => append({ name: "" })}
-              title="Add Category +"
-              className=" rounded-md"
-              type="button"
-            />
-            <CustomBtn
-              title="Save Categories"
-              className="rounded-md"
-              type="submit"
-            />
-          </div>
-        </form>
+            {/* Action Buttons */}
+            <div className="flex gap-3">
+              <CustomBtn
+                handleBtn={() =>
+                  append({ value: "", label: "", slug: "", images: [] })
+                }
+                title="Add Category +"
+                className="rounded-md"
+                type="button"
+              />
+              <CustomBtn
+                title="Save Categories"
+                className="rounded-md"
+                type="submit"
+              />
+            </div>
+          </form>
+        </FormProvider>
       </CardContent>
     </Card>
   );

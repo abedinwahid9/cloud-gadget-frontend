@@ -9,6 +9,13 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
+import { TfiLayoutSliderAlt } from "react-icons/tfi";
+import {
+  PiContactlessPaymentFill,
+  PiUsersFourFill,
+  PiVanFill,
+} from "react-icons/pi";
+import { AiOutlineAppstore } from "react-icons/ai";
 
 import {
   Sidebar,
@@ -20,17 +27,23 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-
 import { BsShop } from "react-icons/bs";
-import { TbCategoryPlus } from "react-icons/tb";
+import {
+  TbCategoryPlus,
+  TbCirclesRelation,
+  TbUserShield,
+} from "react-icons/tb";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { FaCreditCard, FaImages, FaUsers, FaUserShield } from "react-icons/fa";
+import { RiCoupon2Fill } from "react-icons/ri";
+import { IoWalletOutline } from "react-icons/io5";
+import { MdAdminPanelSettings } from "react-icons/md";
 
-// ---------------- Main Menu ----------------
 const menuItems = [
   {
     title: "Dashboard",
@@ -43,6 +56,11 @@ const menuItems = [
     icon: BsShop,
   },
   {
+    title: "Categories",
+    icon: TbCategoryPlus,
+    url: "/admin/categories",
+  },
+  {
     title: "Orders",
     url: "/admin/orders",
     icon: ShoppingCart,
@@ -51,33 +69,86 @@ const menuItems = [
     title: "Products",
     icon: Package,
     subItems: [
-      { title: "All Products", url: "/admin/products", icon: TbCategoryPlus },
+      {
+        title: "All Products",
+        url: "/admin/products",
+        icon: AiOutlineAppstore,
+      },
       {
         title: "Add Product",
-        url: "/admin/add-products",
+        url: "/admin/products/add-product",
         icon: TbCategoryPlus,
       },
     ],
   },
+
   {
-    title: "Categories",
-    icon: TbCategoryPlus,
-    url: "/admin/categories",
-  },
-  {
-    title: "Customers",
-    url: "/admin/customers",
+    title: "User Management",
     icon: Users,
+    subItems: [
+      {
+        title: "Admin",
+        url: "/admin/admins",
+        icon: FaUserShield,
+      },
+      {
+        title: "Reseller",
+        url: "/admin/resellers",
+        icon: PiUsersFourFill,
+      },
+      {
+        title: "Customers",
+        url: "/admin/customers",
+        icon: FaUsers,
+      },
+    ],
   },
   {
     title: "Promotion Management",
-    url: "/admin/promotions",
-    icon: Users,
+    icon: TbCirclesRelation,
+    subItems: [
+      {
+        title: "Slider",
+        url: "/admin/promotion-management/slider",
+        icon: TfiLayoutSliderAlt,
+      },
+      {
+        title: "Banner",
+        url: "/admin/promotion-management/banner",
+        icon: FaImages,
+      },
+      {
+        title: "Coupon",
+        url: "/admin/promotion-management/coupon",
+        icon: RiCoupon2Fill,
+      },
+    ],
   },
   {
     title: "Analytics",
     url: "/admin/analytics",
     icon: BarChart3,
+  },
+  {
+    title: "Payment Management",
+    subItems: [
+      {
+        title: "Payment Gateway",
+        url: "/admin/promotion-management/slider",
+        icon: FaCreditCard,
+      },
+      {
+        title: "Withdraw",
+        url: "/admin/promotion-management/banner",
+        icon: PiContactlessPaymentFill,
+      },
+      {
+        title: "Delivery Charge",
+        url: "/admin/promotion-management/coupon",
+        icon: PiVanFill,
+      },
+    ],
+    icon: IoWalletOutline,
   },
   {
     title: "Settings",
@@ -86,7 +157,6 @@ const menuItems = [
   },
 ];
 
-// ---------------- Admin Menu ----------------
 const adminItems = [
   {
     title: "Logout",
@@ -97,7 +167,7 @@ const adminItems = [
 
 const AdminSidebar = () => {
   return (
-    <Sidebar className="bg-gradient-to-t from-primary/30 to-secondary/30 border-r">
+    <Sidebar className="bg-gradient-to-t from-primary/30 to-secondary/30 border-r ">
       <SidebarContent>
         {/* --- Main Menu --- */}
         <SidebarGroup>
