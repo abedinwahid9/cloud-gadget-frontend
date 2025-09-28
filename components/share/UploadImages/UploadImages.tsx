@@ -1,21 +1,25 @@
 "use client";
-
 import React from "react";
 import { IoIosCloudUpload } from "react-icons/io";
 import FormImage from "@/components/dashboard/(admin)/Components/FormImage";
 import { Controller, useFormContext } from "react-hook-form";
 
 interface UploadImagesProps {
+  fieldName: string;
   limit?: number;
   index: number;
 }
 
-const UploadImages: React.FC<UploadImagesProps> = ({ limit = 2, index }) => {
+const UploadImages: React.FC<UploadImagesProps> = ({
+  fieldName,
+  limit = 1,
+  index,
+}) => {
   const { control } = useFormContext();
 
   return (
     <Controller
-      name={`categories.${index}.images`}
+      name={`${fieldName}.${index}.images`}
       control={control}
       rules={{ required: "Image is required" }}
       render={({ field: { value = [], onChange }, fieldState: { error } }) => {

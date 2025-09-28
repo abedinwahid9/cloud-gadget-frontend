@@ -89,7 +89,7 @@ const AddCategories: React.FC<AddCategoriesProps> = ({ setCategory }) => {
                 className="flex gap-2 items-center flex-col border p-2 rounded-md"
               >
                 {/* Upload images for each category */}
-                <UploadImages index={index} />
+                <UploadImages fieldName="categories" index={index} />
                 {/* Category Input */}
                 <div className="flex gap-2 items-center w-full">
                   <Input

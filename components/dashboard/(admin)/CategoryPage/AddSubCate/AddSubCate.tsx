@@ -74,6 +74,7 @@ const AddSubCate: React.FC<AddSubCateProps> = ({ category }) => {
                   <Controller
                     control={control}
                     name={`subCategories.${index}.category`}
+                    rules={{ required: true }}
                     render={({ field }) => (
                       <ComboBox
                         title="Category"
@@ -90,6 +91,11 @@ const AddSubCate: React.FC<AddSubCateProps> = ({ category }) => {
                       />
                     )}
                   />
+                  {errors.subCategories && (
+                    <p className="text-red-500 text-sm ">
+                      Sub Categories is required.
+                    </p>
+                  )}
                 </div>
 
                 {/* SubCategory Name */}
@@ -110,7 +116,7 @@ const AddSubCate: React.FC<AddSubCateProps> = ({ category }) => {
                     className="text-secondary placeholder:text-primary"
                   />
                   {errors.subCategories?.[index]?.value && (
-                    <p className="text-red-500 text-sm absolute top-full">
+                    <p className="text-red-500 text-sm ">
                       {errors.subCategories[index]?.value?.message}
                     </p>
                   )}

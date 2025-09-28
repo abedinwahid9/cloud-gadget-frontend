@@ -171,7 +171,7 @@ const AdminSidebar = () => {
       <SidebarContent>
         {/* --- Main Menu --- */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-lg font-bold uppercase tracking-wider text-secondary">
+          <SidebarGroupLabel className="text-lg font-bold uppercase tracking-wider text-secondary dark:text-primary">
             Admin Panel
           </SidebarGroupLabel>
 
@@ -186,7 +186,7 @@ const AdminSidebar = () => {
                     className="w-full"
                   >
                     <AccordionItem value={`item-${i}`}>
-                      <AccordionTrigger className="px-3 py-2 rounded-md flex items-center gap-2 text-base font-semibold text-secondary hover:bg-primary/10 hover:text-primary transition-colors ">
+                      <AccordionTrigger className="px-3 py-2 rounded-md flex items-center gap-2 text-base font-semibold text-secondary dark:text-primary hover:bg-primary/10 hover:text-primary transition-colors ">
                         <div className="flex items-center gap-1">
                           <item.icon
                             style={{ strokeWidth: "1.5px" }}
@@ -201,7 +201,7 @@ const AdminSidebar = () => {
                             <a
                               key={sub.title}
                               href={sub.url}
-                              className="flex items-center gap-2 py-1.5 px-2 rounded-md text-base font-semibold text-secondary hover:bg-primary/10 hover:text-primary transition-colors hover:underline"
+                              className="flex items-center gap-2 py-1.5 px-2 rounded-md text-base font-semibold text-secondary hover:bg-primary/10 hover:text-primary dark:text-primary transition-colors hover:underline"
                             >
                               <sub.icon
                                 style={{ strokeWidth: "1.5px" }}
@@ -219,7 +219,7 @@ const AdminSidebar = () => {
                     <SidebarMenuButton asChild>
                       <a
                         href={item.url}
-                        className="flex items-center gap-2 px-3 py-2 text-base  text-secondary hover:bg-primary/10 hover:text-primary transition-colors"
+                        className="flex items-center gap-2 px-3 py-2 text-base  text-secondary hover:bg-primary/10 hover:text-primary transition-colors dark:text-primary"
                       >
                         <item.icon className="h-5 w-5 " />
                         <span className="font-semibold text-base hover:underline">
