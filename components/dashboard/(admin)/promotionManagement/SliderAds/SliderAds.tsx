@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { FormProvider, useForm, useFieldArray } from "react-hook-form";
 
 interface SliderItem {
-  image: File[];
+  images: File[];
   url: string;
 }
 
@@ -18,7 +18,7 @@ interface SliderAds {
 const SliderAds = () => {
   const methods = useForm<SliderAds>({
     defaultValues: {
-      sliders: [{ image: [], url: "" }],
+      sliders: [{ images: [], url: "" }],
     },
   });
 
@@ -60,7 +60,7 @@ const SliderAds = () => {
                 Banner Image
               </label>
               <UploadImages
-                fieldName={`sliders.${index}.image`}
+                fieldName={`sliders.${index}.images`}
                 index={index}
                 limit={1}
               />
@@ -93,16 +93,18 @@ const SliderAds = () => {
         ))}
 
         {/* Bottom Actions */}
-        <div className="flex justify-between items-center pt-4 border-t border-primary/30">
-          <button
+        <div className="flex gap-2 justify-between items-center pt-4 border-t border-primary/30 w-full">
+          <CustomBtn
             type="button"
-            onClick={() => append({ image: [], url: "" })}
-            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition"
-          >
-            + Add New Slider
-          </button>
-
-          <CustomBtn title="Submit All" type="submit" />
+            handleBtn={() => append({ images: [], url: "" })}
+            className="w-full rounded-lg"
+            title=" + Add New Slider"
+          />
+          <CustomBtn
+            className="w-full rounded-lg"
+            title="Submit All"
+            type="submit"
+          />
         </div>
       </form>
     </FormProvider>
