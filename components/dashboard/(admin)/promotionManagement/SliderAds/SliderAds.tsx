@@ -5,6 +5,7 @@ import Title from "@/components/share/Title/Title";
 import UploadImages from "@/components/share/UploadImages/UploadImages";
 import { Input } from "@/components/ui/input";
 import { FormProvider, useForm, useFieldArray } from "react-hook-form";
+import ImageGallery from "../ImageGallery";
 
 interface SliderItem {
   images: File[];
@@ -31,6 +32,10 @@ const SliderAds = () => {
 
   const handleForm = (data: SliderAds) => {
     console.log("Submitted sliders:", data);
+  };
+
+  const handleButton = (data: { name: string; index: number }) => {
+    console.log(data);
   };
 
   return (
@@ -107,6 +112,7 @@ const SliderAds = () => {
           />
         </div>
       </form>
+      <ImageGallery handleButton={handleButton} />
     </FormProvider>
   );
 };
