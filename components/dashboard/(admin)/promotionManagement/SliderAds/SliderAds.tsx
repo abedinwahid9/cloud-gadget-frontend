@@ -5,7 +5,7 @@ import Title from "@/components/share/Title/Title";
 import UploadImages from "@/components/share/UploadImages/UploadImages";
 import { Input } from "@/components/ui/input";
 import { FormProvider, useForm, useFieldArray } from "react-hook-form";
-import ImageGallery from "../ImageGallery";
+import ImageGallery from "../../Content/ImageGallery";
 
 interface SliderItem {
   images: File[];
@@ -64,11 +64,7 @@ const SliderAds = () => {
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Banner Image
               </label>
-              <UploadImages
-                fieldName={`sliders.${index}.images`}
-                index={index}
-                limit={1}
-              />
+              <UploadImages fieldName={`sliders.images.${index}`} limit={1} />
             </div>
 
             {/* URL */}
@@ -112,7 +108,9 @@ const SliderAds = () => {
           />
         </div>
       </form>
-      <ImageGallery handleButton={handleButton} />
+      <div className="bg-primary/20  rounded-lg">
+        <ImageGallery handleButton={handleButton} />
+      </div>
     </FormProvider>
   );
 };

@@ -8,25 +8,28 @@ interface UploadImagesProps {
   fieldName: string;
   limit?: number;
   index: number;
+  sizeNote?: string;
 }
 
 const UploadImages: React.FC<UploadImagesProps> = ({
   fieldName,
   limit = 1,
   index,
+  sizeNote = "720px * 300px",
 }) => {
   const { control } = useFormContext();
 
   return (
     <Controller
-      name={`${fieldName}.${index}.images`}
+      name={`${fieldName}.images.${index}`}
       control={control}
       rules={{ required: "Image is required" }}
       render={({ field: { value = [], onChange }, fieldState: { error } }) => {
         const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           if (!e.target.files) return;
           const newFiles = [...value, ...Array.from(e.target.files)];
-          onChange(newFiles); // ✅ updates form state
+          onChange(newFiles);
+          e.target.value = "";
         };
 
         const handleDelete = (id: number) => {
@@ -48,7 +51,7 @@ const UploadImages: React.FC<UploadImagesProps> = ({
                   </span>
                   <span className="text-xs">Select existing</span>
                   <p className="text-xs">Accepts images</p>
-                  <strong>[Note]: Image Size 720px * 300px</strong>
+                  <strong>[Note]: Image Size {sizeNote}</strong>
                 </div>
               </label>
             ) : (

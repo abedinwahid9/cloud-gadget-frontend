@@ -11,7 +11,7 @@ type ButtonProps = {
 
 const ImageGallery = ({ handleButton }: ButtonProps) => {
   return (
-    <div className="py-4 px-2 mt-2 bg-primary/20 space-y-4">
+    <div className="py-4 px-2 mt-2 space-y-4  ">
       <Title text="🖼️ Gallery" />
       <div className="grid md:grid-cols-4 grid-cols-2 gap-1">
         {Array.from({ length: 8 }).map((_, i) => (
