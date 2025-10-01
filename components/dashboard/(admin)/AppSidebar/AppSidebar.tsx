@@ -163,7 +163,7 @@ const menuItems = [
       },
       {
         title: "Delivery Charge",
-        url: "/admin/promotion-management/coupon",
+        url: "/admin/payment-management/delivery-charge",
         icon: PiVanFill,
       },
     ],

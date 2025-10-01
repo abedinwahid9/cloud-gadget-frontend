@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { IoIosCloudUpload } from "react-icons/io";
 import FormImage from "@/components/dashboard/(admin)/Components/FormImage";
 import ModelGallery from "@/components/dashboard/(admin)/Content/ModelGallery";
@@ -10,6 +10,7 @@ interface UploadImagesProps {
   index?: number;
   sizeNote?: string;
   getImage?: { thumbnail: string }[];
+  setGetImage: Dispatch<SetStateAction<(File | { thumbnail: string })[]>>;
 }
 
 const UploadImages: React.FC<UploadImagesProps> = ({
