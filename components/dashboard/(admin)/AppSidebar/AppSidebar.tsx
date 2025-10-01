@@ -9,9 +9,15 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
-import { TfiLayoutSliderAlt } from "react-icons/tfi";
+import { GoFileMedia } from "react-icons/go";
+import {
+  TfiLayoutMediaCenterAlt,
+  TfiLayoutMediaLeftAlt,
+  TfiLayoutSliderAlt,
+} from "react-icons/tfi";
 import {
   PiContactlessPaymentFill,
+  PiImagesThin,
   PiUsersFourFill,
   PiVanFill,
 } from "react-icons/pi";
@@ -43,6 +49,7 @@ import { FaCreditCard, FaImages, FaUsers, FaUserShield } from "react-icons/fa";
 import { RiCoupon2Fill } from "react-icons/ri";
 import { IoWalletOutline } from "react-icons/io5";
 import { MdAdminPanelSettings } from "react-icons/md";
+import { CiImageOn } from "react-icons/ci";
 
 const menuItems = [
   {
@@ -88,17 +95,17 @@ const menuItems = [
     subItems: [
       {
         title: "Admin",
-        url: "/admin/admins",
+        url: "/admin/user-management/admins",
         icon: FaUserShield,
       },
       {
         title: "Reseller",
-        url: "/admin/resellers",
+        url: "/admin/user-management/resellers",
         icon: PiUsersFourFill,
       },
       {
         title: "Customers",
-        url: "/admin/customers",
+        url: "/admin/user-management/customers",
         icon: FaUsers,
       },
     ],
@@ -121,6 +128,18 @@ const menuItems = [
         title: "Coupon",
         url: "/admin/promotion-management/coupon",
         icon: RiCoupon2Fill,
+      },
+    ],
+  },
+
+  {
+    title: "Content",
+    icon: PiImagesThin,
+    subItems: [
+      {
+        title: "Media",
+        url: "/admin/content/media",
+        icon: GoFileMedia,
       },
     ],
   },

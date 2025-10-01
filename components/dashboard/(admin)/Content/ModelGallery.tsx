@@ -18,6 +18,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Trash2, Check } from "lucide-react";
 import image from "@/app/assets/img5.png";
 import Image, { StaticImageData } from "next/image";
+import { FaDropbox } from "react-icons/fa";
+import { Label } from "@/components/ui/label";
 
 type FileItem = {
   id: number;
@@ -26,12 +28,24 @@ type FileItem = {
   thumbnail: string | StaticImageData;
 };
 
-export default function ModelGallery() {
+export default function ModelGallery({ setGetImage }) {
   const [open, setOpen] = useState(false);
 
   const [files, setFiles] = useState<FileItem[]>([
     {
       id: 1,
+      name: "screencapture-clo-1.png",
+      type: "PNG",
+      thumbnail: image,
+    },
+    {
+      id: 2,
+      name: "screencapture-clo-1.png",
+      type: "PNG",
+      thumbnail: image,
+    },
+    {
+      id: 3,
       name: "screencapture-clo-1.png",
       type: "PNG",
       thumbnail: image,
@@ -54,7 +68,7 @@ export default function ModelGallery() {
 
   function handleDone() {
     const selectedFiles = files.filter((f) => selectedIds.includes(f.id));
-    console.log("Done — selected files:", selectedFiles);
+    setGetImage(selectedFiles);
     // TODO: send selectedFiles back to parent via props or context
     setOpen(false);
   }
@@ -63,11 +77,14 @@ export default function ModelGallery() {
     <div>
       <Drawer direction="top" open={open} onOpenChange={setOpen}>
         <DrawerTrigger asChild>
-          <Button>Open File Picker</Button>
+          <button className="bg-transparent rounded text-secondary px-2 py-1 text-md flex flex-col text-sm  hover:bg-primary/30 items-center font-medium dark:text-primary">
+            <FaDropbox className="w-5 h-5" />
+            Select existing
+          </button>
         </DrawerTrigger>
 
         <DrawerContent className="h-[90vh] rounded-t-xl w-3/4 mx-auto ">
-          <DrawerHeader className="border-b flex items-start justify-between px-4 py-3">
+          <DrawerHeader className="border-b flex items-center justify-between px-4 py-3">
             <div>
               <DrawerTitle>Select file</DrawerTitle>
               <DrawerDescription className="text-sm text-muted-foreground text">
@@ -100,10 +117,20 @@ export default function ModelGallery() {
           <div className="border-dashed border-2 rounded-lg mx-4 mt-4 p-6 text-center text-gray-500">
             <p>Drag and drop images, videos, 3D models, and files</p>
             <div className="flex justify-center gap-4 mt-3">
-              <Button variant="outline">Add media</Button>
-              <Button className="bg-purple-600 text-white hover:bg-purple-700">
-                Generate image
-              </Button>
+              <input
+                accept=".jpg, .jpeg, .png, .gif"
+                type="file"
+                multiple
+                id="images"
+                className="hidden"
+                // onChange={handleFileChange}
+              />
+              <Label
+                className=" bg-gradient-to-r from-primary/40 via-secondary/40 to-badge/40 hover:from-badge/70 hover:via-secondary/70 hover:to-primary/70 hover:text-nav dark:text-white text-secondary md:font-bold font-semibold md:text-lg text-sm capitalize  rounded-4xl px-10 py-1"
+                htmlFor="images"
+              >
+                Add media
+              </Label>
             </div>
           </div>
 
