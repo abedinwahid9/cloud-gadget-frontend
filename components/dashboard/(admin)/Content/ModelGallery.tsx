@@ -16,10 +16,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Trash2, Check } from "lucide-react";
-import image from "@/app/assets/img5.png";
 import Image, { StaticImageData } from "next/image";
 import { FaDropbox } from "react-icons/fa";
 import { Label } from "@/components/ui/label";
+import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 
 type FileItem = {
   id: number;
@@ -28,35 +28,13 @@ type FileItem = {
   thumbnail: string | StaticImageData;
 };
 
-interface ModelGalleryProps {
-  setGetImage: (files: FileItem[]) => void; // <-- fix: type your prop
-}
-
-export default function ModelGallery({ setGetImage }: ModelGalleryProps) {
+const ModelGallery = () => {
   const [open, setOpen] = useState(false);
 
-  const [files, setFiles] = useState<FileItem[]>([
-    {
-      id: 1,
-      name: "screencapture-clo-1.png",
-      type: "PNG",
-      thumbnail: image,
-    },
-    {
-      id: 2,
-      name: "screencapture-clo-1.png",
-      type: "PNG",
-      thumbnail: image,
-    },
-    {
-      id: 3,
-      name: "screencapture-clo-1.png",
-      type: "PNG",
-      thumbnail: image,
-    },
-  ]);
+  const [files, setFiles] = useState<FileItem[]>([]);
 
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const axiosPublic = useAxiosPublic();
 
   function toggleSelect(id: number) {
     setSelectedIds((prev) =>
@@ -71,12 +49,34 @@ export default function ModelGallery({ setGetImage }: ModelGalleryProps) {
 
   function handleDone() {
     const selectedFiles = files.filter((f) => selectedIds.includes(f.id));
-    setGetImage(selectedFiles);
+    // setGetImage(selectedFiles);
     setOpen(false);
   }
 
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const formData = new FormData();
+
+      for (const file of e.target.files) {
+        formData.append("files", file);
+      }
+
+      console.log(formData);
+
+      try {
+        const upload = await axiosPublic.post("/upload/file", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log(upload.data);
+      } catch (error) {
+        console.error("Upload error:", error);
+      }
+    }
+  };
   return (
-    <div>
+    <div className="relative">
       <Drawer direction="top" open={open} onOpenChange={setOpen}>
         <DrawerTrigger asChild>
           <button className="bg-transparent rounded text-secondary px-2 py-1 text-md flex flex-col text-sm hover:bg-primary/30 items-center font-medium dark:text-primary">
@@ -85,7 +85,7 @@ export default function ModelGallery({ setGetImage }: ModelGalleryProps) {
           </button>
         </DrawerTrigger>
 
-        <DrawerContent className="h-[90vh] rounded-t-xl w-3/4 mx-auto">
+        <DrawerContent className="h-[100vh] rounded-t-xl w-3/4 mx-auto">
           <DrawerHeader className="border-b flex items-center justify-between px-4 py-3">
             <div>
               <DrawerTitle>Select file</DrawerTitle>
@@ -123,15 +123,16 @@ export default function ModelGallery({ setGetImage }: ModelGalleryProps) {
                 accept=".jpg, .jpeg, .png, .gif"
                 type="file"
                 multiple
-                id="images"
+                id="galleryImages"
                 className="hidden"
+                onChange={handleFileChange}
               />
               <Label
                 className="bg-gradient-to-r from-primary/40 via-secondary/40 to-badge/40 
                   hover:from-badge/70 hover:via-secondary/70 hover:to-primary/70 
                   hover:text-nav dark:text-white text-secondary font-semibold 
                   md:font-bold md:text-lg text-sm capitalize rounded-4xl px-10 py-1"
-                htmlFor="images"
+                htmlFor="galleryImages"
               >
                 Add media
               </Label>
@@ -206,4 +207,5 @@ export default function ModelGallery({ setGetImage }: ModelGalleryProps) {
       </Drawer>
     </div>
   );
-}
+};
+export default ModelGallery;

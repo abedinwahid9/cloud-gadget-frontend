@@ -10,7 +10,7 @@ interface UploadImagesProps {
   index?: number;
   sizeNote?: string;
   getImage?: { thumbnail: string }[];
-  setGetImage: Dispatch<SetStateAction<(File | { thumbnail: string })[]>>;
+  setGetImage?: Dispatch<SetStateAction<(File | { thumbnail: string })[]>>;
 }
 
 const UploadImages: React.FC<UploadImagesProps> = ({
@@ -53,7 +53,7 @@ const UploadImages: React.FC<UploadImagesProps> = ({
                 Upload new
               </span>
               <span className="text-xs">
-                <ModelGallery setGetImage={setImages} />
+                <ModelGallery />
               </span>
             </div>
             <p className="text-xs">Accepts images</p>
