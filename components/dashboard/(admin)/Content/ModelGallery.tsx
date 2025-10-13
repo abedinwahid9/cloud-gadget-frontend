@@ -20,38 +20,49 @@ import Image, { StaticImageData } from "next/image";
 import { FaDropbox } from "react-icons/fa";
 import { Label } from "@/components/ui/label";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { useQuery } from "@tanstack/react-query";
 
 type FileItem = {
   id: number;
   name: string;
-  type: string;
-  thumbnail: string | StaticImageData;
+  thumbnail: string;
 };
 
 const ModelGallery = () => {
   const [open, setOpen] = useState(false);
 
-  const [files, setFiles] = useState<FileItem[]>([]);
-
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const axiosPublic = useAxiosPublic();
 
-  function toggleSelect(id: number) {
+  const toggleSelect = (id: number) => {
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
-  }
+  };
 
-  function deleteFile(id: number) {
-    setFiles((prev) => prev.filter((f) => f.id !== id));
-    setSelectedIds((prev) => prev.filter((s) => s !== id));
-  }
+  // image fetch
+  const {
+    data: files = [],
+    isPending,
+    refetch,
+  } = useQuery({
+    queryKey: ["gallerys"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/upload/file");
+      return res.data.files;
+    },
+  });
 
-  function handleDone() {
+  // const deleteFile = (id: number) => {
+  //   setFiles((prev) => prev.filter((f) => f.id !== id));
+  //   setSelectedIds((prev) => prev.filter((s) => s !== id));
+  // };
+
+  const handleDone = () => {
     const selectedFiles = files.filter((f) => selectedIds.includes(f.id));
     // setGetImage(selectedFiles);
     setOpen(false);
-  }
+  };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -70,10 +81,12 @@ const ModelGallery = () => {
           },
         });
         console.log(upload.data);
+        refetch();
       } catch (error) {
         console.error("Upload error:", error);
       }
     }
+    e.target.value = "";
   };
   return (
     <div className="relative">
@@ -138,11 +151,11 @@ const ModelGallery = () => {
               </Label>
             </div>
           </div>
-
+          {isPending && <span>loading...</span>}
           {/* Files Grid */}
           <div className="px-4 py-6 overflow-auto">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-              {files.map((file) => {
+              {files.map((file: FileItem) => {
                 const isSelected = selectedIds.includes(file.id);
                 return (
                   <div
@@ -151,7 +164,7 @@ const ModelGallery = () => {
                   >
                     {/* delete icon */}
                     <button
-                      onClick={() => deleteFile(file.id)}
+                      // onClick={() => deleteFile(file.id)}
                       aria-label={`Delete ${file.name}`}
                       className="absolute left-2 top-2 z-20 opacity-0 group-hover:opacity-100 transition bg-white/90 p-1 rounded-md"
                     >
@@ -169,8 +182,8 @@ const ModelGallery = () => {
 
                     {/* thumbnail */}
                     <Image
-                      width={0}
-                      height={0}
+                      width={500}
+                      height={500}
                       src={file.thumbnail}
                       alt={file.name}
                       className="w-full h-36 object-contain"
@@ -179,7 +192,7 @@ const ModelGallery = () => {
                     {/* metadata */}
                     <div className="p-2">
                       <p className="truncate text-sm">{file.name}</p>
-                      <span className="text-xs text-gray-400">{file.type}</span>
+                      {/* <span className="text-xs text-gray-400">{file.type}</span> */}
                     </div>
 
                     {/* selected overlay */}
