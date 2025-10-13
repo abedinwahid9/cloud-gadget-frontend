@@ -39,6 +39,7 @@ const ModelGallery = () => {
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
   };
+  console.log(selectedIds);
 
   // image fetch
   const {
@@ -59,8 +60,11 @@ const ModelGallery = () => {
   // };
 
   const handleDone = () => {
-    const selectedFiles = files.filter((f) => selectedIds.includes(f.id));
+    const selectedFiles = files.filter((f: FileItem) =>
+      selectedIds.includes(f.id)
+    );
     // setGetImage(selectedFiles);
+    console.log(selectedFiles);
     setOpen(false);
   };
 
@@ -109,7 +113,7 @@ const ModelGallery = () => {
           </DrawerHeader>
 
           {/* Search + Filters */}
-          <div className="flex items-center gap-2 border-b px-4 py-3">
+          {/* <div className="flex items-center gap-2 border-b px-4 py-3">
             <Input placeholder="Search files" className="flex-1" />
             <Button variant="outline" size="sm">
               File type
@@ -126,7 +130,7 @@ const ModelGallery = () => {
             <Button variant="outline" size="sm">
               Sort
             </Button>
-          </div>
+          </div> */}
 
           {/* Upload / Generate */}
           <div className="border-dashed border-2 rounded-lg mx-4 mt-4 p-6 text-center text-gray-500">
@@ -168,7 +172,7 @@ const ModelGallery = () => {
                       aria-label={`Delete ${file.name}`}
                       className="absolute left-2 top-2 z-20 opacity-0 group-hover:opacity-100 transition bg-white/90 p-1 rounded-md"
                     >
-                      <Trash2 size={14} />
+                      <Trash2 className="text-badge" size={14} />
                     </button>
 
                     {/* checkbox */}
@@ -177,6 +181,7 @@ const ModelGallery = () => {
                         checked={isSelected}
                         onCheckedChange={() => toggleSelect(file.id)}
                         aria-label={`Select ${file.name}`}
+                        className=" border-badge"
                       />
                     </div>
 
