@@ -12,8 +12,8 @@ const FormImage: React.FC<FormImageProps> = ({ src, onDelete }) => {
   return (
     <div className="overflow-hidden h-full w-full rounded-md border relative group">
       <Image
-        width={0}
-        height={0}
+        width={500}
+        height={500}
         src={src}
         alt="preview"
         className="h-full w-full object-contain"

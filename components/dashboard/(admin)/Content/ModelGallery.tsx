@@ -1,7 +1,7 @@
 // components/ModelGallery.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Drawer,
   DrawerTrigger,
@@ -13,10 +13,10 @@ import {
   DrawerClose,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import { Trash2, Check } from "lucide-react";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { FaDropbox } from "react-icons/fa";
 import { Label } from "@/components/ui/label";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
@@ -39,7 +39,6 @@ const ModelGallery = () => {
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
   };
-  console.log(selectedIds);
 
   // image fetch
   const {
@@ -52,6 +51,7 @@ const ModelGallery = () => {
       const res = await axiosPublic.get("/upload/file");
       return res.data.files;
     },
+    enabled: open,
   });
 
   const deleteFile = async (fileName: string) => {
@@ -170,7 +170,7 @@ const ModelGallery = () => {
                     <button
                       onClick={() => deleteFile(file.name)}
                       aria-label={`Delete ${file.name}`}
-                      className="absolute left-2 top-2 z-20 opacity-0 group-hover:opacity-100 transition bg-white/90 p-1 rounded-md hover:cursor-pointer"
+                      className="absolute hidden md:block left-2 top-2 z-20 opacity-0 group-hover:opacity-100 transition bg-white/90 p-1 rounded-md hover:cursor-pointer"
                     >
                       <Trash2 className="text-badge" size={14} />
                     </button>

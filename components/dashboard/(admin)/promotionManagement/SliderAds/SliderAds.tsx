@@ -8,7 +8,7 @@ import { FormProvider, useForm, useFieldArray } from "react-hook-form";
 import ImageGallery from "../../Content/ImageGallery";
 
 interface SliderItem {
-  images: File[];
+  image: string;
   url: string;
 }
 
@@ -19,7 +19,7 @@ interface SliderAds {
 const SliderAds = () => {
   const methods = useForm<SliderAds>({
     defaultValues: {
-      sliders: [{ images: [], url: "" }],
+      sliders: [{ image: "", url: "" }],
     },
   });
 
@@ -64,7 +64,7 @@ const SliderAds = () => {
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Banner Image
               </label>
-              <UploadImages fieldName={`sliders.images.${index}`} limit={1} />
+              <UploadImages index={index} limit={1} />
             </div>
 
             {/* URL */}
@@ -97,7 +97,7 @@ const SliderAds = () => {
         <div className="flex gap-2 justify-between items-center pt-4 border-t border-primary/30 w-full">
           <CustomBtn
             type="button"
-            handleBtn={() => append({ images: [], url: "" })}
+            handleBtn={() => append({ image: "", url: "" })}
             className="w-full rounded-lg"
             title=" + Add New Slider"
           />
@@ -108,9 +108,6 @@ const SliderAds = () => {
           />
         </div>
       </form>
-      <div className="bg-primary/20  rounded-lg">
-        <ImageGallery handleButton={handleButton} />
-      </div>
     </FormProvider>
   );
 };
