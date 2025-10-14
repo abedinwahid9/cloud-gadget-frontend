@@ -4,11 +4,21 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https", // or 'http' for local development
-        hostname: "i.pravatar.cc", // Replace with your image host
-        port: "", // Optional: Specify port if needed (e.g., '8000' for local API)
+        protocol: "https",
+        hostname: "i.pravatar.cc",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "5000",
+        pathname: "/uploads/**", // allow all images under /uploads
+      },
+      {
+        protocol: "https",
+        hostname: "cloud-gadget-server.onrender.com",
       },
     ],
+    domains: ["localhost", "cloud-gadget-server.onrender.com"],
   },
 };
 
