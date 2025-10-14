@@ -54,10 +54,10 @@ const ModelGallery = () => {
     },
   });
 
-  // const deleteFile = (id: number) => {
-  //   setFiles((prev) => prev.filter((f) => f.id !== id));
-  //   setSelectedIds((prev) => prev.filter((s) => s !== id));
-  // };
+  const deleteFile = async (fileName: string) => {
+    const res = await axiosPublic.delete(`/upload/${fileName}`);
+    refetch();
+  };
 
   const handleDone = () => {
     const selectedFiles = files.filter((f: FileItem) =>
@@ -168,9 +168,9 @@ const ModelGallery = () => {
                   >
                     {/* delete icon */}
                     <button
-                      // onClick={() => deleteFile(file.id)}
+                      onClick={() => deleteFile(file.name)}
                       aria-label={`Delete ${file.name}`}
-                      className="absolute left-2 top-2 z-20 opacity-0 group-hover:opacity-100 transition bg-white/90 p-1 rounded-md"
+                      className="absolute left-2 top-2 z-20 opacity-0 group-hover:opacity-100 transition bg-white/90 p-1 rounded-md hover:cursor-pointer"
                     >
                       <Trash2 className="text-badge" size={14} />
                     </button>

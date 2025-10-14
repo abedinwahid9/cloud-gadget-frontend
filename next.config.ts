@@ -13,8 +13,12 @@ const nextConfig: NextConfig = {
         port: "5000",
         pathname: "/uploads/**", // allow all images under /uploads
       },
+      {
+        protocol: "https",
+        hostname: "cloud-gadget-server.onrender.com",
+      },
     ],
-    domains: ["localhost"],
+    domains: ["localhost", "cloud-gadget-server.onrender.com"],
   },
 };
 
