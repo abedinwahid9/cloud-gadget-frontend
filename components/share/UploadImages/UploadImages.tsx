@@ -1,24 +1,32 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoIosCloudUpload } from "react-icons/io";
 import FormImage from "@/components/dashboard/(admin)/Components/FormImage";
 import ModelGallery from "@/components/dashboard/(admin)/Content/ModelGallery";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
-import { useFormContext } from "react-hook-form";
 
 interface UploadImagesProps {
-  fieldName?: string;
+  value?: string; // ✅ will be controlled by Controller
+  onChange?: (value: string) => void; // ✅ update form state
   index: number;
   sizeNote?: string;
   getImage?: { thumbnail: string }[];
   limit?: number;
 }
 
-const UploadImages: React.FC<UploadImagesProps> = ({ index, limit = 1 }) => {
+const UploadImages: React.FC<UploadImagesProps> = ({
+  value = "",
+  onChange,
+  index,
+  limit = 1,
+}) => {
   const axiosPublic = useAxiosPublic();
-  const { setValue, watch } = useFormContext();
-  const currentImage = watch(`sliders.${index}.image`) || ""; // single image (string)
-  const [image, setImage] = useState<string>(currentImage);
+  const [image, setImage] = useState<string>(value);
+
+  // Keep local state in sync with form value
+  useEffect(() => {
+    setImage(value);
+  }, [value]);
 
   // Handle file upload
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +43,7 @@ const UploadImages: React.FC<UploadImagesProps> = ({ index, limit = 1 }) => {
       const uploaded = upload.data?.files?.[0]?.path;
       if (uploaded) {
         setImage(uploaded);
-        setValue(`sliders.${index}.image`, uploaded);
+        onChange?.(uploaded); // ✅ update form state
       }
     } catch (error) {
       console.error("Upload error:", error);
@@ -46,7 +54,7 @@ const UploadImages: React.FC<UploadImagesProps> = ({ index, limit = 1 }) => {
 
   const handleDelete = () => {
     setImage("");
-    setValue(`sliders.${index}.image`, "");
+    onChange?.(""); // ✅ clear form state
   };
 
   return (
