@@ -10,8 +10,9 @@ import {
   useFieldArray,
   Controller,
 } from "react-hook-form";
-import ImageGallery from "../../Content/ImageGallery";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 interface SliderItem {
   image: string;
@@ -26,7 +27,7 @@ interface SliderAds {
 const SliderAds = () => {
   const methods = useForm<SliderAds>({
     defaultValues: {
-      sliders: [{ image: "", url: "", caption: "" }],
+      sliders: [{ image: "", url: "", caption: "" }], // 👈 always one by default
     },
   });
 
@@ -35,6 +36,7 @@ const SliderAds = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = methods;
   const axiosPublic = useAxiosPublic();
 
@@ -43,10 +45,28 @@ const SliderAds = () => {
     name: "sliders",
   });
 
-  const handleForm = async (data: SliderAds) => {
+  // ✅ Fetch data
+  const { data, refetch } = useQuery({
+    queryKey: ["sliders"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/promotion/sliders");
+      return res.data.sliders;
+    },
+  });
+
+  // ✅ Reset with fetched data or show default field if empty
+  useEffect(() => {
+    if (data && data.length > 0) {
+      reset({ sliders: data });
+    } else {
+      reset({ sliders: [{ image: "", url: "", caption: "" }] });
+    }
+  }, [data, reset]);
+
+  // ✅ Handle submit
+  const handleForm = async (formData: SliderAds) => {
     try {
-      // console.log("Submitted sliders:", data);
-      const res = await axiosPublic.post("/promotion/sliders", data, {
+      const res = await axiosPublic.post("/promotion/sliders", formData, {
         headers: { "Content-Type": "application/json" },
       });
       console.log(res);
@@ -55,22 +75,16 @@ const SliderAds = () => {
     }
   };
 
-  // const handleButton = (data: { name: string; index: number }) => {
-  //   console.log(data);
-  // };
-
   return (
     <FormProvider {...methods}>
       <form
         onSubmit={handleSubmit(handleForm)}
         className="bg-primary/10 text-white p-6 rounded-xl shadow-lg space-y-6"
       >
-        {/* Title */}
         <div className="border-b border-primary/40 pb-2 mb-4">
           <Title text="📢 Slider Ads" />
         </div>
 
-        {/* Slider Items */}
         {fields.map((field, index) => (
           <div
             key={field.id}
@@ -79,7 +93,8 @@ const SliderAds = () => {
             <h3 className="text-lg font-semibold text-primary">
               Slider #{index + 1}
             </h3>
-            {/* Banner Image */}
+
+            {/* Image */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Banner Image
@@ -97,29 +112,31 @@ const SliderAds = () => {
                   />
                 )}
               />
-              {errors.sliders?.[index]?.image?.type === "required" && (
+              {errors.sliders?.[index]?.image && (
                 <p className="text-red-500 text-sm mt-1">
                   Slider image is required.
                 </p>
               )}
             </div>
-            {/* caption */}
+
+            {/* Caption */}
             <div>
               <label className="block text-sm font-medium text-secondary mb-2">
                 Caption
               </label>
               <Input
                 type="text"
-                placeholder="https://example.com"
-                className="bg-dark border border-gray-600 text-primary px-3 py-2 rounded-md w-full focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                 {...register(`sliders.${index}.caption`, { required: true })}
+                placeholder="Caption text"
+                className="bg-dark border border-gray-600 text-primary px-3 py-2 rounded-md w-full focus:border-primary focus:ring-1 focus:ring-primary outline-none"
               />
-              {errors.sliders?.[index]?.caption?.type === "required" && (
+              {errors.sliders?.[index]?.caption && (
                 <p className="text-red-500 text-sm mt-1">
-                  caption image is required.
+                  Caption is required.
                 </p>
               )}
-            </div>{" "}
+            </div>
+
             {/* URL */}
             <div>
               <label className="block text-sm font-medium text-secondary mb-2">
@@ -127,17 +144,16 @@ const SliderAds = () => {
               </label>
               <Input
                 type="text"
+                {...register(`sliders.${index}.url`, { required: true })}
                 placeholder="https://example.com"
                 className="bg-dark border border-gray-600 text-primary px-3 py-2 rounded-md w-full focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-                {...register(`sliders.${index}.url`, { required: true })}
               />
-              {errors.sliders?.[index]?.url?.type === "required" && (
-                <p className="text-red-500 text-sm mt-1">
-                  url image is required.
-                </p>
+              {errors.sliders?.[index]?.url && (
+                <p className="text-red-500 text-sm mt-1">URL is required.</p>
               )}
             </div>
-            {/* Remove button */}
+
+            {/* Remove */}
             {fields.length > 1 && (
               <button
                 type="button"
@@ -150,9 +166,8 @@ const SliderAds = () => {
           </div>
         ))}
 
-        {/* Bottom Actions */}
         <div className="flex gap-2 justify-between items-center pt-4 border-t border-primary/30 w-full">
-          {fields.length !== 5 && (
+          {fields.length < 5 && (
             <CustomBtn
               type="button"
               handleBtn={() => append({ image: "", url: "", caption: "" })}

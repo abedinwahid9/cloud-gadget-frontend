@@ -6,8 +6,8 @@ import ModelGallery from "@/components/dashboard/(admin)/Content/ModelGallery";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 
 interface UploadImagesProps {
-  value?: string; // ✅ will be controlled by Controller
-  onChange?: (value: string) => void; // ✅ update form state
+  value?: string;
+  onChange?: (value: string) => void;
   index: number;
   sizeNote?: string;
   getImage?: { thumbnail: string }[];
