@@ -43,18 +43,18 @@ const UploadImages: React.FC<UploadImagesProps> = ({
       const uploaded = upload.data?.files?.[0]?.path;
       if (uploaded) {
         setImage(uploaded);
-        onChange?.(uploaded); // ✅ update form state
+        onChange?.(uploaded);
       }
     } catch (error) {
       console.error("Upload error:", error);
     }
 
-    e.target.value = ""; // reset input
+    e.target.value = "";
   };
 
   const handleDelete = () => {
     setImage("");
-    onChange?.(""); // ✅ clear form state
+    onChange?.("");
   };
 
   return (

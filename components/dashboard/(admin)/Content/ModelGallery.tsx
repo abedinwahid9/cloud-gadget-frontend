@@ -21,6 +21,8 @@ import { FaDropbox } from "react-icons/fa";
 import { Label } from "@/components/ui/label";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { setImageSeleted } from "@/lib/redux/slices/imageSeletedSlices";
 
 type FileItem = {
   id: number;
@@ -30,7 +32,7 @@ type FileItem = {
 
 const ModelGallery = () => {
   const [open, setOpen] = useState(false);
-
+  const dispatch = useAppDispatch();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const axiosPublic = useAxiosPublic();
 
@@ -63,8 +65,13 @@ const ModelGallery = () => {
     const selectedFiles = files.filter((f: FileItem) =>
       selectedIds.includes(f.id)
     );
+
+    const images = selectedFiles.map((f: FileItem) => f.thumbnail);
+
+    dispatch(setImageSeleted(images));
+
     // setGetImage(selectedFiles);
-    console.log(selectedFiles);
+
     setOpen(false);
   };
 
