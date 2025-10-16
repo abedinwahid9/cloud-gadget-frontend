@@ -1,19 +1,36 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+// ✅ Define the state type
+interface ImageSelectedState {
+  imageSelected: string[];
+}
+
+// ✅ Initial state
+const initialState: ImageSelectedState = {
   imageSelected: [],
 };
 
-const imageSelectedSlices = createSlice({
+// ✅ Create slice
+const imageSelectedSlice = createSlice({
   name: "imageSelected",
-  initialState: initialState,
+  initialState,
   reducers: {
-    setImageSeleted: (state, action) => {
+    setImageSeleted: (state, action: PayloadAction<string[]>) => {
       state.imageSelected = action.payload;
+    },
+    removeSeletedImageAll: (state) => {
+      state.imageSelected = [];
+    },
+    removeSingleImage: (state, action: PayloadAction<string>) => {
+      state.imageSelected = state.imageSelected.filter(
+        (img) => img !== action.payload
+      );
     },
   },
 });
 
-export const { setImageSeleted } = imageSelectedSlices.actions;
+// ✅ Export actions and reducer
+export const { setImageSeleted, removeSeletedImageAll, removeSingleImage } =
+  imageSelectedSlice.actions;
 
-export default imageSelectedSlices.reducer;
+export default imageSelectedSlice.reducer;

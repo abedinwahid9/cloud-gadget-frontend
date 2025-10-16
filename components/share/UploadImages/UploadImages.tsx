@@ -4,6 +4,9 @@ import { IoIosCloudUpload } from "react-icons/io";
 import FormImage from "@/components/dashboard/(admin)/Components/FormImage";
 import ModelGallery from "@/components/dashboard/(admin)/Content/ModelGallery";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { useSelector } from "react-redux";
+import { removeSingleImage } from "@/lib/redux/slices/imageSeletedSlices";
+import { useAppDispatch } from "@/lib/redux/hooks";
 
 interface UploadImagesProps {
   value?: string;
@@ -14,6 +17,12 @@ interface UploadImagesProps {
   limit?: number;
 }
 
+interface RootState {
+  imageSelete: {
+    imageSelected: string[];
+  };
+}
+
 const UploadImages: React.FC<UploadImagesProps> = ({
   value = "",
   onChange,
@@ -22,11 +31,20 @@ const UploadImages: React.FC<UploadImagesProps> = ({
 }) => {
   const axiosPublic = useAxiosPublic();
   const [image, setImage] = useState<string>(value);
+  const imageSelete = useSelector(
+    (state: RootState) => state.imageSelete.imageSelected
+  );
+  const dispatch = useAppDispatch();
 
   // Keep local state in sync with form value
   useEffect(() => {
-    setImage(value);
-  }, [value]);
+    if (!value && imageSelete.length > 0) {
+      setImage(imageSelete[0]);
+      onChange?.(imageSelete[0]);
+    } else {
+      setImage(value);
+    }
+  }, [value, imageSelete]);
 
   // Handle file upload
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,6 +71,9 @@ const UploadImages: React.FC<UploadImagesProps> = ({
   };
 
   const handleDelete = () => {
+    if (imageSelete.length > 0) {
+      dispatch(removeSingleImage(image));
+    }
     setImage("");
     onChange?.("");
   };

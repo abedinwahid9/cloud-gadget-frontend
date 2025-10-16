@@ -19,13 +19,15 @@ const FormImage: React.FC<FormImageProps> = ({ src, onDelete }) => {
         className="h-full w-full object-contain"
       />
 
-      <button
-        type="button"
-        onClick={onDelete}
-        className="absolute hidden group-hover:block top-1 right-1 rounded-full overflow-hidden cursor-pointer"
-      >
-        <MdDeleteForever className="w-6 h-6 bg-badge/70 text-white p-0.5" />
-      </button>
+      {src && (
+        <button
+          type="button"
+          onClick={onDelete}
+          className="absolute hidden group-hover:block top-1 right-1 rounded-full overflow-hidden cursor-pointer"
+        >
+          <MdDeleteForever className="w-6 h-6 bg-badge/70 text-white p-0.5" />
+        </button>
+      )}
     </div>
   );
 };

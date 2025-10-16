@@ -13,6 +13,8 @@ import {
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { removeSeletedImageAll } from "@/lib/redux/slices/imageSeletedSlices";
 
 interface SliderItem {
   image: string;
@@ -43,6 +45,7 @@ const SliderAds = () => {
     name: "sliders",
   });
   const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
 
   // ✅ Fetch data
   const { data, refetch } = useQuery({
@@ -73,6 +76,8 @@ const SliderAds = () => {
       if (res.data.success) {
         setLoading(false);
         refetch();
+
+        dispatch(removeSeletedImageAll());
       }
     } catch (err) {
       console.log(err);
