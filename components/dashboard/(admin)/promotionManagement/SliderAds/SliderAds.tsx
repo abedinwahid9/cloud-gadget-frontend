@@ -12,7 +12,7 @@ import {
 } from "react-hook-form";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface SliderItem {
   image: string;
@@ -30,7 +30,6 @@ const SliderAds = () => {
       sliders: [{ image: "", url: "", caption: "" }], // 👈 always one by default
     },
   });
-
   const {
     control,
     register,
@@ -39,11 +38,11 @@ const SliderAds = () => {
     reset,
   } = methods;
   const axiosPublic = useAxiosPublic();
-
   const { fields, append, remove } = useFieldArray({
     control,
     name: "sliders",
   });
+  const [loading, setLoading] = useState(false);
 
   // ✅ Fetch data
   const { data, refetch } = useQuery({
@@ -66,10 +65,15 @@ const SliderAds = () => {
   // ✅ Handle submit
   const handleForm = async (formData: SliderAds) => {
     try {
+      setLoading(true);
       const res = await axiosPublic.post("/promotion/sliders", formData, {
         headers: { "Content-Type": "application/json" },
       });
-      console.log(res);
+
+      if (res.data.success) {
+        setLoading(false);
+        refetch();
+      }
     } catch (err) {
       console.log(err);
     }
@@ -176,8 +180,9 @@ const SliderAds = () => {
             />
           )}
           <CustomBtn
-            className="w-full rounded-lg"
-            title="Submit All"
+            disabled={loading}
+            className="w-full rounded-lg "
+            title={loading ? "loading..." : "Submit All"}
             type="submit"
           />
         </div>
