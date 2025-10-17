@@ -67,6 +67,7 @@ const SliderAds = () => {
 
   // ✅ Handle submit
   const handleForm = async (formData: SliderAds) => {
+    console.log("Submitted Data:", formData);
     try {
       setLoading(true);
       const res = await axiosPublic.post("/promotion/sliders", formData, {
@@ -179,7 +180,10 @@ const SliderAds = () => {
           {fields.length < 5 && (
             <CustomBtn
               type="button"
-              handleBtn={() => append({ image: "", url: "", caption: "" })}
+              handleBtn={() => {
+                dispatch(removeSeletedImageAll());
+                append({ image: "", url: "", caption: "" });
+              }}
               className="w-full rounded-lg"
               title=" + Add New Slider"
             />

@@ -79,7 +79,7 @@ const UploadImages: React.FC<UploadImagesProps> = ({
   };
 
   return (
-    <div>
+    <>
       {!image ? (
         <label
           htmlFor={`images-${index}`}
@@ -120,7 +120,7 @@ const UploadImages: React.FC<UploadImagesProps> = ({
         className="hidden"
         onChange={handleFileChange}
       />
-    </div>
+    </>
   );
 };
 

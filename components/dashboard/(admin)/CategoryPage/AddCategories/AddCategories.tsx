@@ -1,9 +1,11 @@
+"use client";
 import React from "react";
 import {
   useForm,
   useFieldArray,
   SubmitHandler,
   FormProvider,
+  Controller,
 } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,6 +14,9 @@ import CustomBtn from "@/components/share/CustomBtn/CustomBtn";
 import { X } from "lucide-react";
 import UploadImages from "@/components/share/UploadImages/UploadImages";
 import { generateSlug } from "@/lib/utils/generateSlug";
+import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { removeSeletedImageAll } from "@/lib/redux/slices/imageSeletedSlices";
 
 // Form type
 type FormValues = {
@@ -19,7 +24,7 @@ type FormValues = {
     value: string;
     label: string;
     slug: string;
-    images?: File[];
+    image: "";
   }[];
 };
 
@@ -28,7 +33,7 @@ export interface Cates {
   value: string;
   label: string;
   slug: string;
-  images?: File[];
+  image: "";
 }
 
 interface AddCategoriesProps {
@@ -38,9 +43,12 @@ interface AddCategoriesProps {
 const AddCategories: React.FC<AddCategoriesProps> = ({ setCategory }) => {
   const methods = useForm<FormValues>({
     defaultValues: {
-      categories: [{ value: "", label: "", slug: "", images: [] }],
+      categories: [{ value: "", label: "", slug: "", image: "" }],
     },
   });
+
+  const axoisPublic = useAxiosPublic();
+  const dispatch = useAppDispatch();
 
   const {
     control,
@@ -48,27 +56,38 @@ const AddCategories: React.FC<AddCategoriesProps> = ({ setCategory }) => {
     handleSubmit,
     formState: { errors },
   } = methods;
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "categories",
   });
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    const filtered = data.categories
-      .map((c) => {
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    try {
+      const filtered = data.categories.map((c) => {
         const val = c.value.trim();
         if (!val) return null;
         return {
           value: val,
           label: val,
           slug: generateSlug(val),
-          images: c.images ?? [],
+          image: c.image,
         };
-      })
-      .filter(Boolean) as Cates[];
-
-    setCategory((prev) => [...prev, ...filtered]);
-    console.log("Final Categories:", filtered);
+      });
+      const categoriesToSubmit = await axoisPublic.post(
+        "/category",
+        { categories: filtered },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      console.log(categoriesToSubmit);
+    } catch (err) {
+      console.log("Error submitting categories:", err);
+    }
+    //   .filter(Boolean) as Cates[];
+    // setCategory((prev) => [...prev, ...filtered]);
+    // console.log("Final Categories:", filtered);
     // reset();
   };
 
@@ -86,10 +105,27 @@ const AddCategories: React.FC<AddCategoriesProps> = ({ setCategory }) => {
             {fields.map((field, index) => (
               <div
                 key={field.id}
-                className="flex gap-2 items-center flex-col border p-2 rounded-md"
+                className="flex gap-2 items-center flex-col border p-2 rounded-md "
               >
                 {/* Upload images for each category */}
-                <UploadImages fieldName="categories" index={index} />
+                <Controller
+                  control={control}
+                  name={`categories.${index}.image`}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <UploadImages
+                      index={index}
+                      limit={1}
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  )}
+                />
+                {errors.categories?.[index]?.image && (
+                  <p className="text-red-500 text-sm mt-1">
+                    Slider image is required.
+                  </p>
+                )}
                 {/* Category Input */}
                 <div className="flex gap-2 items-center w-full">
                   <Input
@@ -121,9 +157,10 @@ const AddCategories: React.FC<AddCategoriesProps> = ({ setCategory }) => {
             {/* Action Buttons */}
             <div className="flex gap-3">
               <CustomBtn
-                handleBtn={() =>
-                  append({ value: "", label: "", slug: "", images: [] })
-                }
+                handleBtn={() => {
+                  dispatch(removeSeletedImageAll());
+                  append({ value: "", label: "", slug: "", image: "" });
+                }}
                 title="Add Category +"
                 className="rounded-md"
                 type="button"
