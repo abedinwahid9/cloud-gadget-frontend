@@ -114,7 +114,7 @@ const UploadImages: React.FC<UploadImagesProps> = ({
       )}
 
       <input
-        accept=".jpg,.jpeg,.png,.gif"
+        accept=".jpg,.jpeg,.png,.gif,.webp"
         type="file"
         id={`images-${index}`}
         className="hidden"

@@ -21,6 +21,7 @@ import {
 
 export interface Categories {
   value: string;
+  id: string;
   label: string;
 }
 
@@ -29,18 +30,24 @@ interface ComboBoxProps {
   categories: Categories[];
   value: string;
   onChange?: (value: string) => void;
+  refetch?: () => void;
 }
 
 const ComboBox: React.FC<ComboBoxProps> = ({
   title,
   categories,
   value,
+  refetch,
   onChange,
 }) => {
   const [open, setOpen] = React.useState(false);
+  console.log(categories);
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover
+      open={open}
+      onOpenChange={() => (setOpen(!open), refetch ? refetch() : null)}
+    >
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -60,10 +67,11 @@ const ComboBox: React.FC<ComboBoxProps> = ({
             <CommandGroup>
               {categories.map((category) => (
                 <CommandItem
-                  key={category.value}
+                  key={category.id}
                   className="text-nav text-base font-semibold data-[selected=true]:text-primary"
-                  value={category.value}
+                  value={category.label}
                   onSelect={(currentValue) => {
+                    console.log(currentValue, category.value);
                     if (onChange) {
                       onChange(currentValue === value ? "" : currentValue);
                     }

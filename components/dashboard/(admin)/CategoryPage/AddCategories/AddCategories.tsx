@@ -54,6 +54,7 @@ const AddCategories: React.FC<AddCategoriesProps> = ({ setCategory }) => {
     control,
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = methods;
 
@@ -81,14 +82,13 @@ const AddCategories: React.FC<AddCategoriesProps> = ({ setCategory }) => {
           headers: { "Content-Type": "application/json" },
         }
       );
-      console.log(categoriesToSubmit);
+      if (categoriesToSubmit.status === 201) {
+        reset({ categories: [{ value: "", label: "", slug: "", image: "" }] });
+        dispatch(removeSeletedImageAll());
+      }
     } catch (err) {
       console.log("Error submitting categories:", err);
     }
-    //   .filter(Boolean) as Cates[];
-    // setCategory((prev) => [...prev, ...filtered]);
-    // console.log("Final Categories:", filtered);
-    // reset();
   };
 
   return (

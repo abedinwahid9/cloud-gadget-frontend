@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import {
   useForm,
@@ -15,6 +14,8 @@ import { X } from "lucide-react";
 import ComboBox from "@/components/share/ComboBox/ComboBox";
 import { Cates } from "../AddCategories/AddCategories"; // shared type
 import { generateSlug } from "@/lib/utils/generateSlug";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 
 // Form data type
 type FormValues = {
@@ -30,7 +31,7 @@ interface AddSubCateProps {
   category: Cates[];
 }
 
-const AddSubCate: React.FC<AddSubCateProps> = ({ category }) => {
+const AddSubCate: React.FC<AddSubCateProps> = () => {
   const {
     control,
     register,
@@ -41,6 +42,15 @@ const AddSubCate: React.FC<AddSubCateProps> = ({ category }) => {
   } = useForm<FormValues>({
     defaultValues: {
       subCategories: [{ category: "", value: "", label: "", slug: "" }],
+    },
+  });
+  const axiosPublic = useAxiosPublic();
+
+  const { data: category = [], refetch } = useQuery({
+    queryKey: ["category"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/category");
+      return res.data.allCategory;
     },
   });
 
@@ -78,6 +88,7 @@ const AddSubCate: React.FC<AddSubCateProps> = ({ category }) => {
                     render={({ field }) => (
                       <ComboBox
                         title="Category"
+                        refetch={refetch}
                         categories={category}
                         value={field.value}
                         onChange={(val) => {

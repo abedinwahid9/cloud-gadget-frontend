@@ -144,7 +144,7 @@ const ModelGallery = () => {
             <p>Drag and drop images, videos, 3D models, and files</p>
             <div className="flex justify-center gap-4 mt-3">
               <input
-                accept=".jpg, .jpeg, .png, .gif"
+                accept=".jpg, .jpeg, .png, .gif,.webp"
                 type="file"
                 multiple
                 id="galleryImages"
