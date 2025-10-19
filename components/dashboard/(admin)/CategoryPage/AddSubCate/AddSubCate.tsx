@@ -29,11 +29,7 @@ type FormValues = {
   }[];
 };
 
-interface AddSubCateProps {
-  category: Cates[];
-}
-
-const AddSubCate: React.FC<AddSubCateProps> = () => {
+const AddSubCate = () => {
   const {
     control,
     register,

@@ -19,34 +19,48 @@ import {
 } from "@/components/ui/table";
 import { toast } from "sonner";
 import Image, { StaticImageData } from "next/image";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 
 interface SubCategory {
   id: string;
-  name: string;
+  label: string;
 }
 
 interface Category {
   id: string;
-  name: string;
-  subCategories: SubCategory[];
+  label: string;
+  subCategory: SubCategory[];
   image?: string | StaticImageData;
 }
 
-interface CategoryTableProps {
-  data: Category[];
-  onEditCategory: (id: string) => void;
-  onDeleteCategory: (id: string) => void;
-  onEditSubCategory: (catId: string, subId: string) => void;
-  onDeleteSubCategory: (catId: string, subId: string) => void;
-}
+// interface CategoryTableProps {
+//   onEditCategory?: (id: string) => void;
+//   onDeleteCategory?: (id: string) => void;
+//   onEditSubCategory?: (catId: string, subId: string) => void;
+//   onDeleteSubCategory?: (catId: string, subId: string) => void;
+// }
 
-const CategoryTable: React.FC<CategoryTableProps> = ({
-  data,
-  onEditCategory,
-  onDeleteCategory,
-  onEditSubCategory,
-  onDeleteSubCategory,
-}) => {
+const CategoryTable = (
+  {
+    // onEditCategory,
+    // onDeleteCategory,
+    // onEditSubCategory,
+    // onDeleteSubCategory,
+  }
+) => {
+  const axiosPublic = useAxiosPublic();
+
+  // fetch data
+  const { data, isLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/category/merge");
+      return res.data.categories;
+    },
+    refetchInterval: 5000,
+  });
+
   // ✅ Confirm toast helper
   const confirmToast = (
     message: string,
@@ -111,18 +125,19 @@ const CategoryTable: React.FC<CategoryTableProps> = ({
       header: "Category",
       cell: ({ row }) => {
         const cat = row.original;
+        console.log(cat);
         return (
           <div className="flex items-center gap-2">
             {cat.image && (
               <Image src={cat.image} width={70} height={30} alt="category" />
             )}
-            <span className="font-medium">{cat.name}</span>
+            <span className="font-medium">{cat.label}</span>
             <div className="flex gap-1">
               <Button
                 size="sm"
                 variant="outline"
                 className="hover:bg-primary"
-                onClick={() => onEditCategory(cat.id)}
+                // onClick={() => onEditCategory(cat.id)}
               >
                 <Edit className="h-4 w-4" />
               </Button>
@@ -130,11 +145,11 @@ const CategoryTable: React.FC<CategoryTableProps> = ({
                 size="sm"
                 variant="outline"
                 className="hover:bg-primary"
-                onClick={() =>
-                  confirmToast("Delete this category?", () =>
-                    onDeleteCategory(cat.id)
-                  )
-                }
+                // onClick={() =>
+                //   confirmToast("Delete this category?", () =>
+                //     onDeleteCategory(cat.id)
+                //   )
+                // }
               >
                 <Trash2 className="h-4 w-4 text-red-500" />
               </Button>
@@ -148,20 +163,21 @@ const CategoryTable: React.FC<CategoryTableProps> = ({
       header: "Sub-Categories",
       cell: ({ row }) => {
         const cat = row.original;
+
         return (
           <div className="flex flex-col gap-1">
-            {cat.subCategories.map((sub) => (
+            {cat.subCategory.map((sub) => (
               <div
                 key={sub.id}
                 className="flex items-center justify-between gap-2 border p-1 rounded-md bg-primary/20"
               >
-                <span>{sub.name}</span>
+                <span>{sub.label}</span>
                 <div className="flex gap-1">
                   <Button
                     size="sm"
                     variant="outline"
                     className="hover:bg-primary"
-                    onClick={() => onEditSubCategory(cat.id, sub.id)}
+                    // onClick={() => onEditSubCategory(cat.id, sub.id)}
                   >
                     <Edit className="h-4 w-4" />
                   </Button>
@@ -169,11 +185,11 @@ const CategoryTable: React.FC<CategoryTableProps> = ({
                     size="sm"
                     variant="outline"
                     className="hover:bg-primary"
-                    onClick={() =>
-                      confirmToast("Delete this sub-category?", () =>
-                        onDeleteSubCategory(cat.id, sub.id)
-                      )
-                    }
+                    // onClick={() =>
+                    //   confirmToast("Delete this sub-category?", () =>
+                    //     onDeleteSubCategory(cat.id, sub.id)
+                    //   )
+                    // }
                   >
                     <Trash2 className="h-4 w-4 text-red-500" />
                   </Button>
@@ -191,7 +207,9 @@ const CategoryTable: React.FC<CategoryTableProps> = ({
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-
+  if (isLoading) {
+    return <p>loading...</p>;
+  }
   return (
     <div className="rounded-md border">
       <Table>
@@ -213,7 +231,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {table?.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow className="text-secondary  dark:text-nav " key={row.id}>
                 {row.getVisibleCells().map((cell) => (

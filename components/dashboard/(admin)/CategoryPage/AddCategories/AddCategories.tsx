@@ -37,11 +37,7 @@ export interface Cates {
   image: "";
 }
 
-interface AddCategoriesProps {
-  setCategory: React.Dispatch<React.SetStateAction<Cates[]>>;
-}
-
-const AddCategories: React.FC<AddCategoriesProps> = ({ setCategory }) => {
+const AddCategories = () => {
   const methods = useForm<FormValues>({
     defaultValues: {
       categories: [{ value: "", label: "", slug: "", image: "" }],
