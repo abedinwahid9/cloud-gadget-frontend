@@ -20,7 +20,7 @@ import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 // Form data type
 type FormValues = {
   subCategories: {
-    category: string;
+    categoryId: string;
     value: string;
     label: string;
     slug: string;
@@ -41,10 +41,14 @@ const AddSubCate: React.FC<AddSubCateProps> = () => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      subCategories: [{ category: "", value: "", label: "", slug: "" }],
+      subCategories: [{ categoryId: "", value: "", label: "", slug: "" }],
     },
   });
   const axiosPublic = useAxiosPublic();
+
+  //  name String
+  //   slug String
+  //   categoryId  String @db.ObjectId
 
   const { data: category = [], refetch } = useQuery({
     queryKey: ["category"],
@@ -59,9 +63,19 @@ const AddSubCate: React.FC<AddSubCateProps> = () => {
     name: "subCategories",
   });
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log("Submitted:", data.subCategories);
-    reset();
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    console.log("Submitted:", data);
+    try {
+      const res = await axiosPublic.post("/sub-category", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(res);
+    } catch (err) {
+      console.log("Error submitting sub-categories:", err);
+    }
+    // reset();
   };
 
   return (
@@ -83,7 +97,7 @@ const AddSubCate: React.FC<AddSubCateProps> = () => {
                 <div className="md:w-1/2 w-full">
                   <Controller
                     control={control}
-                    name={`subCategories.${index}.category`}
+                    name={`subCategories.${index}.categoryId`}
                     rules={{ required: true }}
                     render={({ field }) => (
                       <ComboBox
@@ -92,17 +106,17 @@ const AddSubCate: React.FC<AddSubCateProps> = () => {
                         categories={category}
                         value={field.value}
                         onChange={(val) => {
-                          field.onChange(val);
-                          setValue(`subCategories.${index}.label`, val);
+                          field.onChange(val.id);
+                          setValue(`subCategories.${index}.label`, val.label);
                           setValue(
                             `subCategories.${index}.slug`,
-                            generateSlug(val)
+                            generateSlug(val.label)
                           );
                         }}
                       />
                     )}
                   />
-                  {errors.subCategories && (
+                  {errors.subCategories?.[index]?.categoryId && (
                     <p className="text-red-500 text-sm ">
                       Sub Categories is required.
                     </p>
@@ -150,7 +164,7 @@ const AddSubCate: React.FC<AddSubCateProps> = () => {
           <div className="flex gap-3">
             <CustomBtn
               handleBtn={() =>
-                append({ category: "", value: "", label: "", slug: "" })
+                append({ categoryId: "", value: "", label: "", slug: "" })
               }
               title="Add Sub-Category +"
               type="button"
