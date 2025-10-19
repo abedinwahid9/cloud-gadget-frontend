@@ -17,6 +17,7 @@ import { generateSlug } from "@/lib/utils/generateSlug";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { removeSeletedImageAll } from "@/lib/redux/slices/imageSeletedSlices";
+import ToastCustom from "@/components/share/ToastCustom/ToastCustom";
 
 // Form type
 type FormValues = {
@@ -85,6 +86,7 @@ const AddCategories: React.FC<AddCategoriesProps> = ({ setCategory }) => {
       if (categoriesToSubmit.status === 201) {
         reset({ categories: [{ value: "", label: "", slug: "", image: "" }] });
         dispatch(removeSeletedImageAll());
+        ToastCustom("Category saved");
       }
     } catch (err) {
       console.log("Error submitting categories:", err);

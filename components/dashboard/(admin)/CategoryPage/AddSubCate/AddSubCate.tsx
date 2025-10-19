@@ -16,6 +16,8 @@ import { Cates } from "../AddCategories/AddCategories"; // shared type
 import { generateSlug } from "@/lib/utils/generateSlug";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { toast } from "sonner";
+import ToastCustom from "@/components/share/ToastCustom/ToastCustom";
 
 // Form data type
 type FormValues = {
@@ -46,10 +48,6 @@ const AddSubCate: React.FC<AddSubCateProps> = () => {
   });
   const axiosPublic = useAxiosPublic();
 
-  //  name String
-  //   slug String
-  //   categoryId  String @db.ObjectId
-
   const { data: category = [], refetch } = useQuery({
     queryKey: ["category"],
     queryFn: async () => {
@@ -71,11 +69,14 @@ const AddSubCate: React.FC<AddSubCateProps> = () => {
           "Content-Type": "application/json",
         },
       });
-      console.log(res);
+
+      if (res.status === 201) {
+        ToastCustom("Sub-category saved");
+        reset();
+      }
     } catch (err) {
       console.log("Error submitting sub-categories:", err);
     }
-    // reset();
   };
 
   return (
