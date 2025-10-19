@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import Image, { StaticImageData } from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface SubCategory {
   id: string;
@@ -52,7 +53,7 @@ const CategoryTable = (
   const axiosPublic = useAxiosPublic();
 
   // fetch data
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
       const res = await axiosPublic.get("/category/merge");
@@ -119,13 +120,24 @@ const CategoryTable = (
     );
   };
 
+  // delete sub category
+  const handleDeleteSubCategory = async (id: string) => {
+    try {
+      const res = await axiosPublic.delete(`/sub-category/${id}`);
+      console.log(res);
+      refetch();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const columns: ColumnDef<Category>[] = [
     {
       accessorKey: "name",
       header: "Category",
       cell: ({ row }) => {
         const cat = row.original;
-        console.log(cat);
+
         return (
           <div className="flex items-center gap-2">
             {cat.image && (
@@ -181,15 +193,16 @@ const CategoryTable = (
                   >
                     <Edit className="h-4 w-4" />
                   </Button>
+
                   <Button
                     size="sm"
                     variant="outline"
                     className="hover:bg-primary"
-                    // onClick={() =>
-                    //   confirmToast("Delete this sub-category?", () =>
-                    //     onDeleteSubCategory(cat.id, sub.id)
-                    //   )
-                    // }
+                    onClick={() =>
+                      confirmToast(`Delete ${sub.label} sub-category?`, () =>
+                        handleDeleteSubCategory(sub.id)
+                      )
+                    }
                   >
                     <Trash2 className="h-4 w-4 text-red-500" />
                   </Button>
@@ -208,7 +221,19 @@ const CategoryTable = (
     getCoreRowModel: getCoreRowModel(),
   });
   if (isLoading) {
-    return <p>loading...</p>;
+    return (
+      <div className=" space-y-2 ">
+        <Skeleton className="h-12 w-full bg-primary/20 " />
+        {Array.from({ length: 4 }).map((_, i) => {
+          return (
+            <div key={i} className="gap-2 flex">
+              <Skeleton className="h-16 w-1/2 bg-primary/20" />
+              <Skeleton className="h-16 w-1/2 bg-primary/20" />
+            </div>
+          );
+        })}
+      </div>
+    );
   }
   return (
     <div className="rounded-md border">
