@@ -22,6 +22,7 @@ import Image, { StaticImageData } from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { Skeleton } from "@/components/ui/skeleton";
+import ConfirmToast from "../ToastCustom/ConfirmToast";
 
 interface SubCategory {
   id: string;
@@ -63,68 +64,78 @@ const CategoryTable = (
   });
 
   // ✅ Confirm toast helper
-  const confirmToast = (
-    message: string,
-    onConfirm: () => void,
-    onCancel?: () => void
-  ) => {
-    toast.custom(
-      (id) => (
-        <div className="bg-white text-gray-900 rounded-lg shadow-lg p-4 w-[320px] flex flex-col gap-3 border">
-          <p className="font-semibold">{message}</p>
-          <div className="flex justify-end gap-2">
-            <button
-              onClick={() => {
-                toast.dismiss(id);
-                onCancel?.();
-                toast("Cancelled ❌", {
-                  position: "top-center",
-                  style: {
-                    backgroundColor: "#aacec8",
-                    color: "#004030",
-                  },
-                  action: {
-                    label: "Undo",
-                    onClick: () => console.log("Undo"),
-                  },
-                });
-              }}
-              className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-300 text-sm"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={() => {
-                toast.dismiss(id);
-                onConfirm();
-                toast.success("Deleted ✅", {
-                  position: "top-center",
-                  style: {
-                    backgroundColor: "#aacec8",
-                    color: "#004030",
-                  },
-                  action: {
-                    label: "Undo",
-                    onClick: () => console.log("Undo"),
-                  },
-                });
-              }}
-              className="px-3 py-1 rounded-md bg-red-600 text-white hover:bg-red-500 text-sm"
-            >
-              Confirm
-            </button>
-          </div>
-        </div>
-      ),
-      { position: "top-center" }
-    );
+  // const confirmToast = (
+  //   message: string,
+  //   onConfirm: () => void,
+  //   onCancel?: () => void
+  // ) => {
+  //   toast.custom(
+  //     (id) => (
+  //       <div className="bg-white text-gray-900 rounded-lg shadow-lg p-4 w-[320px] flex flex-col gap-3 border">
+  //         <p className="font-semibold">{message}</p>
+  //         <div className="flex justify-end gap-2">
+  //           <button
+  //             onClick={() => {
+  //               toast.dismiss(id);
+  //               onCancel?.();
+  //               toast("Cancelled ❌", {
+  //                 position: "top-center",
+  //                 style: {
+  //                   backgroundColor: "#aacec8",
+  //                   color: "#004030",
+  //                 },
+  //                 action: {
+  //                   label: "Undo",
+  //                   onClick: () => console.log("Undo"),
+  //                 },
+  //               });
+  //             }}
+  //             className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-300 text-sm"
+  //           >
+  //             Cancel
+  //           </button>
+  //           <button
+  //             onClick={() => {
+  //               toast.dismiss(id);
+  //               onConfirm();
+  //               toast.success("Deleted ✅", {
+  //                 position: "top-center",
+  //                 style: {
+  //                   backgroundColor: "#aacec8",
+  //                   color: "#004030",
+  //                 },
+  //                 action: {
+  //                   label: "Undo",
+  //                   onClick: () => console.log("Undo"),
+  //                 },
+  //               });
+  //             }}
+  //             className="px-3 py-1 rounded-md bg-red-600 text-white hover:bg-red-500 text-sm"
+  //           >
+  //             Confirm
+  //           </button>
+  //         </div>
+  //       </div>
+  //     ),
+  //     { position: "top-center" }
+  //   );
+  // };
+
+  // delete category
+  const handleDeleteCategory = async (id: string) => {
+    try {
+      const res = await axiosPublic.delete(`/category/${id}`);
+      refetch();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // delete sub category
   const handleDeleteSubCategory = async (id: string) => {
     try {
       const res = await axiosPublic.delete(`/sub-category/${id}`);
-      console.log(res);
+
       refetch();
     } catch (error) {
       console.log(error);
@@ -140,9 +151,17 @@ const CategoryTable = (
 
         return (
           <div className="flex items-center gap-2">
-            {cat.image && (
-              <Image src={cat.image} width={70} height={30} alt="category" />
-            )}
+            <div className="w-20 h-16">
+              {cat.image && (
+                <Image
+                  className="object-contain w-full h-full"
+                  src={cat.image}
+                  width={500}
+                  height={500}
+                  alt="category"
+                />
+              )}
+            </div>
             <span className="font-medium">{cat.label}</span>
             <div className="flex gap-1">
               <Button
@@ -157,11 +176,11 @@ const CategoryTable = (
                 size="sm"
                 variant="outline"
                 className="hover:bg-primary"
-                // onClick={() =>
-                //   confirmToast("Delete this category?", () =>
-                //     onDeleteCategory(cat.id)
-                //   )
-                // }
+                onClick={() =>
+                  ConfirmToast(`Delete ${cat.label} category?`, () =>
+                    handleDeleteCategory(cat.id)
+                  )
+                }
               >
                 <Trash2 className="h-4 w-4 text-red-500" />
               </Button>
@@ -199,7 +218,7 @@ const CategoryTable = (
                     variant="outline"
                     className="hover:bg-primary"
                     onClick={() =>
-                      confirmToast(`Delete ${sub.label} sub-category?`, () =>
+                      ConfirmToast(`Delete ${sub.label} sub-category?`, () =>
                         handleDeleteSubCategory(sub.id)
                       )
                     }

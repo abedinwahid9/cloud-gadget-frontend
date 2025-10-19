@@ -236,23 +236,23 @@ const EditProduct = () => {
                   <Label className="text-secondary font-bold dark:text-nav underline">
                     Categories
                   </Label>
-                  <ComboBox
+                  {/* <ComboBox
                     title="Categories"
                     categories={categories}
                     value={watch("category") || ""}
                     onChange={(val) => setValue("category", val)}
-                  />
+                  /> */}
                 </div>
                 <div className="grid gap-2">
                   <Label className="text-secondary font-bold dark:text-nav underline">
                     Subcategory (Optional)
                   </Label>
-                  <ComboBox
+                  {/* <ComboBox
                     title="Categories"
                     categories={categories}
                     value={watch("subcategory") || ""}
                     onChange={(val) => setValue("subcategory", val)}
-                  />
+                  /> */}
                 </div>
                 <div className="grid gap-2">
                   <Label
@@ -351,7 +351,7 @@ const EditProduct = () => {
                         "OPTION"}
                       S
                     </Label>
-                    <ComboBox
+                    {/* <ComboBox
                       title="variants"
                       categories={filterData()}
                       value={watch(`variants.${index}.name`) || ""}
@@ -359,7 +359,7 @@ const EditProduct = () => {
                         setValue(`variants.${index}.name`, val);
                         setValue(`variants.${index}.options`, []);
                       }}
-                    />
+                    /> */}
                   </div>
 
                   <div className="grid gap-2">

@@ -22,6 +22,7 @@ import {
 export interface Categories {
   id: string;
   label: string;
+  value: string;
 }
 
 interface ComboBoxProps {
