@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import {
   useForm,
@@ -15,22 +14,22 @@ import { X } from "lucide-react";
 import ComboBox from "@/components/share/ComboBox/ComboBox";
 import { Cates } from "../AddCategories/AddCategories"; // shared type
 import { generateSlug } from "@/lib/utils/generateSlug";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { toast } from "sonner";
+import ToastCustom from "@/components/share/ToastCustom/ToastCustom";
 
 // Form data type
 type FormValues = {
   subCategories: {
-    category: string;
+    categoryId: string;
     value: string;
     label: string;
     slug: string;
   }[];
 };
 
-interface AddSubCateProps {
-  category: Cates[];
-}
-
-const AddSubCate: React.FC<AddSubCateProps> = ({ category }) => {
+const AddSubCate = () => {
   const {
     control,
     register,
@@ -40,7 +39,16 @@ const AddSubCate: React.FC<AddSubCateProps> = ({ category }) => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      subCategories: [{ category: "", value: "", label: "", slug: "" }],
+      subCategories: [{ categoryId: "", value: "", label: "", slug: "" }],
+    },
+  });
+  const axiosPublic = useAxiosPublic();
+
+  const { data: category = [], refetch } = useQuery({
+    queryKey: ["category"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/category");
+      return res.data.allCategory;
     },
   });
 
@@ -49,9 +57,22 @@ const AddSubCate: React.FC<AddSubCateProps> = ({ category }) => {
     name: "subCategories",
   });
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log("Submitted:", data.subCategories);
-    reset();
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    console.log("Submitted:", data);
+    try {
+      const res = await axiosPublic.post("/sub-category", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (res.status === 201) {
+        ToastCustom("Sub-category saved");
+        reset();
+      }
+    } catch (err) {
+      console.log("Error submitting sub-categories:", err);
+    }
   };
 
   return (
@@ -73,25 +94,26 @@ const AddSubCate: React.FC<AddSubCateProps> = ({ category }) => {
                 <div className="md:w-1/2 w-full">
                   <Controller
                     control={control}
-                    name={`subCategories.${index}.category`}
+                    name={`subCategories.${index}.categoryId`}
                     rules={{ required: true }}
                     render={({ field }) => (
                       <ComboBox
                         title="Category"
+                        refetch={refetch}
                         categories={category}
                         value={field.value}
                         onChange={(val) => {
-                          field.onChange(val);
-                          setValue(`subCategories.${index}.label`, val);
+                          field.onChange(val.id);
+                          setValue(`subCategories.${index}.label`, val.label);
                           setValue(
                             `subCategories.${index}.slug`,
-                            generateSlug(val)
+                            generateSlug(val.label)
                           );
                         }}
                       />
                     )}
                   />
-                  {errors.subCategories && (
+                  {errors.subCategories?.[index]?.categoryId && (
                     <p className="text-red-500 text-sm ">
                       Sub Categories is required.
                     </p>
@@ -139,7 +161,7 @@ const AddSubCate: React.FC<AddSubCateProps> = ({ category }) => {
           <div className="flex gap-3">
             <CustomBtn
               handleBtn={() =>
-                append({ category: "", value: "", label: "", slug: "" })
+                append({ categoryId: "", value: "", label: "", slug: "" })
               }
               title="Add Sub-Category +"
               type="button"

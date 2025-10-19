@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/popover";
 
 export interface Categories {
-  value: string;
+  id: string;
   label: string;
 }
 
@@ -28,27 +28,34 @@ interface ComboBoxProps {
   title: string;
   categories: Categories[];
   value: string;
-  onChange?: (value: string) => void;
+  onChange?: (item: { id: string; label: string }) => void;
+  refetch?: () => void;
 }
 
 const ComboBox: React.FC<ComboBoxProps> = ({
   title,
   categories,
   value,
+  refetch,
   onChange,
 }) => {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover
+      open={open}
+      onOpenChange={() => (setOpen(!open), refetch ? refetch() : null)}
+    >
       <PopoverTrigger asChild>
         <Button
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full bg-transparent justify-between rounded-lg text-primary hover:text-primary"
+          className="w-full bg-transparent justify-between rounded-lg text-primary hover:text-primary capitalize"
         >
-          {value ? value : `Select ${title}...`}
+          {value
+            ? categories.find((cat) => cat.id === value)?.label || "Unknown"
+            : `Select ${title}...`}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -60,12 +67,19 @@ const ComboBox: React.FC<ComboBoxProps> = ({
             <CommandGroup>
               {categories.map((category) => (
                 <CommandItem
-                  key={category.value}
-                  className="text-nav text-base font-semibold data-[selected=true]:text-primary"
-                  value={category.value}
+                  key={category.id}
+                  className="text-nav text-base font-semibold data-[selected=true]:text-primary capitalize"
+                  value={category.id}
                   onSelect={(currentValue) => {
-                    if (onChange) {
-                      onChange(currentValue === value ? "" : currentValue);
+                    const selected = categories.find(
+                      (cat) => cat.id === currentValue
+                    );
+
+                    if (selected && onChange) {
+                      onChange({
+                        id: selected.id,
+                        label: selected.label,
+                      });
                     }
                     setOpen(false);
                   }}
@@ -74,7 +88,7 @@ const ComboBox: React.FC<ComboBoxProps> = ({
                   <Check
                     className={cn(
                       "ml-auto",
-                      value === category.value ? "opacity-100" : "opacity-0"
+                      value === category.id ? "opacity-100" : "opacity-0"
                     )}
                   />
                 </CommandItem>

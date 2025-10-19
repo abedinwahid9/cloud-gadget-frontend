@@ -91,12 +91,10 @@ const cartSlice = createSlice({
       const exists = state.items.find((item) => item.id === action.payload.id);
       if (exists) {
         exists.qnt += action.payload.qnt;
-        ToastCustom({
-          title: `This ${action.payload.id} is already add to cart`,
-        });
+        ToastCustom(`This ${action.payload.id} is already add to cart`);
       } else {
         state.items.push(action.payload);
-        ToastCustom({ title: `This ${action.payload.id} is add to cart` });
+        ToastCustom(`This ${action.payload.id} is add to cart`);
       }
 
       // Update totals
@@ -113,9 +111,7 @@ const cartSlice = createSlice({
       const totals = calculateTotals(state.items);
       state.totalPrice = totals.totalPrice;
       state.totalQuantity = totals.totalQuantity;
-      ToastCustom({
-        title: `This ${action.payload} is deleted`,
-      });
+      ToastCustom(`This ${action.payload} is deleted`);
       saveCart(state);
     },
 
@@ -135,9 +131,7 @@ const cartSlice = createSlice({
       if (item) {
         if (item.qnt <= 1) {
           state.items = state.items.filter((i) => i.id !== action.payload.id);
-          ToastCustom({
-            title: `This ${action.payload.id} is deleted`,
-          });
+          ToastCustom(`This ${action.payload.id} is deleted`);
         } else {
           item.qnt -= 1;
         }
@@ -153,9 +147,7 @@ const cartSlice = createSlice({
       state.items = [];
       state.totalPrice = 0;
       state.totalQuantity = 0;
-      ToastCustom({
-        title: `All products are deleted`,
-      });
+      ToastCustom(`All products are deleted`);
       saveCart(state);
     },
   },
