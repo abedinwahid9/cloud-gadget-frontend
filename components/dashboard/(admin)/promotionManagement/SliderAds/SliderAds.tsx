@@ -29,7 +29,7 @@ interface SliderAds {
 const SliderAds = () => {
   const methods = useForm<SliderAds>({
     defaultValues: {
-      sliders: [{ image: "", url: "", caption: "" }], // 👈 always one by default
+      sliders: [{ image: "", url: "", caption: "" }],
     },
   });
   const {

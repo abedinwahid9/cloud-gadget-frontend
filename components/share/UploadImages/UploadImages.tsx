@@ -44,6 +44,11 @@ const UploadImages: React.FC<UploadImagesProps> = ({
     } else {
       setImage(value);
     }
+    if (imageSelete.length > 0) {
+      setTimeout(() => {
+        dispatch(removeSingleImage(image));
+      }, 1000);
+    }
   }, [value, imageSelete]);
 
   // Handle file upload
