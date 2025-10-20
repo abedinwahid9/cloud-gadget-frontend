@@ -11,6 +11,7 @@ import {
 import CustomBtn from "@/components/share/CustomBtn/CustomBtn";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { removeSeletedImageAll } from "@/lib/redux/slices/imageSeletedSlices";
+import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 
 interface Banner {
   banner: string;
@@ -37,6 +38,7 @@ const Banner = ({ limit, nameIndex }: { limit: number; nameIndex: number }) => {
     },
   });
   const dispatch = useAppDispatch();
+  const axiosPublic = useAxiosPublic();
 
   const { register, handleSubmit, control } = method;
 
@@ -45,8 +47,18 @@ const Banner = ({ limit, nameIndex }: { limit: number; nameIndex: number }) => {
     name: "banners",
   });
 
-  const submitForm = (data: unknown) => {
-    console.log(data);
+  const submitForm = async (data: Banners) => {
+    try {
+      const banner = data;
+      console.log(data);
+
+      //   const res = await axiosPublic.post(`/banner/${nameIndex}`, banner, {
+      //     headers: { "Content-Type": "application/json" },
+      //   });
+      //   console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -57,16 +69,16 @@ const Banner = ({ limit, nameIndex }: { limit: number; nameIndex: number }) => {
             Banner #{nameIndex} (limit: {limit})
           </h3>
           <div className="flex gap-2">
-            {fields.map((_, index) => {
+            {fields.map((field, index) => {
               return (
-                <div key={index} className="w-full space-y-2">
+                <div key={field.id} className="w-full space-y-2">
                   {/* image upload */}
                   <Controller
                     control={control}
                     name={`banners.${index}.image`}
                     render={({ field }) => (
                       <UploadImages
-                        index={1}
+                        index={index}
                         limit={1}
                         value={field.value}
                         onChange={field.onChange}
