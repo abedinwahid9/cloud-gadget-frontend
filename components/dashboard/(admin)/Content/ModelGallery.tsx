@@ -30,7 +30,7 @@ type FileItem = {
   thumbnail: string;
 };
 
-const ModelGallery = () => {
+const ModelGallery = ({ imageIndex }: { imageIndex: string }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useAppDispatch();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
@@ -68,9 +68,7 @@ const ModelGallery = () => {
 
     const images = selectedFiles.map((f: FileItem) => f.thumbnail);
 
-    dispatch(setImageSeleted(images));
-
-    // setGetImage(selectedFiles);
+    dispatch(setImageSeleted({ key: imageIndex, image: images }));
 
     setOpen(false);
   };

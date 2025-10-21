@@ -1,7 +1,7 @@
 "use client";
 import UploadImages from "@/components/share/UploadImages/UploadImages";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Controller,
   FormProvider,
@@ -12,8 +12,17 @@ import CustomBtn from "@/components/share/CustomBtn/CustomBtn";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { removeSeletedImageAll } from "@/lib/redux/slices/imageSeletedSlices";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { useQuery } from "@tanstack/react-query";
 
 interface Banner {
+  _id?: string;
+  banner: string;
+  image: string;
+  url: string;
+  caption: string;
+}
+interface BannerGet {
+  id?: string;
   banner: string;
   image: string;
   url: string;
@@ -40,24 +49,56 @@ const Banner = ({ limit, nameIndex }: { limit: number; nameIndex: number }) => {
   const dispatch = useAppDispatch();
   const axiosPublic = useAxiosPublic();
 
-  const { register, handleSubmit, control } = method;
+  const { data, refetch, isLoading } = useQuery({
+    queryKey: ["banners", nameIndex],
+    queryFn: async () => {
+      const res = await axiosPublic.get(`/banner/${nameIndex}`);
+      return res.data.banners || [];
+    },
+  });
+
+  const { register, handleSubmit, control, reset } = method;
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: "banners",
   });
 
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const formatted = data.map((item: BannerGet) => ({
+        _id: item.id,
+        ...item,
+      }));
+
+      reset({ banners: formatted });
+    }
+  }, [data, reset, nameIndex]);
+
   const submitForm = async (data: Banners) => {
     try {
       const banner = data;
-      console.log(data);
 
-      //   const res = await axiosPublic.post(`/banner/${nameIndex}`, banner, {
-      //     headers: { "Content-Type": "application/json" },
-      //   });
-      //   console.log(res);
+      const res = await axiosPublic.post(`/banner/${nameIndex}`, banner, {
+        headers: { "Content-Type": "application/json" },
+      });
+      console.log(res);
+      refetch();
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  // banner delete
+  const handleDelete = async (id: unknown, index: number) => {
+    try {
+      const res = await axiosPublic.delete(`/banner/${id}`);
+
+      console.log(res);
+      refetch();
+      remove(index);
+    } catch (err) {
+      console.log("banner delete failed", err);
     }
   };
 
@@ -78,6 +119,7 @@ const Banner = ({ limit, nameIndex }: { limit: number; nameIndex: number }) => {
                     name={`banners.${index}.image`}
                     render={({ field }) => (
                       <UploadImages
+                        imageIndex={`banner-${nameIndex}${index}`}
                         index={index}
                         limit={1}
                         value={field.value}
@@ -116,7 +158,9 @@ const Banner = ({ limit, nameIndex }: { limit: number; nameIndex: number }) => {
                   {fields.length > 1 && (
                     <button
                       type="button"
-                      onClick={() => remove(index)}
+                      onClick={() => {
+                        handleDelete(field._id, index);
+                      }}
                       className=" bg-red-500 text-white px-2 py-1  text-xs rounded-md hover:bg-red-600"
                     >
                       ✖ Remove

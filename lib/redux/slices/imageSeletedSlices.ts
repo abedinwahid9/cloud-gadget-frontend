@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // ✅ Define the state type
+
 interface ImageSelectedState {
-  imageSelected: string[];
+  imageSelected: Record<string, string>;
 }
 
 // ✅ Initial state
 const initialState: ImageSelectedState = {
-  imageSelected: [],
+  imageSelected: {},
 };
 
 // ✅ Create slice
@@ -15,16 +16,18 @@ const imageSelectedSlice = createSlice({
   name: "imageSelected",
   initialState,
   reducers: {
-    setImageSeleted: (state, action: PayloadAction<string[]>) => {
-      state.imageSelected = action.payload;
+    setImageSeleted: (
+      state,
+      action: PayloadAction<{ key: string; image: string }>
+    ) => {
+      const { key, image } = action.payload;
+      state.imageSelected[key] = image;
     },
     removeSeletedImageAll: (state) => {
-      state.imageSelected = [];
+      state.imageSelected = {};
     },
     removeSingleImage: (state, action: PayloadAction<string>) => {
-      state.imageSelected = state.imageSelected.filter(
-        (img) => img !== action.payload
-      );
+      delete state.imageSelected[action.payload];
     },
   },
 });
