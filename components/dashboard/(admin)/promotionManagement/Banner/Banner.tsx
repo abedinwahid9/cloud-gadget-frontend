@@ -66,13 +66,26 @@ const Banner = ({ limit, nameIndex }: { limit: number; nameIndex: number }) => {
   });
 
   useEffect(() => {
-    if (data && data.length > 0) {
-      const formatted = data.map((item: BannerGet) => ({
-        _id: item.id,
-        ...item,
-      }));
-
-      reset({ banners: formatted });
+    if (data) {
+      if (data.length > 0) {
+        const formatted = data.map((item: BannerGet) => ({
+          _id: item.id,
+          ...item,
+        }));
+        reset({ banners: formatted });
+      } else {
+        // No data found — reset form with one empty field
+        reset({
+          banners: [
+            {
+              banner: `banner-${nameIndex}`,
+              image: "",
+              url: "",
+              caption: "",
+            },
+          ],
+        });
+      }
     }
   }, [data, reset, nameIndex]);
 
@@ -93,11 +106,15 @@ const Banner = ({ limit, nameIndex }: { limit: number; nameIndex: number }) => {
   // banner delete
   const handleDelete = async (id: unknown, index: number) => {
     try {
+      if (!id) {
+        remove(index);
+        return;
+      }
       const res = await axiosPublic.delete(`/banner/${id}`);
-
-      console.log(res);
-      refetch();
-      remove(index);
+      if (res.status === 204) {
+        refetch();
+        dispatch(removeSeletedImageAll());
+      }
     } catch (err) {
       console.log("banner delete failed", err);
     }
@@ -191,13 +208,13 @@ const Banner = ({ limit, nameIndex }: { limit: number; nameIndex: number }) => {
                     />
                   </div>
                   {/* Remove */}
-                  {fields.length > 1 && (
+                  {(field._id || fields.length > 1) && (
                     <button
                       type="button"
                       onClick={() => {
                         handleDelete(field._id, index);
                       }}
-                      className=" bg-red-500 text-white px-2 py-1  text-xs rounded-md hover:bg-red-600"
+                      className=" bg-red-500 text-white px-2 py-1  text-xs rounded-md hover:bg-red-600 cursor-pointer"
                     >
                       ✖ Remove
                     </button>
