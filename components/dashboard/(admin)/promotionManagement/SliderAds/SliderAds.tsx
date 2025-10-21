@@ -116,6 +116,7 @@ const SliderAds = () => {
                 render={({ field }) => (
                   <UploadImages
                     index={index}
+                    imageIndex={`slider${index}`}
                     limit={1}
                     value={field.value}
                     onChange={field.onChange}

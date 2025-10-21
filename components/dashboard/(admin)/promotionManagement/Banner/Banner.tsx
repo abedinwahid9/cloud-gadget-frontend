@@ -78,6 +78,7 @@ const Banner = ({ limit, nameIndex }: { limit: number; nameIndex: number }) => {
                     name={`banners.${index}.image`}
                     render={({ field }) => (
                       <UploadImages
+                        imageIndex={`banner-${nameIndex}${index}`}
                         index={index}
                         limit={1}
                         value={field.value}

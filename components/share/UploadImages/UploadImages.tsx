@@ -5,8 +5,12 @@ import FormImage from "@/components/dashboard/(admin)/Components/FormImage";
 import ModelGallery from "@/components/dashboard/(admin)/Content/ModelGallery";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { useSelector } from "react-redux";
-import { removeSingleImage } from "@/lib/redux/slices/imageSeletedSlices";
+
 import { useAppDispatch } from "@/lib/redux/hooks";
+import {
+  removeSingleImage,
+  setImageSeleted,
+} from "@/lib/redux/slices/imageSeletedSlices";
 
 interface UploadImagesProps {
   value?: string;
@@ -15,11 +19,12 @@ interface UploadImagesProps {
   sizeNote?: string;
   getImage?: { thumbnail: string }[];
   limit?: number;
+  imageIndex: string; // unique key for each image field
 }
 
 interface RootState {
   imageSelete: {
-    imageSelected: string[];
+    imageSelected: Record<string, string>;
   };
 }
 
@@ -28,35 +33,34 @@ const UploadImages: React.FC<UploadImagesProps> = ({
   onChange,
   index,
   limit = 1,
+  imageIndex,
 }) => {
   const axiosPublic = useAxiosPublic();
-  const [image, setImage] = useState<string>(value);
-  const imageSelete = useSelector(
-    (state: RootState) => state.imageSelete.imageSelected
-  );
   const dispatch = useAppDispatch();
 
-  // Keep local state in sync with form value
+  // ✅ Get only the image that belongs to this specific imageIndex
+  const selectedImage = useSelector(
+    (state: RootState) => state.imageSelete.imageSelected[imageIndex]
+  );
+
+  const [image, setImage] = useState<string>(value);
+
+  // ✅ Sync Redux and local state properly
   useEffect(() => {
-    if (!value && imageSelete.length > 0) {
-      setImage(imageSelete[0]);
-      onChange?.(imageSelete[0]);
-    } else {
+    if (selectedImage && selectedImage !== image) {
+      setImage(selectedImage[0]);
+      onChange?.(selectedImage[0]);
+    } else if (value && value !== image) {
       setImage(value);
     }
-    if (imageSelete.length > 0) {
-      setTimeout(() => {
-        dispatch(removeSingleImage(image));
-      }, 1000);
-    }
-  }, [value, imageSelete]);
+  }, [selectedImage, value]);
 
-  // Handle file upload
+  // ✅ Handle file upload
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
+    if (!e.target.files?.length) return;
 
     const formData = new FormData();
-    formData.append("files", e.target.files[0]); // single file only
+    formData.append("files", e.target.files[0]);
 
     try {
       const upload = await axiosPublic.post("/upload/file", formData, {
@@ -67,6 +71,7 @@ const UploadImages: React.FC<UploadImagesProps> = ({
       if (uploaded) {
         setImage(uploaded);
         onChange?.(uploaded);
+        dispatch(setImageSeleted({ key: imageIndex, image: uploaded }));
       }
     } catch (error) {
       console.error("Upload error:", error);
@@ -75,12 +80,11 @@ const UploadImages: React.FC<UploadImagesProps> = ({
     e.target.value = "";
   };
 
+  // ✅ Handle delete
   const handleDelete = () => {
-    if (imageSelete.length > 0) {
-      dispatch(removeSingleImage(image));
-    }
     setImage("");
     onChange?.("");
+    dispatch(removeSingleImage(imageIndex));
   };
 
   return (
@@ -97,7 +101,7 @@ const UploadImages: React.FC<UploadImagesProps> = ({
                 Upload new
               </span>
               <span className="text-xs">
-                <ModelGallery />
+                <ModelGallery imageIndex={imageIndex} />
               </span>
             </div>
             <p className="text-xs">Accepts a single image</p>
