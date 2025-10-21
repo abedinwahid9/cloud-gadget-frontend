@@ -112,6 +112,7 @@ const AddCategories = () => {
                   rules={{ required: true }}
                   render={({ field }) => (
                     <UploadImages
+                      imageIndex={`category-${index}`}
                       index={index}
                       limit={1}
                       value={field.value}

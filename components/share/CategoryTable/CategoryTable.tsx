@@ -17,7 +17,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { toast } from "sonner";
 import Image, { StaticImageData } from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
@@ -36,21 +35,7 @@ interface Category {
   image?: string | StaticImageData;
 }
 
-// interface CategoryTableProps {
-//   onEditCategory?: (id: string) => void;
-//   onDeleteCategory?: (id: string) => void;
-//   onEditSubCategory?: (catId: string, subId: string) => void;
-//   onDeleteSubCategory?: (catId: string, subId: string) => void;
-// }
-
-const CategoryTable = (
-  {
-    // onEditCategory,
-    // onDeleteCategory,
-    // onEditSubCategory,
-    // onDeleteSubCategory,
-  }
-) => {
+const CategoryTable = () => {
   const axiosPublic = useAxiosPublic();
 
   // fetch data
@@ -241,13 +226,32 @@ const CategoryTable = (
   });
   if (isLoading) {
     return (
-      <div className=" space-y-2 ">
-        <Skeleton className="h-12 w-full bg-primary/20 " />
-        {Array.from({ length: 4 }).map((_, i) => {
+      <div className=" space-y-2 bg-primary/5 p-2 ">
+        <Skeleton className="h-10 rounded-s-sm w-full bg-primary/20 flex items-center ">
+          <div className="w-1/2 px-2">
+            <Skeleton className="h-6 w-1/2 bg-primary/20 rounded-md" />
+          </div>
+          <div className="w-1/2 px-5">
+            <Skeleton className="h-6 w-1/2 bg-primary/20 rounded-md" />
+          </div>
+        </Skeleton>
+
+        {Array.from({ length: 8 }).map((_, i) => {
           return (
             <div key={i} className="gap-2 flex">
-              <Skeleton className="h-16 w-1/2 bg-primary/20" />
-              <Skeleton className="h-16 w-1/2 bg-primary/20" />
+              <Skeleton className="h-16 w-1/2 bg-primary/20 px-2 flex items-center gap-2">
+                <Skeleton className="h-12 w-20 bg-primary/20 rounded-md" />
+                <Skeleton className="h-6 w-20 bg-primary/20 rounded-md" />
+                <Skeleton className="h-9 w-9 bg-primary/20 rounded-md" />
+                <Skeleton className="h-9 w-9 bg-primary/20 rounded-md" />
+              </Skeleton>
+              <Skeleton className="h-16 w-1/2 bg-primary/20 px-2 flex items-center gap-2 justify-between">
+                <Skeleton className="h-6 w-20 bg-primary/20 rounded-md" />
+                <div className="flex gap-2">
+                  <Skeleton className="h-9 w-9 bg-primary/20 rounded-md" />
+                  <Skeleton className="h-9 w-9 bg-primary/20 rounded-md" />
+                </div>
+              </Skeleton>
             </div>
           );
         })}
@@ -255,9 +259,9 @@ const CategoryTable = (
     );
   }
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border p-2">
       <Table>
-        <TableHeader className="bg-primary/20">
+        <TableHeader className="bg-primary/20 ">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (

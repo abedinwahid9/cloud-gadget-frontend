@@ -13,6 +13,7 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { removeSeletedImageAll } from "@/lib/redux/slices/imageSeletedSlices";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Banner {
   _id?: string;
@@ -101,6 +102,41 @@ const Banner = ({ limit, nameIndex }: { limit: number; nameIndex: number }) => {
       console.log("banner delete failed", err);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="p-6 bg-primary/10 rounded-xl space-y-6 animate-pulse">
+        {/* One slider card placeholder */}
+        <div className="bg-dark/80 border border-primary/30 rounded-lg p-5 space-y-5">
+          {/* Slider title */}
+          <Skeleton className="h-5 w-24 bg-primary/20 rounded-md" />
+
+          {/* Image Upload Placeholder */}
+          <div>
+            <Skeleton className="h-40 w-full bg-primary/20 rounded-lg" />
+          </div>
+
+          {/* Caption field */}
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-20 bg-primary/20 rounded-md" />
+            <Skeleton className="h-10 w-full bg-primary/20 rounded-md" />
+          </div>
+
+          {/* URL field */}
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-16 bg-primary/20 rounded-md" />
+            <Skeleton className="h-10 w-full bg-primary/20 rounded-md" />
+          </div>
+        </div>
+
+        {/* Footer buttons */}
+        <div className="flex gap-3">
+          <Skeleton className="h-12 w-full bg-primary/20 rounded-lg" />
+          <Skeleton className="h-12 w-full bg-primary/20 rounded-lg" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <FormProvider {...method}>

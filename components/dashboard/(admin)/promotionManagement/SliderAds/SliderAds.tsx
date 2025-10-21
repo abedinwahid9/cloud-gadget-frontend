@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { removeSeletedImageAll } from "@/lib/redux/slices/imageSeletedSlices";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface SliderItem {
   image: string;
@@ -48,7 +49,7 @@ const SliderAds = () => {
   const dispatch = useAppDispatch();
 
   // ✅ Fetch data
-  const { data, refetch } = useQuery({
+  const { data, refetch, isLoading } = useQuery({
     queryKey: ["sliders"],
     queryFn: async () => {
       const res = await axiosPublic.get("/promotion/sliders");
@@ -84,6 +85,46 @@ const SliderAds = () => {
       console.log(err);
     }
   };
+
+  if (!isLoading) {
+    return (
+      <div className="p-6 bg-primary/10 rounded-xl space-y-6 animate-pulse">
+        {/* Header */}
+        <div className="border-b border-primary/30 pb-3">
+          <Skeleton className="h-6 w-40 bg-primary/20 rounded-md" />
+        </div>
+
+        {/* One slider card placeholder */}
+        <div className="bg-dark/80 border border-primary/30 rounded-lg p-5 space-y-5">
+          {/* Slider title */}
+          <Skeleton className="h-5 w-24 bg-primary/20 rounded-md" />
+
+          {/* Image Upload Placeholder */}
+          <div>
+            <Skeleton className="h-52 w-full bg-primary/20 rounded-lg" />
+          </div>
+
+          {/* Caption field */}
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-20 bg-primary/20 rounded-md" />
+            <Skeleton className="h-10 w-full bg-primary/20 rounded-md" />
+          </div>
+
+          {/* URL field */}
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-16 bg-primary/20 rounded-md" />
+            <Skeleton className="h-10 w-full bg-primary/20 rounded-md" />
+          </div>
+        </div>
+
+        {/* Footer buttons */}
+        <div className="flex gap-3">
+          <Skeleton className="h-12 w-full bg-primary/20 rounded-lg" />
+          <Skeleton className="h-12 w-full bg-primary/20 rounded-lg" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <FormProvider {...methods}>
