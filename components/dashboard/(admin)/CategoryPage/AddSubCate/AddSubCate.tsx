@@ -101,18 +101,18 @@ const AddSubCate = () => {
                         title="Category"
                         refetch={refetch}
                         categories={category}
-                        value={field.value}
+                        value={
+                          category.find(
+                            (cat: { id: string }) => cat.id === field.value
+                          )?.label || ""
+                        }
                         onChange={(val) => {
                           field.onChange(val.id);
-                          setValue(`subCategories.${index}.label`, val.label);
-                          setValue(
-                            `subCategories.${index}.slug`,
-                            generateSlug(val.label)
-                          );
                         }}
                       />
                     )}
                   />
+
                   {errors.subCategories?.[index]?.categoryId && (
                     <p className="text-red-500 text-sm ">
                       Sub Categories is required.
@@ -135,7 +135,7 @@ const AddSubCate = () => {
                       },
                     })}
                     placeholder="Add Sub-Category"
-                    className="text-secondary placeholder:text-primary"
+                    className="text-primary placeholder:text-primary"
                   />
                   {errors.subCategories?.[index]?.value && (
                     <p className="text-red-500 text-sm ">

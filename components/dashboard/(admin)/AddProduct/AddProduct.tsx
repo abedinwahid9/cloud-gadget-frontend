@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, useFieldArray, FormProvider } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Title from "@/components/share/Title/Title";
 import ComboBox from "@/components/share/ComboBox/ComboBox";
@@ -15,6 +14,10 @@ import InputColor from "../Components/InputColor";
 import FormImage from "../Components/FormImage";
 import InputText from "../Components/InputText";
 import DetailsEditor from "@/components/DetailsEditor/DetailsEditor";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import ModelGallery from "../Content/ModelGallery";
+import { useSelector } from "react-redux";
 
 type Variant = { name: string; options: string | string[] };
 
@@ -30,10 +33,30 @@ type FormValues = {
   variants: Variant[];
 };
 
-type Variants = { category: string; value: string; label: string };
+interface RootState {
+  imageSelete: {
+    imageSelected: {
+      addproduct: [];
+    };
+  };
+}
+
+type Variants = { id: string; category: string; value: string; label: string };
 
 const AddProductPage = () => {
-  const [images, setImages] = useState<File[]>([]);
+  const [images, setImages] = useState<string[]>([]);
+
+  // ✅ Get only the image that belongs to this specific imageIndex
+  const selectedImages = useSelector(
+    (state: RootState) => state.imageSelete.imageSelected.addproduct
+  );
+
+  // ✅ Sync Redux with local state
+  useEffect(() => {
+    if (Array.isArray(selectedImages)) {
+      setImages(selectedImages);
+    }
+  }, [selectedImages]);
 
   const methods = useForm<FormValues>({
     defaultValues: {
@@ -58,52 +81,46 @@ const AddProductPage = () => {
     formState: { errors },
   } = methods;
 
+  const axiosPublic = useAxiosPublic();
+
   const variantOptions: Variants[] = [
-    { category: "color", value: "color", label: "color" },
-    { category: "size", value: "size", label: "size" },
-    { category: "material", value: "material", label: "material" },
+    { id: "1", category: "color", value: "color", label: "color" },
+    { id: "2", category: "size", value: "size", label: "size" },
+    { id: "3", category: "material", value: "material", label: "material" },
   ];
+
+  const filterData = () => {
+    const variantsValue = watch("variants").map((v) => v.name);
+
+    const filter = variantOptions.filter(
+      (v) => !variantsValue.includes(v.label)
+    );
+
+    return filter;
+  };
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: "variants",
   });
 
-  const filterData = () => {
-    const variantsValue = watch("variants").map((v) => v.name);
-    const filter = variantOptions.filter(
-      (v) => !variantsValue.includes(v.value)
-    );
-
-    return filter;
-  };
+  const { data: category } = useQuery({
+    queryKey: ["addcategory"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/category");
+      return res.data.allCategory;
+    },
+  });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(images);
-    if (e.target.files) {
-      setImages([...images, ...Array.from(e.target.files)]);
-    }
+    // if (e.target.files) {
+    //   setImages([...images, ...Array.from(e.target.files)]);
+    // }
   };
 
   const onSubmit = (data: FormValues) => {
     console.log("Submitting product:", { ...data, images, status: true });
   };
-
-  const categories = [
-    { category: "Electronics", value: "electronics", label: "Electronics" },
-    {
-      category: "Apparel & Accessories",
-      value: "apparel-accessories",
-      label: "Apparel & Accessories",
-    },
-    { category: "Home & Garden", value: "home-garden", label: "Home & Garden" },
-    {
-      category: "Health & Beauty",
-      value: "health-beauty",
-      label: "Health & Beauty",
-    },
-    { category: "Books & Media", value: "books-media", label: "Books & Media" },
-  ];
 
   // preview image delete
   const handleDelete = (id: number) => {
@@ -152,17 +169,21 @@ const AddProductPage = () => {
                   >
                     Product Images
                   </Label>
-                  {images.length === 0 ? (
+                  {images?.length === 0 ? (
                     <label
                       htmlFor="images"
                       className="flex h-64 w-full cursor-pointer items-center justify-center rounded-md border border-dashed border-gray-400 text-sm text-gray-500"
                     >
                       <div className="flex flex-col items-center space-y-1">
-                        <span className="rounded text-secondary px-2 py-1 text-md flex flex-col items-center font-medium">
-                          <IoIosCloudUpload className="w-7 h-7" />
-                          Upload new
-                        </span>
-                        <span className="text-xs">Select existing</span>
+                        <div className="flex gap-3">
+                          <span className="rounded text-secondary px-2 py-1 text-md flex flex-col items-center font-medium dark:text-primary">
+                            <IoIosCloudUpload className="w-5 h-5" />
+                            Upload new
+                          </span>
+                          <span className="text-xs">
+                            <ModelGallery imageIndex={`addproduct`} />
+                          </span>
+                        </div>
                         <p className="text-xs">Accepts images</p>
                       </div>
                     </label>
@@ -170,14 +191,14 @@ const AddProductPage = () => {
                     <div className="grid gap-2 h-64 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 auto-rows-fr">
                       <div className="md:col-span-2 col-span-1 row-span-2">
                         <FormImage
-                          src={URL.createObjectURL(images[0])}
+                          src={images?.[0]}
                           onDelete={() => handleDelete(0)}
                         />
                       </div>
-                      {images.slice(1).map((file, idx) => (
+                      {images?.slice(1).map((file, idx) => (
                         <FormImage
                           key={idx}
-                          src={URL.createObjectURL(file)}
+                          src={file}
                           onDelete={() => handleDelete(idx + 1)}
                         />
                       ))}
@@ -227,23 +248,23 @@ const AddProductPage = () => {
                   <Label className="text-secondary font-bold dark:text-nav underline">
                     Categories
                   </Label>
-                  {/* <ComboBox
+                  <ComboBox
                     title="Categories"
-                    categories={categories}
+                    categories={category || []}
                     value={watch("category") || ""}
-                    onChange={(val) => setValue("category", val)}
-                  /> */}
+                    onChange={(val) => setValue("category", val.label)}
+                  />
                 </div>
                 <div className="grid gap-2">
                   <Label className="text-secondary font-bold dark:text-nav underline">
                     Subcategory (Optional)
                   </Label>
-                  {/* <ComboBox
+                  <ComboBox
                     title="Categories"
-                    categories={categories}
+                    categories={category || []}
                     value={watch("subcategory") || ""}
-                    onChange={(val) => setValue("subcategory", val)}
-                  /> */}
+                    onChange={(val) => setValue("subcategory", val.label)}
+                  />
                 </div>
                 <div className="grid gap-2">
                   <Label
@@ -342,22 +363,23 @@ const AddProductPage = () => {
                         "OPTION"}
                       S
                     </Label>
-                    {/* <ComboBox
+                    <ComboBox
                       title="variants"
                       categories={filterData()}
                       value={watch(`variants.${index}.name`) || ""}
                       onChange={(val) => {
-                        setValue(`variants.${index}.name`, val);
+                        setValue(`variants.${index}.name`, val.label);
                         setValue(`variants.${index}.options`, []);
                       }}
-                    /> */}
+                    />
                   </div>
 
                   <div className="grid gap-2">
-                    <Label>
+                    <Label className="uppercase">
+                      selete{" "}
                       {watch(`variants.${index}.name`).toUpperCase() ||
-                        "OPTION"}{" "}
-                      VALUES
+                        "OPTION"}
+                      S values
                     </Label>
                     {watch(`variants.${index}.name`) === "color" ? (
                       <InputColor index={index} />
