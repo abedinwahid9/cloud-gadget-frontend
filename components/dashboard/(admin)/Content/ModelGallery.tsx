@@ -23,6 +23,7 @@ import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { setImageSeleted } from "@/lib/redux/slices/imageSeletedSlices";
+import ToastCustom from "@/components/share/ToastCustom/ToastCustom";
 
 type FileItem = {
   id: number;
@@ -58,7 +59,10 @@ const ModelGallery = ({ imageIndex }: { imageIndex: string }) => {
 
   const deleteFile = async (fileName: string) => {
     const res = await axiosPublic.delete(`/upload/${fileName}`);
-    refetch();
+    if (res.status === 200) {
+      ToastCustom(` ${fileName.slice(0, 10)} is delete done`);
+      refetch();
+    }
   };
 
   const handleDone = () => {
@@ -89,8 +93,9 @@ const ModelGallery = ({ imageIndex }: { imageIndex: string }) => {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log(upload.data);
-        refetch();
+        if (upload.data) {
+          refetch();
+        }
       } catch (error) {
         console.error("Upload error:", error);
       }

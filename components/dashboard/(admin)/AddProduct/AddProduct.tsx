@@ -46,7 +46,6 @@ type Variants = { id: string; category: string; value: string; label: string };
 const AddProductPage = () => {
   const [images, setImages] = useState<string[]>([]);
 
-  // ✅ Get only the image that belongs to this specific imageIndex
   const selectedImages = useSelector(
     (state: RootState) => state.imageSelete.imageSelected.addproduct
   );
@@ -105,17 +104,44 @@ const AddProductPage = () => {
   });
 
   const { data: category } = useQuery({
-    queryKey: ["addcategory"],
+    queryKey: ["addCategory"],
     queryFn: async () => {
       const res = await axiosPublic.get("/category");
       return res.data.allCategory;
     },
   });
+  const { data: subCategory } = useQuery({
+    queryKey: ["sub-Category"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/sub-category");
+      return res.data.sub_cate;
+    },
+  });
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // if (e.target.files) {
-    //   setImages([...images, ...Array.from(e.target.files)]);
-    // }
+  console.log(subCategory);
+
+  // ✅ Handle file upload
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files?.length) return;
+
+    const formData = new FormData();
+    formData.append("files", e.target.files[0]);
+
+    try {
+      const upload = await axiosPublic.post("/upload/file", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      const uploaded = upload.data?.files?.[0]?.path;
+
+      if (uploaded) {
+        setImages((prev) => [...prev, uploaded]);
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+    }
+
+    e.target.value = "";
   };
 
   const onSubmit = (data: FormValues) => {
@@ -261,7 +287,7 @@ const AddProductPage = () => {
                   </Label>
                   <ComboBox
                     title="Categories"
-                    categories={category || []}
+                    categories={subCategory || []}
                     value={watch("subcategory") || ""}
                     onChange={(val) => setValue("subcategory", val.label)}
                   />
