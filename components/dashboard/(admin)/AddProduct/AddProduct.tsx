@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useForm, useFieldArray, FormProvider } from "react-hook-form";
+import {
+  useForm,
+  useFieldArray,
+  FormProvider,
+  Controller,
+} from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -18,6 +23,8 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import ModelGallery from "../Content/ModelGallery";
 import { useSelector } from "react-redux";
+import ToastCustom from "@/components/share/ToastCustom/ToastCustom";
+import { Spinner } from "@/components/ui/spinner";
 
 type Variant = { name: string; options: string | string[] };
 
@@ -29,6 +36,7 @@ type FormValues = {
   stock_quantity: number | string;
   tags: string;
   category: string;
+  collections: string;
   sub_category?: string | undefined;
   variants: Variant[];
 };
@@ -41,10 +49,11 @@ interface RootState {
   };
 }
 
-type Variants = { id: string; category: string; value: string; label: string };
+type Variants = { id: string; category?: string; value: string; label: string };
 
 const AddProductPage = () => {
   const [images, setImages] = useState<string[]>([]);
+  const [saveLoad, setSaveLoad] = useState<boolean>(false);
 
   const selectedImages = useSelector(
     (state: RootState) => state.imageSelete.imageSelected.addproduct
@@ -66,9 +75,11 @@ const AddProductPage = () => {
       stock_quantity: "",
       tags: "",
       category: "",
+      collections: "",
       sub_category: "",
       variants: [{ name: "", options: [] }],
     },
+    mode: "onBlur",
   });
 
   const {
@@ -77,6 +88,7 @@ const AddProductPage = () => {
     control,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = methods;
 
@@ -86,6 +98,12 @@ const AddProductPage = () => {
     { id: "1", category: "color", value: "color", label: "color" },
     { id: "2", category: "size", value: "size", label: "size" },
     { id: "3", category: "material", value: "material", label: "material" },
+  ];
+  const collections = [
+    { id: "1", slug: "featured_products", label: "featured products" },
+    { id: "2", slug: "new_arrivals", label: "new arrivals" },
+    { id: "3", slug: "best_sellers", label: "best sellers" },
+    { id: "4", slug: "trending", label: "trending" },
   ];
 
   const filterData = () => {
@@ -144,6 +162,7 @@ const AddProductPage = () => {
 
   const onSubmit = async (data: FormValues) => {
     try {
+      // setSaveLoad(true);
       const product = {
         ...data,
         price: Number(data.price) || 0,
@@ -154,11 +173,29 @@ const AddProductPage = () => {
         status: true,
       };
       console.log(product);
+
       const res = await axiosPublic.post("/product", product, {
         headers: { "Content-Type": "application/json" },
       });
 
-      console.log(res);
+      if (res.status === 201) {
+        console.log(res);
+        ToastCustom(`${data.title} product has saved`);
+        setSaveLoad(false);
+        reset({
+          title: "",
+          description: "",
+          price: "",
+          discount: "",
+          stock_quantity: "",
+          tags: "",
+          category: "",
+          collections: "",
+          sub_category: "",
+          variants: [{ name: "", options: [] }],
+        });
+        setImages([]);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -270,10 +307,21 @@ const AddProductPage = () => {
                   >
                     Product Description
                   </Label>
-                  <DetailsEditor />
+                  <Controller
+                    control={control}
+                    name="description"
+                    rules={{ required: true }}
+                    render={({ field }) => (
+                      <DetailsEditor
+                        value={field.value || ""}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+
                   {errors.description && (
                     <p className="text-red-500 text-sm">
-                      {errors.description.message}
+                      Description is required.
                     </p>
                   )}
                 </div>
@@ -293,8 +341,12 @@ const AddProductPage = () => {
                   <ComboBox
                     title="Categories"
                     categories={category || []}
-                    value={watch("category") || ""}
-                    onChange={(val) => setValue("category", val.label)}
+                    value={
+                      category?.find(
+                        (c: { slug: string }) => c.slug === watch("category")
+                      )?.label || ""
+                    }
+                    onChange={(val) => setValue("category", val.slug ?? "")}
                   />
                 </div>
                 <div className="grid gap-2">
@@ -304,8 +356,28 @@ const AddProductPage = () => {
                   <ComboBox
                     title="Categories"
                     categories={subCategory || []}
-                    value={watch("sub_category") || ""}
-                    onChange={(val) => setValue("sub_category", val.label)}
+                    value={
+                      subCategory?.find(
+                        (c: { slug: string }) =>
+                          c.slug === watch("sub_category")
+                      )?.label || ""
+                    }
+                    onChange={(val) => setValue("sub_category", val.slug)}
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label className="text-secondary font-bold dark:text-nav underline">
+                    Collections (Optional)
+                  </Label>
+                  <ComboBox
+                    title="Categories"
+                    categories={collections || []}
+                    value={
+                      collections?.find(
+                        (c: { slug: string }) => c.slug === watch("collections")
+                      )?.label || ""
+                    }
+                    onChange={(val) => setValue("collections", val.slug ?? "")}
                   />
                 </div>
                 <div className="grid gap-2">
@@ -460,9 +532,16 @@ const AddProductPage = () => {
           {/* Submit */}
           <div className="flex justify-end w-full">
             <CustomBtn
-              title="Save Product"
+              disabled={saveLoad}
+              title={
+                saveLoad ? <Spinner className="size-10" /> : "Save Product"
+              }
               type="submit"
-              className="rounded-lg w-full"
+              className={`rounded-lg w-full ${
+                saveLoad
+                  ? "disabled:cursor-not-allowed cursor-not-allowed opacity-35"
+                  : ""
+              }`}
             />
           </div>
         </form>

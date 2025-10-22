@@ -22,14 +22,21 @@ import {
 export interface Categories {
   id: string;
   label: string;
-  value: string;
+  value?: string;
+  slug?: string;
 }
 
 interface ComboBoxProps {
   title: string;
   categories: Categories[];
   value: string;
-  onChange?: (item: { id: string; label: string }) => void;
+
+  onChange?: (item: {
+    id: string;
+    label: string;
+    value?: string | undefined;
+    slug: string | undefined;
+  }) => void;
   refetch?: () => void;
 }
 
@@ -78,6 +85,8 @@ const ComboBox: React.FC<ComboBoxProps> = ({
                       onChange({
                         id: selected.id,
                         label: selected.label,
+                        value: selected.value,
+                        slug: selected.slug,
                       });
                     }
                     setOpen(false);
