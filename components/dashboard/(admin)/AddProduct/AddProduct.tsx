@@ -24,12 +24,12 @@ type Variant = { name: string; options: string | string[] };
 type FormValues = {
   title: string;
   description: string;
-  price: string;
-  discountedPrice?: string;
-  stock: string;
+  price: number | string;
+  discount?: number | undefined | string;
+  stock_quantity: number | string;
   tags: string;
   category: string;
-  subcategory?: string;
+  sub_category?: string | undefined;
   variants: Variant[];
 };
 
@@ -62,11 +62,11 @@ const AddProductPage = () => {
       title: "",
       description: "",
       price: "",
-      discountedPrice: "",
-      stock: "",
+      discount: "",
+      stock_quantity: "",
       tags: "",
       category: "",
-      subcategory: "",
+      sub_category: "",
       variants: [{ name: "", options: [] }],
     },
   });
@@ -118,8 +118,6 @@ const AddProductPage = () => {
     },
   });
 
-  console.log(subCategory);
-
   // ✅ Handle file upload
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) return;
@@ -144,8 +142,26 @@ const AddProductPage = () => {
     e.target.value = "";
   };
 
-  const onSubmit = (data: FormValues) => {
-    console.log("Submitting product:", { ...data, images, status: true });
+  const onSubmit = async (data: FormValues) => {
+    try {
+      const product = {
+        ...data,
+        price: Number(data.price) || 0,
+        discount: Number(data.discount) || 0,
+        stock_quantity: Number(data.stock_quantity) || 0,
+        images,
+        tags: data.tags.split(","),
+        status: true,
+      };
+      console.log(product);
+      const res = await axiosPublic.post("/product", product, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // preview image delete
@@ -288,8 +304,8 @@ const AddProductPage = () => {
                   <ComboBox
                     title="Categories"
                     categories={subCategory || []}
-                    value={watch("subcategory") || ""}
-                    onChange={(val) => setValue("subcategory", val.label)}
+                    value={watch("sub_category") || ""}
+                    onChange={(val) => setValue("sub_category", val.label)}
                   />
                 </div>
                 <div className="grid gap-2">
@@ -348,7 +364,7 @@ const AddProductPage = () => {
                   step="0.01"
                   className="text-primary"
                   placeholder="0.00"
-                  {...register("discountedPrice")}
+                  {...register("discount")}
                 />
               </div>
               <div className="grid gap-2">
@@ -363,10 +379,14 @@ const AddProductPage = () => {
                   type="number"
                   className="text-primary"
                   placeholder="100"
-                  {...register("stock", { required: "Stock is required" })}
+                  {...register("stock_quantity", {
+                    required: "Stock is required",
+                  })}
                 />
-                {errors.stock && (
-                  <p className="text-red-500 text-sm">{errors.stock.message}</p>
+                {errors.stock_quantity && (
+                  <p className="text-red-500 text-sm">
+                    {errors.stock_quantity.message}
+                  </p>
                 )}
               </div>
             </CardContent>
