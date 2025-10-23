@@ -10,7 +10,7 @@ import style from "./productcard.module.css";
 interface ProductCardProps {
   id: number;
   title: string;
-  images: StaticImageData[] | string[];
+  images: string[];
   price: number;
   oldPrice?: number;
   category?: string;
@@ -50,21 +50,23 @@ const ProductCard: React.FC<ProductCardProps> = ({
       >
         {/* Image 1 */}
         <Image
-          src={typeof images[0] === "string" ? images[0] : images[0].src}
+          src={images[0] || "/placeholder.png"}
           alt={title}
-          width={300}
-          height={300}
-          className="object-contain w-full h-28 sm:h-36 md:h-44 transition-opacity duration-500 ease-in-out group-hover:opacity-0"
+          width={500}
+          height={500}
+          className={`object-contain w-full h-28 sm:h-36 md:h-44 transition-opacity duration-500 ease-in-out ${
+            images.length > 1 && "group-hover:opacity-0"
+          }`}
         />
 
         {/* Image 2 (hover) */}
         {images[1] && (
           <Image
-            src={typeof images[1] === "string" ? images[1] : images[1].src}
+            src={images[1] || "/placeholder.png"}
             alt={title}
-            width={300}
-            height={300}
-            className="object-contain w-full h-28 sm:h-36 md:h-44 absolute top-0 left-0 opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
+            width={500}
+            height={500}
+            className="object-contain w-full h-28 sm:h-36 md:h-44 absolute top-2 left-0 opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
           />
         )}
       </Link>

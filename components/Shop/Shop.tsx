@@ -7,6 +7,17 @@ import { Button } from "../ui/button";
 import { BsSliders } from "react-icons/bs";
 
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+
+export interface Products {
+  id: number | boolean;
+  price: number | boolean;
+  title: string | boolean;
+  images: string[] | boolean;
+  category: string | boolean;
+  discount: number | boolean;
+}
 
 const option = [
   { value: "relevance", label: "Relevance" },
@@ -15,6 +26,25 @@ const option = [
 ];
 
 const Shop = () => {
+  const axiosPublic = useAxiosPublic();
+
+  const query: Products = {
+    id: true,
+    price: true,
+    title: true,
+    images: true,
+    category: true,
+    discount: true,
+  };
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["products1"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/product", { params: query });
+      return res.data.allProduct;
+    },
+  });
+
   return (
     <main className="pb-5 px-1.5">
       <div className="grid grid-cols-12 w-full h-full gap-1">
@@ -57,7 +87,7 @@ const Shop = () => {
             </div>
           </div>
           {/* all card */}
-          <ProductsSection />
+          <ProductsSection data={data} isLoading={isLoading} />
         </div>
       </div>
     </main>
