@@ -1,11 +1,9 @@
 "use client";
 import Options from "@/components/share/Options/Options";
-
 import ProductsSection from "../ProductsSection/ProductsSection";
 import FilterSideBar from "../share/FilterSideBar/FilterSideBar";
 import { Button } from "../ui/button";
 import { BsSliders } from "react-icons/bs";
-
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";

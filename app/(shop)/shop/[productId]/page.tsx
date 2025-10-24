@@ -2,8 +2,8 @@ import ProductPage from "@/components/ProductPage/ProductPage";
 import CustomBreadCrumb from "@/components/share/CustomBreadCrumb/CustomBreadCrumb";
 import React from "react";
 
-const Page = async ({ params }: { params: Promise<{ productId: string }> }) => {
-  const { productId } = await params;
+const Page = async ({ params }: { params: { productId: string } }) => {
+  const { productId } = params;
 
   // Fetch runs on server per request (SSR)
   const res = await fetch(
@@ -20,7 +20,6 @@ const Page = async ({ params }: { params: Promise<{ productId: string }> }) => {
   }
 
   const data = await res.json();
-
   const product = data.productById;
 
   return (
