@@ -10,6 +10,7 @@ import BestCollection from "@/components/BestCollection/BestCollection";
 import FeatureCollection from "@/components/FeatureCollection/FeatureCollection";
 import FeatureHighlights from "@/components/FeatureHighlights/FeatureHighlights";
 import EmailSubscription from "@/components/EmailSubscription/EmailSubscription";
+import Feature from "@/components/share/Feature/Feature";
 // import BrandCarousel from "@/components/share/BrandCarousel/BrandCarousel";
 
 export const metadata: Metadata = {
@@ -27,15 +28,20 @@ export default function Home() {
       <HeroSection />
       <AdsBanner images={images} />
       <Category />
-      <TrendingCollection />
+
+      {/* new_arrivals collection */}
+      <Feature collection="new_arrivals" title="New Arrivals" />
       <div className="md:py-4 py-2">
         <AdsBanner images={images2} />
       </div>
-      <BestCollection />
+
+      {/* trending collection */}
+      <Feature collection="trending_collection" title="Trending collection" />
       <div className="md:py-4 py-2">
         <AdsBanner images={images3} />
       </div>
-      <FeatureCollection />
+      {/* featured collection */}
+      <Feature collection="featured_products" title="featured Collections" />
       <div className="md:py-4 py-2 ">
         <AdsBanner images={images5} />
       </div>

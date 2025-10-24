@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import React from "react";
 
 interface Btn {
-  title: string;
+  title: string | React.ReactNode;
   className?: string;
   handleBtn?: () => void;
   type?: "button" | "submit" | "reset" | undefined;

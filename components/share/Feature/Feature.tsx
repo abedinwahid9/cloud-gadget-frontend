@@ -11,9 +11,45 @@ import ProductCard from "../ProductCard/ProductCard";
 
 import { data } from "@/public/data";
 
-const Feature = ({ title }: { title: string }) => {
+interface Query {
+  id: boolean;
+  price: boolean;
+  title: boolean;
+  images: boolean;
+  category: boolean;
+  discount: boolean;
+}
+
+const Feature = async ({
+  title,
+  collection,
+}: {
+  title: string;
+  collection: string;
+}) => {
   const carouselBtn =
     "border-0 bg-primary/50 text-secondary rounded-full dark:text-nav dark:bg-secondary w-5 md:w-8 h-5 md:h-8 font-semibold hover:bg-primary";
+
+  const query: Query = {
+    id: true,
+    price: true,
+    title: true,
+    images: true,
+    category: true,
+    discount: true,
+  };
+
+  const url = new URLSearchParams(query).toString();
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_LOCAL}/product/${collection}?${url}`,
+    {
+      next: { revalidate: 120 },
+    }
+  );
+
+  const collections = await res.json();
+  console.log(collections);
 
   const products = data;
 

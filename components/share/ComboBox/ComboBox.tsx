@@ -22,14 +22,21 @@ import {
 export interface Categories {
   id: string;
   label: string;
-  value: string;
+  value?: string;
+  slug?: string;
 }
 
 interface ComboBoxProps {
   title: string;
   categories: Categories[];
   value: string;
-  onChange?: (item: { id: string; label: string }) => void;
+
+  onChange?: (item: {
+    id: string;
+    label: string;
+    value?: string | undefined;
+    slug: string | undefined;
+  }) => void;
   refetch?: () => void;
 }
 
@@ -54,9 +61,7 @@ const ComboBox: React.FC<ComboBoxProps> = ({
           aria-expanded={open}
           className="w-full bg-transparent justify-between rounded-lg text-primary hover:text-primary capitalize"
         >
-          {value
-            ? categories.find((cat) => cat.id === value)?.label || "Unknown"
-            : `Select ${title}...`}
+          {value ? value : `Select ${title}...`}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -80,6 +85,8 @@ const ComboBox: React.FC<ComboBoxProps> = ({
                       onChange({
                         id: selected.id,
                         label: selected.label,
+                        value: selected.value,
+                        slug: selected.slug,
                       });
                     }
                     setOpen(false);
