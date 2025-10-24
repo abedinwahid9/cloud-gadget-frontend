@@ -163,7 +163,7 @@ const AddProductPage = () => {
 
   const onSubmit = async (data: FormValues) => {
     try {
-      // setSaveLoad(true);
+      setSaveLoad(true);
       const product = {
         ...data,
         price: Number(data.price) || 0,
@@ -173,14 +173,12 @@ const AddProductPage = () => {
         tags: data.tags.split(","),
         status: true,
       };
-      console.log(product);
 
       const res = await axiosPublic.post("/product", product, {
         headers: { "Content-Type": "application/json" },
       });
 
       if (res.status === 201) {
-        console.log(res);
         ToastCustom(`${data.title} product has saved`);
         setSaveLoad(false);
         reset({
