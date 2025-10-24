@@ -27,7 +27,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const dispatch = useAppDispatch();
 
   const handleBtn = () => {
-    dispatch(addToCart({ id, name: title, qnt: 1, price }));
+    dispatch(addToCart({ id, title: title, qnt: 1, price }));
   };
 
   return (
