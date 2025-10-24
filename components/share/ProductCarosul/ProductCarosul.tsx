@@ -8,7 +8,6 @@ import {
   KeenSliderInstance,
 } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
-import airpods from "@/app/assets/airpods.png";
 
 // Thumbnail plugin
 function ThumbnailPlugin(
@@ -47,9 +46,7 @@ function ThumbnailPlugin(
   };
 }
 
-export default function ProductGallery() {
-  const images = [airpods, airpods, airpods, airpods, airpods]; // Put your actual product image paths in /public folder
-
+export default function ProductGallery({ images }: { images: string[] }) {
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
   });
@@ -72,7 +69,7 @@ export default function ProductGallery() {
         ref={sliderRef}
         className="keen-slider rounded-2xl overflow-hidden bg-white shadow"
       >
-        {images.map((src, i) => (
+        {images?.map((src, i) => (
           <div
             key={i}
             className="keen-slider__slide flex items-center justify-center bg-white"

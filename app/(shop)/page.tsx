@@ -5,9 +5,6 @@ import cover3 from "@/app/assets/cover3.jpg";
 import cover2 from "@/app/assets/cover2.jpg";
 import AdsBanner from "@/components/share/AdsBanner/AdsBanner";
 import Category from "@/components/Category/Category";
-import TrendingCollection from "@/components/TrendingCollection/TrendingCollection";
-import BestCollection from "@/components/BestCollection/BestCollection";
-import FeatureCollection from "@/components/FeatureCollection/FeatureCollection";
 import FeatureHighlights from "@/components/FeatureHighlights/FeatureHighlights";
 import EmailSubscription from "@/components/EmailSubscription/EmailSubscription";
 import Feature from "@/components/share/Feature/Feature";
@@ -34,17 +31,19 @@ export default function Home() {
       <div className="md:py-4 py-2">
         <AdsBanner images={images2} />
       </div>
+      {/* featured collection */}
+      <Feature collection="best_sellers" title="Best Sellers" />
 
-      {/* trending collection */}
-      <Feature collection="trending_collection" title="Trending collection" />
       <div className="md:py-4 py-2">
         <AdsBanner images={images3} />
       </div>
-      {/* featured collection */}
-      <Feature collection="featured_products" title="featured Collections" />
+      {/* trending collection */}
+      <Feature collection="trending_collections" title="Trending collection" />
       <div className="md:py-4 py-2 ">
         <AdsBanner images={images5} />
       </div>
+      {/* featured collection */}
+      <Feature collection="featured_products" title="featured Collections" />
       <EmailSubscription />
       <FeatureHighlights />
       {/* <BrandCarousel /> */}

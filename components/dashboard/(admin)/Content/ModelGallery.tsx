@@ -13,7 +13,6 @@ import {
   DrawerClose,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-
 import { Checkbox } from "@/components/ui/checkbox";
 import { Trash2, Check } from "lucide-react";
 import Image from "next/image";
@@ -35,6 +34,8 @@ const ModelGallery = ({ imageIndex }: { imageIndex: string }) => {
   const dispatch = useAppDispatch();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const axiosPublic = useAxiosPublic();
+
+  console.log(selectedIds);
 
   const toggleSelect = (id: number) => {
     setSelectedIds((prev) =>
@@ -220,7 +221,14 @@ const ModelGallery = ({ imageIndex }: { imageIndex: string }) => {
           {/* Footer */}
           <DrawerFooter className="flex justify-end gap-3 border-t px-4 py-3">
             <DrawerClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button
+                onClick={() => {
+                  setSelectedIds([]);
+                }}
+                variant="outline"
+              >
+                Cancel
+              </Button>
             </DrawerClose>
             <DrawerClose asChild>
               <Button onClick={handleDone}>Done</Button>

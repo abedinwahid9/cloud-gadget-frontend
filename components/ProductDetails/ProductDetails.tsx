@@ -1,48 +1,72 @@
 "use client";
 
 import { useState } from "react";
-import { FaFacebookF, FaTwitter, FaLinkedinIn } from "react-icons/fa";
 import { Button } from "../ui/button";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { useAppDispatch } from "@/lib/redux/hooks";
 import { addToCart } from "@/lib/redux/slices/cartSlices";
 
-const ProductDetails = () => {
-  const [quantity, setQuantity] = useState(1);
-  const [selectedColor, setSelectedColor] = useState("black");
+// Types
+interface Variant {
+  name: "color" | "size" | "material" | string;
+  options: string[];
+}
+
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  discount?: number;
+  stock_quantity: number;
+  variants?: Variant[];
+}
+
+interface ProductDetailsProps {
+  product: Product;
+}
+
+const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
+  const [quantity, setQuantity] = useState<number>(1);
+  const [selectedOption, setSelectedOption] = useState<string>("");
   const dispatch = useAppDispatch();
 
+  const { id, price, discount = 0, title, stock_quantity, variants } = product;
+
   const handleQuantity = (type: "inc" | "dec") => {
-    if (type === "dec" && quantity > 1) {
-      setQuantity(quantity - 1);
-    } else if (type === "inc") {
-      setQuantity(quantity + 1);
-    }
+    setQuantity((prev) => {
+      if (type === "dec" && prev > 1) return prev - 1;
+      if (type === "inc") return prev + 1;
+      return prev;
+    });
   };
 
   return (
     <div className="lg:w-1/2 w-full space-y-2">
       {/* Title */}
-      <h1 className="text-xl md:text-2xl font-semibold text-secondary dark:text-nav">
-        JBL Tune Flex 2 Ghost Edition ANC True Wireless Earbuds
+      <h1 className="text-xl md:text-2xl font-semibold text-secondary dark:text-nav capitalize">
+        {title}
       </h1>
 
       {/* Price */}
       <div className="flex items-center gap-3">
-        <span className="text-2xl font-bold text-primary">11,990৳</span>
-        <span className="text-lg text-gray-400 line-through">13,990৳</span>
+        <span className="text-2xl font-bold text-primary">{price}৳</span>
+        {discount > 0 && (
+          <span className="text-lg text-gray-400 line-through">
+            {discount}৳
+          </span>
+        )}
       </div>
 
-      {/* Wishlist + Share */}
+      {/* Wishlist */}
       <div className="flex items-center gap-4">
         <button className="border rounded-full p-2 hover:bg-gray-100">
           ❤️
         </button>
-        <span className="text-secondary dark:text-nav">Share :</span>
-        <div className="flex gap-2">
+        {/* <span className="text-secondary dark:text-nav">Share :</span> */}
+        {/* <div className="flex gap-2">
           <FaFacebookF className="cursor-pointer text-gray-600 hover:text-blue-600" />
           <FaTwitter className="cursor-pointer text-gray-600 hover:text-sky-500" />
           <FaLinkedinIn className="cursor-pointer text-gray-600 hover:text-blue-700" />
-        </div>
+        </div> */}
       </div>
 
       {/* Highlights */}
@@ -62,37 +86,87 @@ const ProductDetails = () => {
       </div>
 
       {/* Stock */}
-      <div className="flex items-center gap-2 text-primary font-medium">
-        <span className="w-3 h-3 bg-primary rounded-full"></span> In Stock
-      </div>
-
-      {/* Colors */}
-      <div>
-        <h4 className="font-medium mb-1">Color:</h4>
-        <div className="flex gap-3">
-          {["black", "white", "purple"].map((color) => (
-            <button
-              key={color}
-              onClick={() => setSelectedColor(color)}
-              className={`w-8 h-8 rounded border ${
-                selectedColor === color ? "ring-2 ring-black" : ""
-              }`}
-              style={{
-                backgroundColor:
-                  color === "black"
-                    ? "#000"
-                    : color === "white"
-                    ? "#fff"
-                    : "purple",
-              }}
-            ></button>
-          ))}
+      {stock_quantity > 0 ? (
+        <div className="flex items-center gap-2 text-primary font-medium">
+          <span className="w-3 h-3 bg-primary rounded-full"></span>
+          In Stock
         </div>
-      </div>
+      ) : (
+        <div className="flex items-center gap-2 text-badge font-medium">
+          <span className="w-3 h-3 bg-badge rounded-full"></span>
+          Out of Stock
+        </div>
+      )}
 
-      {/* Quantity + Actions */}
+      {/* Variants */}
+      {variants?.map((vari, i) => {
+        if (vari.name === "color") {
+          return (
+            <div key={i}>
+              <h4 className="font-medium mb-1">Color:</h4>
+              <div className="flex gap-3">
+                {vari.options?.map((color) => (
+                  <button
+                    key={color}
+                    onClick={() => setSelectedOption(color)}
+                    className={`w-8 h-8 rounded border ${
+                      selectedOption === color ? "ring-2 ring-black" : ""
+                    }`}
+                    style={{ backgroundColor: color }}
+                  ></button>
+                ))}
+              </div>
+            </div>
+          );
+        }
+
+        if (vari.name === "size") {
+          return (
+            <div key={i}>
+              <h4 className="font-medium mb-1">Size:</h4>
+              <div className="flex gap-3">
+                {vari.options?.map((size) => (
+                  <button
+                    key={size}
+                    onClick={() => setSelectedOption(size)}
+                    className={`py-1 px-3 rounded border ${
+                      selectedOption === size ? "ring-2 ring-black" : ""
+                    }`}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        }
+
+        if (vari.name === "material") {
+          return (
+            <div key={i}>
+              <h4 className="font-medium mb-1">Material:</h4>
+              <div className="flex gap-3">
+                {vari.options?.map((material) => (
+                  <button
+                    key={material}
+                    onClick={() => setSelectedOption(material)}
+                    className={`py-1 px-3 rounded border ${
+                      selectedOption === material ? "ring-2 ring-black" : ""
+                    }`}
+                  >
+                    {material}
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        }
+
+        return null;
+      })}
+
+      {/* Quantity + Add to Cart */}
       <div className="flex items-center gap-4">
-        {/* Quantity Selector */}
         <div className="flex items-center border rounded-md">
           <button
             onClick={() => handleQuantity("dec")}
@@ -109,15 +183,18 @@ const ProductDetails = () => {
           </button>
         </div>
 
-        {/* Buttons */}
         <Button
           onClick={() =>
             dispatch(
-              addToCart({ id: 0, name: "title", qnt: quantity, price: 100 * 1 })
+              addToCart({
+                id,
+                title,
+                qnt: quantity,
+                price: price * quantity,
+              })
             )
           }
-          className="   rounded-md bg-primary/50 py-5  hover:bg-secondary hover:text-nav text-secondary font-semibold md:text-lg text-sm
-      "
+          className="rounded-md bg-primary/50 py-5 hover:bg-secondary hover:text-nav text-secondary font-semibold md:text-lg text-sm"
         >
           Add to Cart
         </Button>

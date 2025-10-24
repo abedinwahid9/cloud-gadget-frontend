@@ -4,7 +4,7 @@ import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 // Cart item type
 export interface CartItem {
   id: number;
-  name: string;
+  title: string;
   qnt: number;
   price: number;
   imageUrl?: string;
@@ -91,10 +91,10 @@ const cartSlice = createSlice({
       const exists = state.items.find((item) => item.id === action.payload.id);
       if (exists) {
         exists.qnt += action.payload.qnt;
-        ToastCustom(`This ${action.payload.id} is already add to cart`);
+        ToastCustom(`This ${action.payload.title} is already add to cart`);
       } else {
         state.items.push(action.payload);
-        ToastCustom(`This ${action.payload.id} is add to cart`);
+        ToastCustom(`This ${action.payload.title} is add to cart`);
       }
 
       // Update totals
