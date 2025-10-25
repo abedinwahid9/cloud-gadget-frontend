@@ -8,6 +8,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import ProductCard from "../ProductCard/ProductCard";
+import { REVALIDATE_TIME } from "@/lib/constants";
 
 interface Query {
   id: boolean;
@@ -56,7 +57,7 @@ const Feature = async ({
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/product/collections/${collection}?${url}`,
     {
-      next: { revalidate: 10 },
+      next: { revalidate: REVALIDATE_TIME },
     }
   );
 

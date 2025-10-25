@@ -77,7 +77,9 @@ const MainNav = () => {
               <DrawerTrigger className="lg:hidden block" asChild>
                 <RiMenu2Line className="w-7 h-7 text-primary cursor-pointer" />
               </DrawerTrigger>
-              <h2 className="text-nav font-semibold text-sm">logo</h2>
+              <Link href="/">
+                <h2 className="text-nav font-semibold text-sm">logo</h2>
+              </Link>
             </div>
 
             {/* Navigation + Icons */}
