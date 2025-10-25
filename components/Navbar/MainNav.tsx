@@ -8,17 +8,18 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import { IoLogoYoutube } from "react-icons/io";
-
 import UserProfile from "../share/UserProfile/UserProfile";
 import CateNav from "./CateNav";
 import SidebarNav from "./SidebarNav";
 import { Drawer, DrawerTrigger } from "../ui/drawer";
 import { RiMenu2Line } from "react-icons/ri";
-
 import { usePathname } from "next/navigation";
 import Cart from "../share/Cart/Cart";
 import Wishlist from "../share/Wishlist/Wishlist";
 import { ThemeBtn } from "../theme/ThemeBtn";
+import Image from "next/image";
+import logo from "@/public/logo.png";
+import logo1 from "@/public/logo1.png";
 
 const MainNav = () => {
   const socialIconStyle = "md:w-4 md:h-4 w-3 h-3 text-secondary";
@@ -77,8 +78,15 @@ const MainNav = () => {
               <DrawerTrigger className="lg:hidden block" asChild>
                 <RiMenu2Line className="w-7 h-7 text-primary cursor-pointer" />
               </DrawerTrigger>
-              <Link href="/">
-                <h2 className="text-nav font-semibold text-sm">logo</h2>
+
+              <Link className="" href="/">
+                <Image
+                  className="object-contain w-20 h-12"
+                  width={500}
+                  height={500}
+                  src={logo1}
+                  alt="logo"
+                />
               </Link>
             </div>
 

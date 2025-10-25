@@ -45,7 +45,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
       {/* Product Image with hover effect */}
       <Link
-        href={`/shop/${id}`}
+        href={`/shop/product/${id}`}
         className="flex-1 flex items-center justify-center p-2 relative"
       >
         {/* Image 1 */}
@@ -74,7 +74,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       {/* Product Info */}
       <div className="px-2 flex flex-col gap-1">
         {/* Title */}
-        <Link href={`/shop/${id}`}>
+        <Link href={`/shop/product/${id}`}>
           <p className="text-xs sm:text-sm md:text-base font-medium hover:underline truncate text-secondary dark:text-nav">
             {title}
           </p>

@@ -1,5 +1,4 @@
 "use client";
-
 import * as React from "react";
 import Link from "next/link";
 import {
@@ -12,6 +11,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { Skeleton } from "../ui/skeleton";
 
 export interface SubCategory {
   id: string;
@@ -29,13 +29,25 @@ export interface Category {
 const CateNav = () => {
   const axiosPublic = useAxiosPublic();
 
-  const { data: categories } = useQuery({
+  const { data: categories, isLoading } = useQuery({
     queryKey: ["cat-marge"],
     queryFn: async () => {
       const res = await axiosPublic.get("/category/merge");
       return res.data.categories;
     },
   });
+
+  if (isLoading) {
+    return (
+      <Skeleton className="bg-secondary/25 w-full h-10 container mx-auto flex justify-between items-center px-10">
+        {Array.from({ length: 6 }).map((_, i) => {
+          return (
+            <Skeleton key={i} className="w-30 h-4 bg-secondary/75 rounded-sm" />
+          );
+        })}
+      </Skeleton>
+    );
+  }
 
   return (
     <NavigationMenu
