@@ -36,6 +36,7 @@ const AddSubCate = () => {
     handleSubmit,
     setValue,
     reset,
+    watch,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
@@ -45,7 +46,7 @@ const AddSubCate = () => {
   const axiosPublic = useAxiosPublic();
 
   const { data: category = [], refetch } = useQuery({
-    queryKey: ["category"],
+    queryKey: ["add-category"],
     queryFn: async () => {
       const res = await axiosPublic.get("/category");
       return res.data.allCategory;
@@ -56,9 +57,9 @@ const AddSubCate = () => {
     control,
     name: "subCategories",
   });
+  console.log(category);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log("Submitted:", data);
     try {
       const res = await axiosPublic.post("/sub-category", data, {
         headers: {
@@ -67,7 +68,11 @@ const AddSubCate = () => {
       });
 
       if (res.status === 201) {
-        ToastCustom("Sub-category saved");
+        ToastCustom(
+          `${data.subCategories
+            .map((cat) => cat.label)
+            .toString()} sub category is saved`
+        );
         reset();
       }
     } catch (err) {
@@ -101,7 +106,11 @@ const AddSubCate = () => {
                         title="Category"
                         refetch={refetch}
                         categories={category}
-                        value={field.value}
+                        value={
+                          category?.find(
+                            (c: { id: string }) => c?.id === field.value
+                          )?.label || ""
+                        }
                         onChange={(val) => {
                           field.onChange(val.id);
                           setValue(`subCategories.${index}.label`, val.label);
