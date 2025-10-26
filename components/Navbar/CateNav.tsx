@@ -37,6 +37,7 @@ const CateNav = () => {
     },
   });
 
+  // loading with skeleton
   if (isLoading) {
     return (
       <Skeleton className="bg-secondary/25 w-full h-10 container mx-auto flex justify-between items-center px-10">
