@@ -42,7 +42,7 @@ const SidebarNav = () => {
     },
   });
 
-  // loading skeleton
+  // loading with skeleton
 
   if (isLoading) {
     return (
