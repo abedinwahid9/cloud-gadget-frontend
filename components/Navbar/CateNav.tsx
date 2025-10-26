@@ -81,7 +81,7 @@ const CateNav = () => {
                     {cat?.subCategory?.map((sub: SubCategory) => (
                       <li key={sub.id}>
                         <NavigationMenuLink asChild>
-                          <Link href={`/shop/${sub.slug}`}>
+                          <Link href={`/shop/${cat.slug}/${sub.slug}`}>
                             <div className="text-lg text-nav leading-none font-semibold capitalize hover:underline">
                               {sub.label}
                             </div>

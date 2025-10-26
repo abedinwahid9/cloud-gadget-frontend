@@ -42,7 +42,7 @@ const SidebarNav = () => {
     },
   });
 
-  // loading
+  // loading skeleton
 
   if (isLoading) {
     return (
@@ -89,7 +89,7 @@ const SidebarNav = () => {
                 {cat.subCategory.map((sub) => (
                   <li key={sub.id}>
                     <Link
-                      href={sub.slug}
+                      href={`/shop/${cat.slug}/${sub.slug}`}
                       className=" text-nav text-lg hover:text-primary transition"
                     >
                       {sub.label}
