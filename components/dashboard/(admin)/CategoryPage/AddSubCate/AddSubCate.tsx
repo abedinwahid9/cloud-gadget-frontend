@@ -18,6 +18,9 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { toast } from "sonner";
 import ToastCustom from "@/components/share/ToastCustom/ToastCustom";
+import UploadImages from "@/components/share/UploadImages/UploadImages";
+import { removeSeletedImageAll } from "@/lib/redux/slices/imageSeletedSlices";
+import { useAppDispatch } from "@/lib/redux/hooks";
 
 // Form data type
 type FormValues = {
@@ -26,6 +29,7 @@ type FormValues = {
     value: string;
     label: string;
     slug: string;
+    image: string;
   }[];
 };
 
@@ -40,10 +44,13 @@ const AddSubCate = () => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      subCategories: [{ categoryId: "", value: "", label: "", slug: "" }],
+      subCategories: [
+        { categoryId: "", image: "", value: "", label: "", slug: "" },
+      ],
     },
   });
   const axiosPublic = useAxiosPublic();
+  const dispatch = useAppDispatch();
 
   const { data: category = [], refetch } = useQuery({
     queryKey: ["add-category"],
@@ -57,7 +64,6 @@ const AddSubCate = () => {
     control,
     name: "subCategories",
   });
-  console.log(category);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
@@ -73,6 +79,7 @@ const AddSubCate = () => {
             .map((cat) => cat.label)
             .toString()} sub category is saved`
         );
+        dispatch(removeSeletedImageAll());
         reset();
       }
     } catch (err) {
@@ -92,8 +99,28 @@ const AddSubCate = () => {
           {fields.map((field, index) => (
             <div
               key={field.id}
-              className="flex gap-2 items-start md:items-center"
+              className="flex flex-col gap-2 items-start md:items-center"
             >
+              {/* Upload images for each category */}
+              <Controller
+                control={control}
+                name={`subCategories.${index}.image`}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <UploadImages
+                    imageIndex={`subCategories-${index}`}
+                    index={index}
+                    limit={1}
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+              {errors.subCategories?.[index]?.image && (
+                <p className="text-red-500 text-sm mt-1">
+                  Subcategory image is required.
+                </p>
+              )}
               <div className="flex flex-col md:flex-row w-full gap-3">
                 {/* Controlled ComboBox */}
                 <div className="md:w-1/2 w-full">
@@ -152,17 +179,16 @@ const AddSubCate = () => {
                     </p>
                   )}
                 </div>
+                {/* Remove Button */}
+                <Button
+                  type="button"
+                  className="bg-transparent hover:bg-badge hover:text-white font-bold"
+                  size="sm"
+                  onClick={() => remove(index)}
+                >
+                  <X />
+                </Button>
               </div>
-
-              {/* Remove Button */}
-              <Button
-                type="button"
-                className="bg-transparent hover:bg-badge hover:text-white font-bold"
-                size="sm"
-                onClick={() => remove(index)}
-              >
-                <X />
-              </Button>
             </div>
           ))}
 
@@ -170,7 +196,13 @@ const AddSubCate = () => {
           <div className="flex gap-3">
             <CustomBtn
               handleBtn={() =>
-                append({ categoryId: "", value: "", label: "", slug: "" })
+                append({
+                  categoryId: "",
+                  image: "",
+                  value: "",
+                  label: "",
+                  slug: "",
+                })
               }
               title="Add Sub-Category +"
               type="button"

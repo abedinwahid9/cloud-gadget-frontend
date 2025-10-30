@@ -22,7 +22,7 @@ import logo from "@/public/logo.png";
 import logo1 from "@/public/logo1.png";
 
 const MainNav = () => {
-  const socialIconStyle = "md:w-4 md:h-4 w-3 h-3 text-secondary";
+  const socialIconStyle = "md:w-6 md:h-6 w-5 h-5 text-secondary";
   const userIcons = "w-6 h-6 text-nav";
 
   const navLink = [
@@ -52,7 +52,7 @@ const MainNav = () => {
             </Link>
             <h2
               aria-hidden="true"
-              className="text-nav font-semibold md:text-sm text-[8px]"
+              className="text-nav font-semibold md:text-lg text-xs"
             >
               Welcome to Cloudie Gadgets Shop
             </h2>

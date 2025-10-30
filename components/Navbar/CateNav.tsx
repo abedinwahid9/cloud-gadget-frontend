@@ -55,15 +55,15 @@ const CateNav = () => {
       viewport={false}
       className="container mx-auto w-full relative z-50 "
     >
-      <NavigationMenuList className="flex flex-wrap  w-full ">
-        {categories?.slice(0, 6).map((cat: Category) => {
+      <NavigationMenuList className="flex justify-center-safe flex-wrap  w-full ">
+        {categories?.slice(0, 10).map((cat: Category) => {
           return (
-            <NavigationMenuItem key={cat.id}>
+            <NavigationMenuItem className=" " key={cat.id}>
               {cat?.subCategory.length > 0 ? (
                 <Link href={`/shop/${cat.slug}`}>
                   <NavigationMenuTrigger
                     icon
-                    className="text-secondary/75 data-[state=open]:text-secondary hover:text-secondary font-bold uppercase bg-transparent dark:text-white "
+                    className="text-secondary/75 px-2 data-[state=open]:text-secondary hover:text-secondary font-bold uppercase bg-transparent dark:text-white whitespace-normal"
                   >
                     {cat.label}
                   </NavigationMenuTrigger>
