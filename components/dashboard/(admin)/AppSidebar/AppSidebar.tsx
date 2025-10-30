@@ -205,14 +205,17 @@ const AdminSidebar = () => {
                     className="w-full"
                   >
                     <AccordionItem value={`item-${i}`}>
-                      <AccordionTrigger className="px-3 py-2 rounded-md flex items-center gap-2 text-base font-semibold text-secondary dark:text-white hover:bg-primary/10 hover:text-primary transition-colors ">
-                        <div className="flex items-center gap-1">
+                      <AccordionTrigger
+                        icon
+                        className="px-3 py-2 rounded-md flex items-center gap-2 text-base font-semibold text-secondary dark:text-white hover:bg-primary/10 hover:text-primary transition-colors "
+                      >
+                        <span className="flex items-center gap-1">
                           <item.icon
                             style={{ strokeWidth: "1.5px" }}
                             className="h-5 w-5 "
                           />
                           <span>{item.title}</span>
-                        </div>
+                        </span>
                       </AccordionTrigger>
                       <AccordionContent>
                         <div className="flex flex-col pl-9 gap-1">

@@ -86,7 +86,7 @@ const SliderAds = () => {
     }
   };
 
-  if (!isLoading) {
+  if (isLoading) {
     return (
       <div className="p-6 bg-primary/10 rounded-xl space-y-6 animate-pulse">
         {/* Header */}

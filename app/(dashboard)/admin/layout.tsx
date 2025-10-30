@@ -1,5 +1,3 @@
-"use client";
-
 import AppSidebar from "@/components/dashboard/(admin)/AppSidebar/AppSidebar";
 import { ThemeBtn } from "@/components/theme/ThemeBtn";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";

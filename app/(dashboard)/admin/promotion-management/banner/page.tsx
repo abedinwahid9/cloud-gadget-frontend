@@ -7,7 +7,7 @@ const page = () => {
       <Banner limit={2} nameIndex={1} />
       <Banner limit={4} nameIndex={2} />
       <Banner limit={2} nameIndex={3} />
-      <Banner limit={2} nameIndex={4} />
+      <Banner limit={1} nameIndex={4} />
     </div>
   );
 };

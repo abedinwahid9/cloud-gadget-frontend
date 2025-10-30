@@ -26,6 +26,7 @@ import ConfirmToast from "../ToastCustom/ConfirmToast";
 interface SubCategory {
   id: string;
   label: string;
+  image: string;
 }
 
 interface Category {
@@ -120,7 +121,6 @@ const CategoryTable = () => {
   const handleDeleteSubCategory = async (id: string) => {
     try {
       const res = await axiosPublic.delete(`/sub-category/${id}`);
-
       refetch();
     } catch (error) {
       console.log(error);
@@ -187,6 +187,17 @@ const CategoryTable = () => {
                 key={sub.id}
                 className="flex items-center justify-between gap-2 border p-1 rounded-md bg-primary/20"
               >
+                <div className="w-20 h-16">
+                  {sub.image && (
+                    <Image
+                      className="object-contain w-full h-full"
+                      src={sub.image}
+                      width={500}
+                      height={500}
+                      alt="subcategory"
+                    />
+                  )}
+                </div>
                 <span>{sub.label}</span>
                 <div className="flex gap-1">
                   <Button

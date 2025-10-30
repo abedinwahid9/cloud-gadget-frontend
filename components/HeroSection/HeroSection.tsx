@@ -9,6 +9,9 @@ import Image from "next/image";
 import cover from "@/app/assets/cover.png";
 import cover2 from "@/app/assets/cover2.jpg";
 import cover3 from "@/app/assets/cover3.jpg";
+import LiquidBtn from "../share/LiquidBtn/LiquidBtn";
+import defaultBanner from "@/public/default/hero.jpg";
+import Link from "next/link";
 
 const HeroSection = () => {
   return (
@@ -26,26 +29,34 @@ const HeroSection = () => {
         ]}
       >
         <CarouselContent>
-          <CarouselItem>
+          {/* <CarouselItem className="relative">
             <Image
               className="w-full h-full object-fill "
               src={cover}
               alt="cover"
             />
+            <div className="absolute bottom-1/10 right-1/10">
+              <LiquidBtn text="add cart" />
+            </div>
           </CarouselItem>
-          <CarouselItem>
+          <CarouselItem className="relative">
             <Image
               className="w-full h-full object-fill "
               src={cover2}
               alt="cover"
             />
-          </CarouselItem>
+            <div className="absolute bottom-1/10 right-1/10">
+              <LiquidBtn text="add cart" />
+            </div>
+          </CarouselItem> */}
           <CarouselItem>
-            <Image
-              className="w-full h-full object-fill "
-              src={cover3}
-              alt="cover"
-            />
+            <Link href={"/"} className="relative">
+              <Image
+                className="w-full h-full object-fill "
+                src={cover3}
+                alt="cover"
+              />
+            </Link>
           </CarouselItem>
         </CarouselContent>
         {/* <CarouselPrevious />
