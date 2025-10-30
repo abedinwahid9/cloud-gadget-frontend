@@ -56,9 +56,6 @@ const HeroSection = () => {
                 src={cover3}
                 alt="cover"
               />
-              <div className="absolute bottom-1/10 right-1/10">
-                <LiquidBtn text="add cart" />
-              </div>
             </Link>
           </CarouselItem>
         </CarouselContent>
