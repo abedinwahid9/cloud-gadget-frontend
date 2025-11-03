@@ -77,8 +77,8 @@ const CateNav = () => {
               )}
 
               {cat?.subCategory.length > 0 && (
-                <NavigationMenuContent className="bg-secondary/85 rounded-md p-4 shadow-lg min-w-[250px]">
-                  <ul className="grid gap-2">
+                <NavigationMenuContent className="bg-secondary/65  rounded-md p-4 shadow-lg min-w-[250px] backdrop-blur-3xl border-none">
+                  <ul className="grid gap-2 ">
                     {cat?.subCategory?.map((sub: SubCategory) => (
                       <li key={sub.id}>
                         <NavigationMenuLink asChild>

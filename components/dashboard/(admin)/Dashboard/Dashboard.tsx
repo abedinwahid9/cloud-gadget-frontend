@@ -15,17 +15,17 @@ const Dashboard = () => {
         <SummaryCard
           title="Total Orders"
           value={1200}
-          gradient="from-green-400 to-teal-400"
+          gradient="from-green-400/30 to-teal-400/30"
         />
         <SummaryCard
           title="Total Revenue"
           value="$56,300"
-          gradient="from-blue-400 to-indigo-400"
+          gradient="from-blue-400/30 to-indigo-400/30"
         />
         <SummaryCard
           title="Pending Orders"
           value={15}
-          gradient="from-yellow-400 to-orange-400"
+          gradient="from-yellow-400/30 to-orange-400/30"
         />
       </div>
 

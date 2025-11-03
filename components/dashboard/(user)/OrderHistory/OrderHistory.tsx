@@ -47,7 +47,7 @@ const OrderHistory = ({
 }) => {
   return (
     <div>
-      <Card className="bg-primary/20 dark:bg-blue-300/20  border border-gray-200 dark:border-gray-700 shadow-[0px_0px_10px_0px_#00a8a8]">
+      <Card className="bg-primary/15 dark:bg-blue-300/15  border border-gray-200 dark:border-gray-700 shadow-[0px_0px_10px_0px_#00a8a8]">
         <CardHeader>
           <CardTitle className="text-xl font-bold text-primary capitalize">
             {title}

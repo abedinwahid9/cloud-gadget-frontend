@@ -1,5 +1,4 @@
 "use client";
-
 import {
   LayoutDashboard,
   ShoppingCart,
@@ -10,11 +9,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { GoFileMedia } from "react-icons/go";
-import {
-  TfiLayoutMediaCenterAlt,
-  TfiLayoutMediaLeftAlt,
-  TfiLayoutSliderAlt,
-} from "react-icons/tfi";
+import { TfiLayoutSliderAlt } from "react-icons/tfi";
 import {
   PiContactlessPaymentFill,
   PiImagesThin,
@@ -34,11 +29,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { BsShop } from "react-icons/bs";
-import {
-  TbCategoryPlus,
-  TbCirclesRelation,
-  TbUserShield,
-} from "react-icons/tb";
+import { TbCategoryPlus, TbCirclesRelation } from "react-icons/tb";
 import {
   Accordion,
   AccordionContent,
@@ -48,8 +39,6 @@ import {
 import { FaCreditCard, FaImages, FaUsers, FaUserShield } from "react-icons/fa";
 import { RiCoupon2Fill } from "react-icons/ri";
 import { IoWalletOutline } from "react-icons/io5";
-import { MdAdminPanelSettings } from "react-icons/md";
-import { CiImageOn } from "react-icons/ci";
 
 const menuItems = [
   {
@@ -186,7 +175,7 @@ const adminItems = [
 
 const AdminSidebar = () => {
   return (
-    <Sidebar className="bg-gradient-to-t from-primary/30 to-secondary/30 border-r ">
+    <Sidebar className="bg-gradient-to-t from-primary/20 to-secondary/20 border-r ">
       <SidebarContent>
         {/* --- Main Menu --- */}
         <SidebarGroup>
