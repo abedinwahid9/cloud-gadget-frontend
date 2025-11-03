@@ -167,16 +167,17 @@ const Banner = ({ limit, nameIndex }: { limit: number; nameIndex: number }) => {
               return (
                 <div key={field.id} className="w-full space-y-2">
                   {/* image upload */}
+
                   <Controller
                     control={control}
                     name={`banners.${index}.image`}
-                    render={({ field }) => (
+                    render={({ field: controllerField }) => (
                       <UploadImages
-                        imageIndex={`banner-${nameIndex}${index}`}
-                        index={index}
+                        imageIndex={`banner-${nameIndex}-${index}`}
+                        nameIndex={nameIndex}
                         limit={1}
-                        value={field.value}
-                        onChange={field.onChange}
+                        value={controllerField.value}
+                        onChange={controllerField.onChange}
                       />
                     )}
                   />

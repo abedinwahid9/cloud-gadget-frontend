@@ -34,7 +34,7 @@ const HeroSection = () => {
 
   if (banLoading && isLoading) {
     return (
-      <div className="w-full h-[600px] flex py-2 px-2 gap-2">
+      <div className="w-full lg:h-[600px] md:h-96 h-48 flex py-2 px-2 gap-2">
         <Skeleton className="w-5/8 h-full bg-primary/20 "></Skeleton>
         <div className="flex w-3/8 flex-col gap-2">
           <Skeleton className="w-full h-1/2 bg-primary/20"></Skeleton>

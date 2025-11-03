@@ -35,8 +35,6 @@ const ModelGallery = ({ imageIndex }: { imageIndex: string }) => {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const axiosPublic = useAxiosPublic();
 
-  console.log(selectedIds);
-
   const toggleSelect = (id: number) => {
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]

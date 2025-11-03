@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { IoIosCloudUpload } from "react-icons/io";
 import FormImage from "@/components/dashboard/(admin)/Components/FormImage";
 import ModelGallery from "@/components/dashboard/(admin)/Content/ModelGallery";
@@ -11,11 +11,12 @@ import {
   removeSingleImage,
   setImageSeleted,
 } from "@/lib/redux/slices/imageSeletedSlices";
+import { useFormContext } from "react-hook-form";
 
 interface UploadImagesProps {
   value?: string;
   onChange?: (value: string) => void;
-  index: number;
+  nameIndex: number | string;
   sizeNote?: string;
   getImage?: { thumbnail: string }[];
   limit?: number;
@@ -31,12 +32,13 @@ interface RootState {
 const UploadImages: React.FC<UploadImagesProps> = ({
   value = "",
   onChange,
-  index,
+  nameIndex,
   limit = 1,
   imageIndex,
 }) => {
   const axiosPublic = useAxiosPublic();
   const dispatch = useAppDispatch();
+  const { watch } = useFormContext();
 
   // ✅ Get only the image that belongs to this specific imageIndex
   const selectedImage = useSelector(
@@ -55,18 +57,19 @@ const UploadImages: React.FC<UploadImagesProps> = ({
     }
   }, [selectedImage, value]);
 
+  // const inputRef = useRef(null);
+
   // ✅ Handle file upload
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) return;
 
     const formData = new FormData();
     formData.append("files", e.target.files[0]);
-
+    console.log(e.target);
     try {
       const upload = await axiosPublic.post("/upload/file", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-
       const uploaded = upload.data?.files?.[0]?.path;
       if (uploaded) {
         setImage(uploaded);
@@ -91,7 +94,8 @@ const UploadImages: React.FC<UploadImagesProps> = ({
     <>
       {!image ? (
         <label
-          htmlFor={`images-${index}`}
+          // ref={inputRef}
+          htmlFor={`images-${imageIndex}`}
           className="flex h-64 w-full cursor-pointer items-center justify-center rounded-md border border-dashed border-gray-400 text-sm text-gray-500"
         >
           <div className="flex flex-col items-center space-y-1">
@@ -113,7 +117,7 @@ const UploadImages: React.FC<UploadImagesProps> = ({
 
           {limit > 1 && (
             <label
-              htmlFor={`images-${index}`}
+              htmlFor={`images-${imageIndex}`}
               className="flex cursor-pointer items-center justify-center rounded-md border border-dashed border-gray-400 text-2xl text-gray-400 w-24 h-24"
             >
               +
@@ -125,7 +129,7 @@ const UploadImages: React.FC<UploadImagesProps> = ({
       <input
         accept=".jpg,.jpeg,.png,.gif,.webp"
         type="file"
-        id={`images-${index}`}
+        id={`images-${imageIndex}`}
         className="hidden"
         onChange={handleFileChange}
       />
