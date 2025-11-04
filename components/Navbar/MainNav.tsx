@@ -52,7 +52,7 @@ const MainNav = () => {
             </Link>
             <h2
               aria-hidden="true"
-              className="text-nav font-semibold md:text-lg text-xs"
+              className="text-nav font-semibold [text-shadow:_0px_0px_3px_#000000] md:text-lg text-xs"
             >
               Welcome to Cloudie Gadgets Shop
             </h2>
@@ -102,7 +102,7 @@ const MainNav = () => {
                     <li key={item.name} className="group relative">
                       <Link
                         href={item.href}
-                        className={`capitalize font-semibold text-lg transition-colors duration-300 ${
+                        className={`capitalize font-semibold text-lg transition-colors duration-300 [text-shadow:_0px_0px_3px_#000000] ${
                           isActive
                             ? "text-primary"
                             : "text-nav hover:text-primary"

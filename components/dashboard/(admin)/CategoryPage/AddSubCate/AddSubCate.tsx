@@ -109,7 +109,7 @@ const AddSubCate = () => {
                 render={({ field }) => (
                   <UploadImages
                     imageIndex={`subCategories-${index}`}
-                    index={index}
+                    nameIndex={index}
                     limit={1}
                     value={field.value}
                     onChange={field.onChange}

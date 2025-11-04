@@ -156,7 +156,7 @@ const SliderAds = () => {
                 rules={{ required: true }}
                 render={({ field }) => (
                   <UploadImages
-                    index={index}
+                    nameIndex={index}
                     imageIndex={`slider${index}`}
                     limit={1}
                     value={field.value}

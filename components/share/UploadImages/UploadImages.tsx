@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { IoIosCloudUpload } from "react-icons/io";
 import FormImage from "@/components/dashboard/(admin)/Components/FormImage";
 import ModelGallery from "@/components/dashboard/(admin)/Content/ModelGallery";
@@ -11,7 +11,6 @@ import {
   removeSingleImage,
   setImageSeleted,
 } from "@/lib/redux/slices/imageSeletedSlices";
-import { useFormContext } from "react-hook-form";
 
 interface UploadImagesProps {
   value?: string;
@@ -32,13 +31,11 @@ interface RootState {
 const UploadImages: React.FC<UploadImagesProps> = ({
   value = "",
   onChange,
-  nameIndex,
   limit = 1,
   imageIndex,
 }) => {
   const axiosPublic = useAxiosPublic();
   const dispatch = useAppDispatch();
-  const { watch } = useFormContext();
 
   // ✅ Get only the image that belongs to this specific imageIndex
   const selectedImage = useSelector(
@@ -65,7 +62,6 @@ const UploadImages: React.FC<UploadImagesProps> = ({
 
     const formData = new FormData();
     formData.append("files", e.target.files[0]);
-    console.log(e.target);
     try {
       const upload = await axiosPublic.post("/upload/file", formData, {
         headers: { "Content-Type": "multipart/form-data" },

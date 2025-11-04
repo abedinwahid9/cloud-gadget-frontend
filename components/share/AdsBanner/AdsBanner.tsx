@@ -56,7 +56,7 @@ const AdsBanner: React.FC<AdsBannerProps> = ({ index }) => {
           <Image
             width={500}
             height={500}
-            src={img.image}
+            src={img.image || ""}
             alt={`Ad Banner ${images.id}`}
             className="object-fill w-full h-full"
           />
