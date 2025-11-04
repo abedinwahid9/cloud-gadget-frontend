@@ -22,7 +22,7 @@ import logo from "@/public/logo.png";
 import logo1 from "@/public/logo1.png";
 
 const MainNav = () => {
-  const socialIconStyle = "md:w-6 md:h-6 w-5 h-5 text-secondary";
+  const socialIconStyle = "md:w-6 md:h-6 w-5 h-5 text-nav";
   const userIcons = "w-6 h-6 text-nav";
 
   const navLink = [
@@ -38,7 +38,7 @@ const MainNav = () => {
     <header>
       <Drawer direction="left">
         {/* top nav */}
-        <div className="w-full bg-primary">
+        <div className="w-full bg-secondary">
           <div className="container mx-auto py-2 lg:px-5 px-1 flex justify-between">
             <Link
               href="tel:01716893200"
@@ -46,7 +46,7 @@ const MainNav = () => {
               className="flex items-center gap-1"
             >
               <FaMobileAlt className="text-nav md:text-base text-xs" />
-              <span className="text-secondary font-semibold md:text-sm text-[8px]">
+              <span className="text-nav [text-shadow:_0px_0px_3px_#000000] font-semibold md:text-sm text-[8px]">
                 +88-01716893200
               </span>
             </Link>
@@ -71,7 +71,7 @@ const MainNav = () => {
         </div>
 
         {/* main nav */}
-        <div className="w-full bg-secondary py-3 lg:px-5  px-1 ">
+        <div className="w-full bg-gradient-to-tr from-20% from-primary to-secondary to-70%  py-3 lg:px-5  px-1 ">
           <div className="container mx-auto flex justify-between items-center">
             {/* Logo + Menu */}
             <div className="flex items-center gap-2">
@@ -147,7 +147,7 @@ const MainNav = () => {
         </div>
 
         {/* category nav link */}
-        <div className="bg-primary/50 hidden lg:block">
+        <div className="bg-primary/55 mt-2 mx-2 rounded-xl hidden lg:block">
           <CateNav />
         </div>
 

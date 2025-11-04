@@ -54,8 +54,6 @@ const UploadImages: React.FC<UploadImagesProps> = ({
     }
   }, [selectedImage, value]);
 
-  // const inputRef = useRef(null);
-
   // ✅ Handle file upload
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) return;

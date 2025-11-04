@@ -53,7 +53,7 @@ const CateNav = () => {
   return (
     <NavigationMenu
       viewport={false}
-      className="container mx-auto w-full relative z-50 "
+      className="container mx-auto w-full relative z-50 py-1"
     >
       <NavigationMenuList className="flex justify-center-safe flex-wrap  w-full ">
         {categories?.slice(0, 10).map((cat: Category) => {
@@ -63,21 +63,21 @@ const CateNav = () => {
                 <Link href={`/shop/${cat.slug}`}>
                   <NavigationMenuTrigger
                     icon
-                    className="text-secondary/75 px-2 data-[state=open]:text-secondary hover:text-secondary font-bold uppercase bg-transparent dark:text-white whitespace-normal"
+                    className="text-secondary px-2 data-[state=open]:text-secondary hover:text-secondary font-bold uppercase bg-transparent dark:text-white whitespace-normal"
                   >
                     {cat.label}
                   </NavigationMenuTrigger>
                 </Link>
               ) : (
                 <Link href={`/shop/${cat.slug}`}>
-                  <NavigationMenuTrigger className="text-secondary/75 data-[state=open]:text-secondary hover:text-secondary font-bold uppercase bg-transparent dark:text-white ">
+                  <NavigationMenuTrigger className="text-secondary data-[state=open]:text-secondary hover:text-secondary font-bold uppercase bg-transparent dark:text-white ">
                     {cat.label}
                   </NavigationMenuTrigger>
                 </Link>
               )}
 
               {cat?.subCategory.length > 0 && (
-                <NavigationMenuContent className="bg-secondary/65  rounded-md p-4 shadow-lg min-w-[250px] backdrop-blur-3xl border-none">
+                <NavigationMenuContent className="bg-secondary/75  rounded-md p-4 shadow-lg min-w-[250px] backdrop-blur-3xl  border-4 border-secondary">
                   <ul className="grid gap-2 ">
                     {cat?.subCategory?.map((sub: SubCategory) => (
                       <li key={sub.id}>
