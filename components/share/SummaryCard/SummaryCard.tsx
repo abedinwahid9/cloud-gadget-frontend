@@ -26,7 +26,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
       <div className=" absolute right-0 -top-5 h-full w-20 bg-badge/20 rounded-l-full"></div>
 
       {/* Content */}
-      <div className="relative z-10 p-4 flex flex-col justify-between h-full text-white">
+      <div className="relative z-10 p-4 flex flex-col justify-between h-full dark:text-white text-secondary">
         <span className="text-md capitalize font-semibold opacity-90">
           {title}
         </span>

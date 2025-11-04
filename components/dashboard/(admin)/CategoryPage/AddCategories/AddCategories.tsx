@@ -113,8 +113,8 @@ const AddCategories = () => {
                   render={({ field }) => (
                     <UploadImages
                       imageIndex={`category-${index}`}
-                      index={index}
                       limit={1}
+                      nameIndex={index}
                       value={field.value}
                       onChange={field.onChange}
                     />

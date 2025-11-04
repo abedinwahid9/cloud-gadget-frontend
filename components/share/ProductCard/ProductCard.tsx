@@ -36,7 +36,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       {category && (
         <div>
           <div
-            className={`${style.tag} relative inline-block -top-1 -left-1 bg-gradient-to-r from-primary/60 via-secondary/60 to-badge/60 text-[10px] sm:text-xs md:text-base rounded-xl border-8 border-background py-0.5 px-3 text-secondary dark:text-nav font-semibold uppercase tracking-wide`}
+            className={`${style.tag} relative inline-block -top-1 -left-1 bg-gradient-to-r from-primary/30 to-secondary/30  text-[10px] sm:text-xs md:text-base rounded-xl border-8 border-background py-0.5 px-3 text-secondary dark:text-nav font-semibold uppercase tracking-wide`}
           >
             {category}
           </div>
@@ -119,7 +119,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <div className="rounded-[6px] overflow-hidden">
             <CustomBtn
               title="Add To Cart"
-              className="bg-gradient-to-r from-primary/70 via-secondary/70 to-badge/70 text-white text-xs sm:text-sm md:text-base font-semibold shadow-md hover:opacity-90 w-full rounded-none"
+              className="  text-xs sm:text-sm md:text-base font-semibold shadow-md hover:opacity-90 w-full rounded-none"
               handleBtn={handleBtn}
             />
           </div>

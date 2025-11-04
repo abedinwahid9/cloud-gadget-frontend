@@ -1,6 +1,12 @@
-import AppSidebar from "@/components/dashboard/(admin)/AppSidebar/AppSidebar";
+"use client";
+
 import { ThemeBtn } from "@/components/theme/ThemeBtn";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import dynamic from "next/dynamic";
+
+const AppSidebar = dynamic(
+  () => import("@/components/dashboard/(admin)/AppSidebar/AppSidebar")
+);
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -12,7 +18,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {/* Main Content Area */}
         <div className="flex flex-col flex-1 ">
           {/* Top Bar */}
-          <header className="flex items-center justify-between border-b bg-primary bg-gradient-to-r from-primary/50 to-secondary/50 px-4 py-3">
+          <header className="flex items-center justify-between border-b bg-primary/50 bg-gradient-to-r from-primary/20 to-secondary/20 px-4 py-3">
             <div className="flex items-center gap-2">
               <SidebarTrigger className="md::hidden" />
               <h2 className="text-lg font-semibold tracking-tight">

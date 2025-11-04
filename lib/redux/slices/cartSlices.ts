@@ -1,5 +1,5 @@
 import ToastCustom from "@/components/share/ToastCustom/ToastCustom";
-import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Cart item type
 export interface CartItem {

@@ -40,14 +40,22 @@ const CategoryTable = () => {
   const axiosPublic = useAxiosPublic();
 
   // fetch data
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ["categories"],
+  const {
+    data = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["categories-marge"],
     queryFn: async () => {
       const res = await axiosPublic.get("/category/merge");
       return res.data.categories;
     },
     refetchInterval: 5000,
+    staleTime: 1000 * 60 * 5,
+    retry: 3,
   });
+
+  console.log(data);
 
   // ✅ Confirm toast helper
   // const confirmToast = (
