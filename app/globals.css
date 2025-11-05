@@ -97,11 +97,11 @@
   --background: oklch(0.955 0.0083 91.48);
   --card: oklch(1 0 0);
   --badge: oklch(0.628 0.2577 29.23);
-  --text-color: oklch(0.3303 0.0656 169.69);
-  --text-nav: oklch(0.8573 0.0547 93.32);
-  --primary: oklch(0.6624 0.113068 194.769);
-  --secondary: oklch(0.3303 0.0656 169.69);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
+  --text-color: #ff6b00;
+  --text-nav: #cdffdc;
+  --primary: #69ba7f;
+  --secondary: #233e2b;
+  --secondary-foreground: #2d6f3f;
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.705 0.015 286.067);

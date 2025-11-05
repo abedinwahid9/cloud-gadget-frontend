@@ -69,6 +69,7 @@ const HeroSection = () => {
                     className="w-full h-full object-fill "
                     src={slider.image}
                     alt="cover"
+                    priority
                   />
                 </Link>
               </CarouselItem>
