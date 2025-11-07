@@ -18,7 +18,6 @@ import Cart from "../share/Cart/Cart";
 import Wishlist from "../share/Wishlist/Wishlist";
 import { ThemeBtn } from "../theme/ThemeBtn";
 import Image from "next/image";
-import logo from "@/public/logo.png";
 import logo1 from "@/public/logo1.png";
 
 const MainNav = () => {
@@ -71,7 +70,7 @@ const MainNav = () => {
         </div>
 
         {/* main nav */}
-        <div className="w-full bg-gradient-to-tr from-20% from-primary to-secondary to-70%  py-3 lg:px-5  px-1 ">
+        <div className="w-full bg-gradient-to-r from-20% from-primary to-secondary to-70%  py-3 lg:px-5  px-1 ">
           <div className="container mx-auto flex justify-between items-center">
             {/* Logo + Menu */}
             <div className="flex items-center gap-2">
@@ -80,13 +79,14 @@ const MainNav = () => {
               </DrawerTrigger>
 
               <Link className="" href="/">
-                <Image
+                {/* <Image
                   className="object-contain w-20 h-12"
                   width={500}
                   height={500}
                   src={logo1}
                   alt="logo"
-                />
+                /> */}
+                <h2 className="text-xl font-bold">Cloudie Gadget</h2>
               </Link>
             </div>
 

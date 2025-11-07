@@ -1,5 +1,5 @@
-import SignIn from "@/components/Register/SignIn";
-import React from "react";
+import dynamic from "next/dynamic";
+const SignIn = dynamic(() => import("@/components/Register/SignIn"));
 
 const page = () => {
   return (
