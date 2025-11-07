@@ -139,7 +139,7 @@ yarn dev
 
 - 🌐 **Live Website**: https://cloudgadgetshop.netlify.app
 
-- 🖥️ **Server API**: https://cloudgadgetserver.vercel.app
+- 🖥️ **Server API**: [https://cloudgadgetserver.vercel.app](https://cloud-gadget-server.onrender.com/)
 
 - 💻 **Client Repository**: https://github.com/abedinwahid/cloud-gadget-frontend
 
