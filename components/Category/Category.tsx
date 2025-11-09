@@ -61,7 +61,7 @@ const Category = () => {
                   className="basis-1/4 lg:basis-1/6 cursor-grabbing"
                 >
                   <Link href={`/shop/${item.slug}`}>
-                    <div className="w-full rounded-sm drop-shadow-2xl inset-shadow-[0px_0px_30px_0px_#00A8A8]/50 flex flex-col items-center justify-center md:p-2 p-1 hover:scale-105 transition-all duration-300">
+                    <div className="w-full rounded-sm drop-shadow-2xl bg-radial from-primary/40 to-secondary/5 flex flex-col items-center justify-center md:p-2 p-1 hover:scale-105 transition-all duration-300">
                       <Image
                         src={item?.image || "/default.png"}
                         alt={item?.label || "category"}

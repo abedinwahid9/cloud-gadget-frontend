@@ -5,43 +5,102 @@ import FilterSideBar from "../share/FilterSideBar/FilterSideBar";
 import { Button } from "../ui/button";
 import { BsSliders } from "react-icons/bs";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
-
-export interface Products {
-  id: number | boolean;
-  price: number | boolean;
-  title: string | boolean;
-  images: string[] | boolean;
-  category: string | boolean;
-  discount: number | boolean;
-}
+import { useEffect, useRef, useState } from "react";
 
 const option = [
-  { value: "relevance", label: "Relevance" },
-  { value: "price", label: "Sort by price: low to high" },
-  { value: "price-desc", label: "Sort by price: high to low" },
+  { value: "default", label: "Default" },
+  { value: "asc", label: "Sort by price: low to high" },
+  { value: "desc", label: "Sort by price: high to low" },
 ];
 
 const Shop = () => {
   const axiosPublic = useAxiosPublic();
+  // const [posts, setPosts] = useState<Product[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+  console.log(page);
+  const [filter, setFilter] = useState("");
+  const [sort, setSort] = useState("");
 
-  const query: Products = {
-    id: true,
-    price: true,
-    title: true,
-    images: true,
-    category: true,
-    discount: true,
+  // 👇 useInfiniteQuery instead of useQuery
+  // const {
+  //   data: filters,
+  //   fetchNextPage,
+  //   hasNextPage,
+  //   isFetchingNextPage,
+  //   isLoading: filterLoading,
+  //   error,
+  // } = useInfiniteQuery({
+  //   queryKey: ["products", { filter, sort }],
+  //   queryFn: async ({ pageParam = 1 }) => {
+  //     const res = await axiosPublic.get(
+  //       `/product?page=${pageParam}&limit=10&${filter}&${sort}`
+  //     );
+  //     return res.data;
+  //   },
+  //   getNextPageParam: (lastPage, allPages) => {
+  //     // Example: API returns something like { data: [...], nextPage: 3, hasMore: true }
+  //     return lastPage.hasMore ? allPages.length + 1 : undefined;
+  //   },
+  //   keepPreviousData: true,
+  // });
+  // console.log(filters);
+
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  // 👇 Infinite scroll observer
+  // useEffect(() => {
+  //   if (!hasNextPage || isFetchingNextPage) return;
+
+  //   const observer = new IntersectionObserver((entries) => {
+  //     if (entries[0].isIntersecting) {
+  //       fetchNextPage();
+  //     }
+  //   });
+
+  //   const el = loadMoreRef.current;
+  //   if (el) observer.observe(el);
+
+  //   return () => {
+  //     if (el) observer.unobserve(el);
+  //   };
+  // }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const query = {
+    fields: "id,title,price,images,category,discount",
+    sortBy: "price",
+    orderSort: sort === "default" ? "" : sort,
   };
 
   const { data, isLoading } = useQuery({
-    queryKey: ["products1"],
+    queryKey: ["products1", { sort }],
     queryFn: async () => {
       const res = await axiosPublic.get("/product", { params: query });
       return res.data.allProduct;
     },
   });
+
+  // infinite scroll observe
+
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(
+  //     (entries) => {
+  //       if (entries[0].isIntersecting && !loading) {
+  //         setPage((prev) => prev + 1);
+  //       }
+  //     },
+  //     { threshold: 1 }
+  //   );
+
+  //   if (loaderRef.current) observer.observe(loaderRef.current);
+
+  //   return () => {
+  //     if (loaderRef.current) observer.unobserve(loaderRef?.current);
+  //   };
+  // }, [loading]);
 
   return (
     <main className="pb-5 px-1.5">
@@ -64,7 +123,7 @@ const Shop = () => {
             </div>
             <div className="lg:pr-1.5 pr-0 flex lg:gap-1 gap-2  justify-between lg:w-auto w-full">
               <div className="relative basis-full w-full">
-                <Options items={option} />
+                <Options onChange={(val) => setSort(val)} items={option} />
               </div>
 
               <div className="lg:hidden block basis-full w-full">
@@ -85,7 +144,12 @@ const Shop = () => {
             </div>
           </div>
           {/* all card */}
-          <ProductsSection data={data} isLoading={isLoading} />
+          <ProductsSection
+            data={data}
+            loading={loading}
+            loaderRef={loaderRef}
+            isLoading={isLoading}
+          />
         </div>
       </div>
     </main>
