@@ -201,7 +201,7 @@ const SignIn = () => {
                 <motion.div
                   initial={{ x: 0 }}
                   animate={{ x: ballToggle ? 200 : 0 }}
-                  transition={transition}
+                  // transition={transition}
                   className="absolute -bottom-14 -right-14 -z-30  h-1/3 w-1/3 rounded-full bg-gradient-to-br from-primary to-secondary shadow-[0px_10px_50px_10px_rgba(0,_0,_0,_0.25)]"
                 />
               </Card>
@@ -348,7 +348,7 @@ const SignIn = () => {
                 <motion.div
                   initial={{ x: 0 }}
                   animate={{ x: !ballToggle ? 200 : 0 }}
-                  transition={transition}
+                  // transition={transition}
                   className="absolute -bottom-14 -left-14 -z-30  h-1/3 w-1/3 rounded-full bg-gradient-to-br from-primary to-secondary shadow-[0px_10px_50px_10px_rgba(0,_0,_0,_0.25)]"
                 />
               </Card>

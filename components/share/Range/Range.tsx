@@ -57,7 +57,6 @@ const Range = ({ className, ...props }: SliderProps) => {
     if (numValue > maxPrice) numValue = maxPrice;
 
     const updatedRange = { ...priceRange, [name]: numValue };
-    console.log({ ...priceRange, [name]: numValue });
 
     // Prevent min > max and max < min
     if (updatedRange.min > updatedRange.max) {
