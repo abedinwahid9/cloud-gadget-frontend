@@ -1,11 +1,13 @@
 import cartReducer from "./slices/cartSlices";
 import imageSeletedReducer from "./slices/imageSeletedSlices";
+import filterSlices from "./slices/filterSlices";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
   //add all your reducers here
   cart: cartReducer,
   imageSelete: imageSeletedReducer,
+  filterSlices: filterSlices,
 });
 
 export const makeStore = () => {
