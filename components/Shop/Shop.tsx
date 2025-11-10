@@ -8,6 +8,8 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { useEffect, useRef, useState } from "react";
+import { useAppSelector } from "@/lib/redux/hooks";
+import useDebounce from "@/hooks/useDebounce";
 
 const option = [
   { value: "default", label: "Default" },
@@ -24,6 +26,11 @@ const Shop = () => {
   console.log(page);
   const [filter, setFilter] = useState("");
   const [sort, setSort] = useState("");
+
+  const priceRange = useAppSelector((state) => state.filterSlices.price_range);
+
+  const maxPrice = useDebounce(priceRange.max_Price, 600);
+  const minPrice = useDebounce(priceRange.min_Price, 600);
 
   // 👇 useInfiniteQuery instead of useQuery
   // const {

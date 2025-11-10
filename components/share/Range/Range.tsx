@@ -2,6 +2,8 @@
 import { cn } from "@/lib/utils";
 import { Slider } from "@/components/ui/slider";
 import { useState } from "react";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { priceMax, priceMin } from "@/lib/redux/slices/filterSlices";
 
 type SliderProps = React.ComponentProps<typeof Slider>;
 
@@ -15,12 +17,15 @@ const Range = ({ className, ...props }: SliderProps) => {
     min: 0,
     max: 50,
   });
+  const dispatch = useAppDispatch();
 
   const handleChange = (value: number[]) => {
     setPriceRange({
       min: value[0],
       max: value[1],
     });
+    dispatch(priceMin(value[0]));
+    dispatch(priceMax(value[1]));
   };
 
   return (
