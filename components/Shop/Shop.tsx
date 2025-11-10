@@ -23,12 +23,11 @@ const Shop = () => {
   const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const loaderRef = useRef<HTMLDivElement | null>(null);
-  console.log(page);
   const [filter, setFilter] = useState("");
   const [sort, setSort] = useState("");
 
+  // price ranga filter
   const priceRange = useAppSelector((state) => state.filterSlices.price_range);
-
   const maxPrice = useDebounce(priceRange.max_Price, 600);
   const minPrice = useDebounce(priceRange.min_Price, 600);
 
@@ -80,10 +79,13 @@ const Shop = () => {
     fields: "id,title,price,images,category,discount",
     sortBy: "price",
     orderSort: sort === "default" ? "" : sort,
+    maxPrice,
+    minPrice,
   };
+  console.log(query);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["products1", { sort }],
+    queryKey: ["products1", { sort, maxPrice, minPrice }],
     queryFn: async () => {
       const res = await axiosPublic.get("/product", { params: query });
       return res.data.allProduct;

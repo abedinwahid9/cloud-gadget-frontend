@@ -13,9 +13,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${baiJamjuree.variable || ""} ${
-          geistMono.variable || ""
-        }  antialiased `}
+        className={`${baiJamjuree.variable} ${geistMono.variable}  antialiased `}
         cz-shortcut-listen="true"
       >
         <StoreProvider>
