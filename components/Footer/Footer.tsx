@@ -2,12 +2,12 @@ import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="bg-secondary text-nav py-10 px-4 md:mb-0 mb-8  ">
+    <footer className="bg-primary text-text py-10 px-4 md:mb-0 mb-8  ">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
         {/* Logo + Tagline */}
         <div>
           <h2 className="text-2xl font-bold text-blue-500">GadgetHub</h2>
-          <p className="text-sm mt-2 text-nav">
+          <p className="text-sm mt-2 text-text">
             Your one-stop shop for the latest gadgets & tech accessories.
           </p>
         </div>
@@ -15,7 +15,7 @@ export default function Footer() {
         {/* Navigation Links */}
         <div>
           <h3 className="text-lg font-semibold mb-3">Shop</h3>
-          <ul className="space-y-2 text-sm text-nav">
+          <ul className="space-y-2 text-sm ">
             <li>
               <a href="#">New Arrivals</a>
             </li>
@@ -33,7 +33,7 @@ export default function Footer() {
 
         <div>
           <h3 className="text-lg font-semibold mb-3">Support</h3>
-          <ul className="space-y-2 text-sm text-nav">
+          <ul className="space-y-2 text-sm ">
             <li>
               <a href="#">Contact Us</a>
             </li>
@@ -77,7 +77,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-gray-800 mt-10 pt-4 text-sm text-center text-gray-500">
+      <div className="border-t border-gray-800 mt-10 pt-4 text-sm text-center text-nav">
         &copy; {new Date().getFullYear()} GadgetHub. All rights reserved.
       </div>
     </footer>

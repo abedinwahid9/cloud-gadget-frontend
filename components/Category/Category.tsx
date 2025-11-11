@@ -31,7 +31,7 @@ const Category = () => {
         align: "start",
         loop: true,
       }}
-      className="w-full md:p-5 p-2 select-none"
+      className="w-full  p-2 select-none "
       plugins={[
         Autoplay({
           delay: 2500,
@@ -39,7 +39,7 @@ const Category = () => {
         }),
       ]}
     >
-      <CarouselContent>
+      <CarouselContent className="p-1">
         {/* Show skeletons while loading OR when no data */}
         {isLoading || isEmpty
           ? Array.from({ length: 8 }).map((_, i) => (
@@ -61,7 +61,7 @@ const Category = () => {
                   className="basis-1/4 lg:basis-1/6 cursor-grabbing"
                 >
                   <Link href={`/shop/${item.slug}`}>
-                    <div className="w-full rounded-sm drop-shadow-2xl bg-radial from-primary/40 to-secondary/5 flex flex-col items-center justify-center md:p-2 p-1 hover:scale-105 transition-all duration-300">
+                    <div className="w-full rounded-sm drop-shadow-md bg-secondary/10 flex flex-col items-center justify-center md:py-2  p-1 hover:scale-105 transition-all duration-300">
                       <Image
                         src={item?.image || "/default.png"}
                         alt={item?.label || "category"}
@@ -69,7 +69,7 @@ const Category = () => {
                         height={60}
                         className="md:w-16 md:h-16 h-8 w-8 object-contain"
                       />
-                      <p className="md:text-sm text-[8px] text-secondary dark:text-nav font-semibold mt-1 text-center">
+                      <p className="md:text-sm text-[8px] text-primary dark:text-nav font-semibold mt-1 text-center">
                         {item?.label || "Unknown"}
                       </p>
                     </div>
