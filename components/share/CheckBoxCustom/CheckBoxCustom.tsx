@@ -28,7 +28,7 @@ const CheckBoxCustom = ({ items, title }: { items: Item[]; title: string }) => {
   };
 
   return (
-    <div className="p-2 bg-primary/10 rounded-md shadow-[0px_0px_10px_0px_#00a8a8] select-none">
+    <div className="p-2 bg-secondary/10 rounded-md  select-none">
       <p className="pb-4 font-semibold text-secondary dark:text-nav">{title}</p>
       <div className="flex flex-col gap-1">
         {items.map((item) => (

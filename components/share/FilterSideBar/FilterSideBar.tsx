@@ -1,6 +1,7 @@
 import Range from "@/components/share/Range/Range";
 import CheckBoxCustom from "@/components/share/CheckBoxCustom/CheckBoxCustom";
 import { Separator } from "@/components/ui/separator";
+import Title from "../Title/Title";
 
 const brands = [
   {
@@ -75,10 +76,8 @@ const mobileBrands = [
 const FilterSideBar = () => {
   return (
     <div className="my-2 mx-4">
-      <h2 className="text-3xl  font-semibold text-secondary dark:text-nav">
-        Filter
-      </h2>
-      <p className="md:text-base text-xs text-secondary dark:text-nav">
+      <Title text="filter" />
+      <p className="md:text-base text-xs text-primary font-medium dark:text-secondary capitalize">
         get own custom items
       </p>
       <Separator className=" bg-secondary dark:bg-nav w-full h-[1px] " />

@@ -40,9 +40,13 @@ const Options: React.FC<OptionsProps> = ({ items, onChange }) => {
           />
         </SelectTrigger>
         <SelectContent className="bg-white dark:bg-secondary w-full">
-          <SelectGroup className="bg-primary/45 rounded-lg p-1 text-secondary dark:text-nav ">
+          <SelectGroup className="bg-secondary/65 rounded-lg p-1 hover:text-secondary">
             {items.map((item) => (
-              <SelectItem key={item.value} value={item.value}>
+              <SelectItem
+                className="text-primary dark:text-nav "
+                key={item.value}
+                value={item.value}
+              >
                 {item.label}
               </SelectItem>
             ))}

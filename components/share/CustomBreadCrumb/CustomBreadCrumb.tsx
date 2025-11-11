@@ -36,7 +36,7 @@ const CustomBreadCrumb = () => {
     <Breadcrumb className="mt-4 mx-5 ">
       <BreadcrumbList>
         {/* Always show Home */}
-        <BreadcrumbItem className="text-lg font-semibold text-secondary dark:text-nav">
+        <BreadcrumbItem className="text-lg font-semibold text-primary dark:text-secondary  ">
           <BreadcrumbLink asChild>
             <Link href="/">Home</Link>
           </BreadcrumbLink>
@@ -54,15 +54,15 @@ const CustomBreadCrumb = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="start"
-                  className="bg-primary/75 border-0"
+                  className="bg-primary/85 border-0"
                 >
                   {crumbLink.slice(0, -1).map((item, i) => (
                     <DropdownMenuItem
-                      className="text-lg font-semibold text-secondary dark:text-nav capitalize"
+                      className="text-lg font-semibold text-secondary dark:text-secondary   capitalize"
                       key={i}
                       asChild
                     >
-                      <Link className="hover:text-primary" href={item.path}>
+                      <Link className="hover:text-nav" href={item.path}>
                         {item.name}
                       </Link>
                     </DropdownMenuItem>
@@ -74,7 +74,7 @@ const CustomBreadCrumb = () => {
 
             {/* Last item (current page) */}
             <BreadcrumbItem>
-              <BreadcrumbPage className="text-lg  font-semibold text-secondary dark:text-nav capitalize underline">
+              <BreadcrumbPage className="text-lg  font-semibold text-primary dark:text-secondary   capitalize underline">
                 {crumbLink[crumbLink.length - 1].name}
               </BreadcrumbPage>
             </BreadcrumbItem>
@@ -83,12 +83,12 @@ const CustomBreadCrumb = () => {
           /* Normal breadcrumb when <= 3 */
           crumbLink.map((path, i) => (
             <div
-              className="text-lg flex items-center font-semibold text-secondary dark:text-nav"
+              className="text-lg flex items-center font-semibold text-primary dark:text-secondary  "
               key={i}
             >
               <BreadcrumbItem>
                 {i === crumbLink.length - 1 ? (
-                  <BreadcrumbPage className="text-lg font-semibold text-secondary dark:text-nav capitalize underline">
+                  <BreadcrumbPage className="text-lg font-semibold text-primary dark:text-secondary  capitalize underline">
                     {path.name}
                   </BreadcrumbPage>
                 ) : (

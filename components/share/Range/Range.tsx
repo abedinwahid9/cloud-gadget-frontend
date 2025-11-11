@@ -32,6 +32,7 @@ const Range = ({ className, ...props }: SliderProps) => {
       return res.data.maxPrice;
     },
   });
+  console.log(maxPrice);
 
   useEffect(() => {
     if (maxPrice) {
@@ -71,7 +72,7 @@ const Range = ({ className, ...props }: SliderProps) => {
 
   if (isLoading) {
     return (
-      <div className="p-2 bg-primary/10 rounded-md shadow-[0px_0px_5px_2px_#00a8a8] select-none">
+      <div className="p-2 bg-primary/10 rounded-md  select-none">
         <p className="pb-4 font-semibold text-secondary dark:text-nav">Price</p>
         <Skeleton className="h-2 w-full rounded-full mb-3 bg-primary/20" />
         <div className="flex justify-between">
@@ -91,7 +92,7 @@ const Range = ({ className, ...props }: SliderProps) => {
   }
 
   return (
-    <div className="p-2 bg-primary/10 rounded-md shadow-[0px_0px_5px_2px_#00a8a8] select-none">
+    <div className="p-2 bg-secondary/10 rounded-md   select-none">
       <p className="pb-4 font-semibold text-secondary dark:text-nav">Price</p>
 
       <Slider

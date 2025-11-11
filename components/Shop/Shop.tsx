@@ -10,6 +10,7 @@ import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "@/lib/redux/hooks";
 import useDebounce from "@/hooks/useDebounce";
+import Title from "../share/Title/Title";
 
 const option = [
   { value: "default", label: "Default" },
@@ -85,11 +86,12 @@ const Shop = () => {
   console.log(query);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["products1", { sort, maxPrice, minPrice }],
+    queryKey: ["products1", query],
     queryFn: async () => {
       const res = await axiosPublic.get("/product", { params: query });
       return res.data.allProduct;
     },
+    enabled: !!maxPrice,
   });
 
   // infinite scroll observe
@@ -123,9 +125,7 @@ const Shop = () => {
           {/* top */}
           <div className="flex justify-between lg:items-end items-start  py-2  flex-col md:flex-row gap-2">
             <div>
-              <h2 className="text-3xl  font-semibold text-secondary dark:text-nav">
-                All Products
-              </h2>
+              {/* <Title text="All Products" /> */}
               <p className="md:text-base text-xs text-secondary dark:text-nav">
                 search result (244 items)
               </p>
