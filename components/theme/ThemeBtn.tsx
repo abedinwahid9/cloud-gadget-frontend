@@ -25,7 +25,7 @@ export function ThemeBtn() {
         aria-label="Toggle theme"
         className="relative bg-transparent hover:bg-transparent cursor-pointer flex justify-center"
       >
-        <Moon className="w-6 h-6 text-nav" />
+        <Moon className="w-6 h-6 text-secondary" />
       </button>
     );
   }
@@ -46,7 +46,7 @@ export function ThemeBtn() {
             transition={{ duration: 0.3 }}
             className="flex items-center justify-center"
           >
-            <Moon className="w-6 h-6 text-nav" />
+            <Moon className="w-6 h-6 text-secondary" />
           </motion.span>
         ) : (
           <motion.span
@@ -57,7 +57,7 @@ export function ThemeBtn() {
             transition={{ duration: 0.3 }}
             className="flex items-center justify-center"
           >
-            <FaSun className="w-6 h-6 text-nav" />
+            <FaSun className="w-6 h-6 text-secondary" />
           </motion.span>
         )}
       </AnimatePresence>

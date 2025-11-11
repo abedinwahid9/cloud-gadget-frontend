@@ -37,7 +37,7 @@ const Feature = async ({
 }) => {
   "use server";
   const carouselBtn =
-    "border-0 bg-primary/50 text-secondary rounded-full dark:text-nav dark:bg-secondary w-5 md:w-8 h-5 md:h-8 font-semibold hover:bg-primary";
+    "border-0 bg-primary text-nav rounded-full dark:text-nav dark:bg-secondary w-5 md:w-8 h-5 md:h-8 font-semibold hover:bg-secondary";
 
   const query: Query = {
     id: true,

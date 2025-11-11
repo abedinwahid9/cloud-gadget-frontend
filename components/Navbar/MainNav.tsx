@@ -21,8 +21,8 @@ import Image from "next/image";
 import logo1 from "@/public/logo1.png";
 
 const MainNav = () => {
-  const socialIconStyle = "md:w-6 md:h-6 w-5 h-5 text-nav";
-  const userIcons = "w-6 h-6 text-nav";
+  const socialIconStyle = "md:w-6 md:h-6 w-5 h-5 text-text";
+  const userIcons = "w-6 h-6 text-secondary hover:text-nav";
 
   const navLink = [
     { name: "Home", href: "/" },
@@ -37,21 +37,21 @@ const MainNav = () => {
     <header>
       <Drawer direction="left">
         {/* top nav */}
-        <div className="w-full bg-secondary">
+        <div className="w-full bg-primary">
           <div className="container mx-auto py-2 lg:px-5 px-1 flex justify-between">
             <Link
               href="tel:01716893200"
               aria-hidden="true"
               className="flex items-center gap-1"
             >
-              <FaMobileAlt className="text-nav md:text-base text-xs" />
-              <span className="text-nav [text-shadow:_0px_0px_3px_#000000] font-semibold md:text-sm text-[8px]">
+              <FaMobileAlt className="text-text md:text-base text-xs" />
+              <span className="text-text  font-semibold md:text-sm text-[8px]">
                 +88-01716893200
               </span>
             </Link>
             <h2
               aria-hidden="true"
-              className="text-nav font-semibold [text-shadow:_0px_0px_3px_#000000] md:text-lg text-xs"
+              className="text-text font-semibold  md:text-lg text-xs"
             >
               Welcome to Cloudie Gadgets Shop
             </h2>
@@ -70,7 +70,7 @@ const MainNav = () => {
         </div>
 
         {/* main nav */}
-        <div className="w-full bg-gradient-to-r from-20% from-primary to-secondary to-70%  py-3 lg:px-5  px-1 ">
+        <div className="w-full shadow-md shadow-primary/20 to-70%  py-4 lg:px-5  px-1 ">
           <div className="container mx-auto flex justify-between items-center">
             {/* Logo + Menu */}
             <div className="flex items-center gap-2">
@@ -89,65 +89,59 @@ const MainNav = () => {
                 <h2 className="text-xl font-bold">Cloudie Gadget</h2>
               </Link>
             </div>
-
-            {/* Navigation + Icons */}
-            <div className="flex items-center gap-4">
-              {/* Nav links */}
-              <ul className="text-nav lg:flex items-center gap-6 hidden">
-                {navLink.map((item) => {
-                  const isActive =
-                    pathname === item.href ||
-                    (item.href !== "/" && pathname.startsWith(item.href));
-                  return (
-                    <li key={item.name} className="group relative">
-                      <Link
-                        href={item.href}
-                        className={`capitalize font-semibold text-lg transition-colors duration-300 [text-shadow:_0px_0px_3px_#000000] ${
-                          isActive
-                            ? "text-primary"
-                            : "text-nav hover:text-primary"
+            {/* Nav links */}
+            <ul className="text-nav lg:flex items-center gap-6 hidden">
+              {navLink.map((item) => {
+                const isActive =
+                  pathname === item.href ||
+                  (item.href !== "/" && pathname.startsWith(item.href));
+                return (
+                  <li key={item.name} className="group relative">
+                    <Link
+                      href={item.href}
+                      className={`capitalize font-semibold text-lg transition-colors duration-300  ${
+                        isActive ? "text-nav" : "text-secondary hover:text-nav"
+                      }`}
+                    >
+                      {item.name}
+                      <span
+                        className={`absolute left-0 -bottom-1 h-[2px] bg-nav transition-all duration-300 ${
+                          isActive ? "w-full" : "w-0 group-hover:w-full"
                         }`}
-                      >
-                        {item.name}
-                        <span
-                          className={`absolute left-0 -bottom-1 h-[2px] bg-primary transition-all duration-300 ${
-                            isActive ? "w-full" : "w-0 group-hover:w-full"
-                          }`}
-                        />
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
+                      />
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
 
-              {/* User icons */}
-              <ul className="text-nav flex items-center gap-4">
-                <li className="hidden lg:block">
-                  <Link href="/wishlist">
-                    <Wishlist css={userIcons} />
-                  </Link>
-                </li>
-                <li className=" hidden lg:block">
-                  <Link href="/cart">
-                    <Cart css={userIcons} />
-                  </Link>
-                </li>
-                <li>
-                  <FaSearch className={userIcons} />
-                </li>
-                <li className="hidden lg:block">
-                  <ThemeBtn />
-                </li>{" "}
-                <li>
-                  <UserProfile />
-                </li>
-              </ul>
-            </div>
+            {/* User icons */}
+            <ul className="text-nav flex items-center gap-4">
+              <li className="hidden lg:block">
+                <Link href="/wishlist">
+                  <Wishlist css={userIcons} />
+                </Link>
+              </li>
+              <li className=" hidden lg:block">
+                <Link href="/cart">
+                  <Cart css={userIcons} />
+                </Link>
+              </li>
+              <li>
+                <FaSearch className={userIcons} />
+              </li>
+              <li className="hidden lg:block">
+                <ThemeBtn />
+              </li>{" "}
+              <li>
+                <UserProfile />
+              </li>
+            </ul>
           </div>
         </div>
 
         {/* category nav link */}
-        <div className="bg-primary/55 mt-2 mx-2 rounded-xl hidden lg:block">
+        <div className="bg-secondary/50 mt-2 mx-2 shadow-[0px_0px_5px_0px_#233E2B]/50 rounded-xl hidden lg:block">
           <CateNav />
         </div>
 

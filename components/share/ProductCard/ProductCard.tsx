@@ -31,12 +31,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <div className="relative w-full max-w-[250px] mx-auto rounded-xl shadow-sm bg-primary/10 transition flex flex-col group">
+    <div className="relative w-full max-w-[250px] mx-auto rounded-xl shadow-sm bg-gradient-to-tr from-text/20 to-secondary/20  transition flex flex-col group">
       {/* Category Badge */}
       {category && (
         <div>
           <div
-            className={`${style.tag} relative inline-block -top-1 -left-1 bg-gradient-to-r from-primary/30 to-secondary/30  text-[10px] sm:text-xs md:text-base rounded-xl border-8 border-background py-0.5 px-3 text-secondary dark:text-nav font-semibold uppercase tracking-wide`}
+            className={`${style.tag} relative inline-block -top-1 -left-1 bg-gradient-to-tr from-text/20 to-secondary/20  text-[10px] sm:text-xs md:text-base rounded-xl border-8 border-background py-0.5 px-3 text-primary dark:text-nav font-semibold uppercase tracking-wide`}
           >
             {category}
           </div>
@@ -75,7 +75,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <div className="px-2 flex flex-col gap-1">
         {/* Title */}
         <Link href={`/shop/product/${id}`}>
-          <p className="text-xs sm:text-sm md:text-base font-medium hover:underline truncate text-secondary dark:text-nav">
+          <p className="text-xs sm:text-sm md:text-base font-medium hover:underline truncate text-primary dark:text-nav">
             {title}
           </p>
         </Link>

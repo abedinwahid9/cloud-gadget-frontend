@@ -63,27 +63,27 @@ const CateNav = () => {
                 <Link href={`/shop/${cat.slug}`}>
                   <NavigationMenuTrigger
                     icon
-                    className="text-secondary px-2 data-[state=open]:text-secondary hover:text-secondary font-bold uppercase bg-transparent dark:text-white whitespace-normal"
+                    className="text-primary px-2 data-[state=open]:text-nav hover:text-secondary font-bold uppercase bg-transparent dark:text-white whitespace-normal"
                   >
                     {cat.label}
                   </NavigationMenuTrigger>
                 </Link>
               ) : (
                 <Link href={`/shop/${cat.slug}`}>
-                  <NavigationMenuTrigger className="text-secondary data-[state=open]:text-secondary hover:text-secondary font-bold uppercase bg-transparent dark:text-white ">
+                  <NavigationMenuTrigger className="text-primary data-[state=open]:text-nav hover:text-secondary font-bold uppercase bg-transparent dark:text-white ">
                     {cat.label}
                   </NavigationMenuTrigger>
                 </Link>
               )}
 
               {cat?.subCategory.length > 0 && (
-                <NavigationMenuContent className="bg-secondary/75  rounded-md p-4 shadow-lg min-w-[250px] backdrop-blur-3xl  border-4 border-secondary">
+                <NavigationMenuContent className="bg-primary/75  rounded-md p-4 shadow-lg min-w-[250px] backdrop-blur-3xl  border-4 border-nav/50">
                   <ul className="grid gap-2 ">
                     {cat?.subCategory?.map((sub: SubCategory) => (
                       <li key={sub.id}>
                         <NavigationMenuLink asChild>
                           <Link href={`/shop/${cat.slug}/${sub.slug}`}>
-                            <div className="text-lg text-nav leading-none font-semibold capitalize hover:underline">
+                            <div className="text-lg text-secondary hover:text-nav leading-none font-semibold capitalize hover:underline">
                               {sub.label}
                             </div>
                           </Link>

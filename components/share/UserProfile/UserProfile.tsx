@@ -11,7 +11,7 @@ import Link from "next/link";
 import { FaUserAlt } from "react-icons/fa";
 
 const UserProfile = () => {
-  const userIcons: string = "w-6 h-6 text-nav";
+  const userIcons: string = "w-6 h-6 text-secondary hover:text-nav";
   const menuItemclassName =
     "group relative text-md font-semibold transition-colors duration-300 hover:text-secondary";
   const underlineclassName =
@@ -19,14 +19,16 @@ const UserProfile = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="focus:outline-none cursor-pointer flex items-center ">
-        <FaUserAlt className={userIcons} />
+      <DropdownMenuTrigger className="focus:outline-none group cursor-pointer flex items-center ">
+        <FaUserAlt
+          className={`${userIcons} group-data-[state=open]:text-nav`}
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         side="bottom"
         align="end" // aligns to the left of trigger
         sideOffset={15} // offset from the trigger (downward)
-        className="bg-primary border-none text-secondary "
+        className="bg-primary/95 border-none text-secondary "
       >
         <DropdownMenuLabel className="font-bold">My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />

@@ -10,7 +10,7 @@ const Wishlist = ({ css }: { css: string }) => {
           left: "50%",
           transform: "translate(-50%,-50%)",
         }}
-        className="absolute text-xs font-bold tabular-nums leading-none text-secondary"
+        className="absolute text-xs font-bold tabular-nums leading-none text-primary"
       >
         5
       </span>
