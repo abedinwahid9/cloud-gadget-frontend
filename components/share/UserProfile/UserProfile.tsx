@@ -15,7 +15,7 @@ const UserProfile = () => {
   const menuItemclassName =
     "group relative text-md font-semibold transition-colors duration-300 hover:text-secondary";
   const underlineclassName =
-    "absolute left-0 -bottom-1 h-[2px] w-0 bg-secondary transition-all duration-300 group-hover:w-full";
+    "absolute left-0 -bottom-1 h-[2px] w-0 bg-nav transition-all duration-300 group-hover:w-full";
 
   return (
     <DropdownMenu>
