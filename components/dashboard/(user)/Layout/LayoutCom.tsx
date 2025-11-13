@@ -28,10 +28,10 @@ const LayoutCom = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] ">
+    <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] py-2  ">
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:block border-r bg-primary/20 dark:bg-gray-900 p-3 border-r-secondary/50">
-        <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
+      <aside className="hidden lg:block border-r p-3 border-r-secondary/50 border-t-md bg-secondary/20 dark:bg-blue-300/20 border border-gray-200 dark:border-gray-700 shadow-[0px_0px_1px_0px_#00a8a8] rounded-t-xl ">
+        <h2 className="text-lg font-semibold mb-4 text-primary dark:text-nav">
           My Account
         </h2>
         <nav className="space-y-2">
@@ -46,14 +46,14 @@ const LayoutCom = ({ children }: { children: React.ReactNode }) => {
                 <span
                   className={`capitalize font-semibold text-base transition-colors duration-300 ${
                     isActive
-                      ? "text-primary"
-                      : "text-gray-700 dark:text-gray-200 hover:text-primary"
+                      ? "text-secondary"
+                      : "text-primary dark:text-nav hover:text-secondary"
                   }`}
                 >
                   {item.title}
                 </span>
                 <span
-                  className={`absolute left-3 bottom-1 h-[2px] bg-primary transition-all duration-300 ${
+                  className={`absolute left-3 bottom-1 h-[2px] bg-secondary transition-all duration-300 ${
                     isActive
                       ? "w-[calc(100%-1.5rem)]"
                       : "w-0 group-hover:w-[calc(100%-1.5rem)]"
@@ -66,7 +66,7 @@ const LayoutCom = ({ children }: { children: React.ReactNode }) => {
       </aside>
 
       {/* Main Content */}
-      <main className="p-4 relative">
+      <main className="px-2  relative">
         {/* Mobile Toggle */}
         <div className="lg:hidden mb-4">
           <Button
@@ -113,7 +113,7 @@ const LayoutCom = ({ children }: { children: React.ReactNode }) => {
                       <span
                         className={`capitalize font-semibold text-base transition-colors duration-300 ${
                           isActive
-                            ? "text-secondary dark:text-primary"
+                            ? "text-secondary dark:text-secondary"
                             : "text-nav  hover:text-primary"
                         }`}
                       >

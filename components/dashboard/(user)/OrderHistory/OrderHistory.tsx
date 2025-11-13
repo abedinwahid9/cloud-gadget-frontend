@@ -13,6 +13,7 @@ import {
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { CardStyle } from "@/lib/utils/customCss";
 
 const orders = [
   {
@@ -47,7 +48,7 @@ const OrderHistory = ({
 }) => {
   return (
     <div>
-      <Card className="bg-primary/15 dark:bg-blue-300/15  border border-gray-200 dark:border-gray-700 shadow-[0px_0px_10px_0px_#00a8a8]">
+      <Card className={`${CardStyle}`}>
         <CardHeader>
           <CardTitle className="text-xl font-bold text-primary capitalize">
             {title}

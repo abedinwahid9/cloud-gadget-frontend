@@ -26,6 +26,7 @@ import { useSelector } from "react-redux";
 import ToastCustom from "@/components/share/ToastCustom/ToastCustom";
 import { Spinner } from "@/components/ui/spinner";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { CardStyle } from "@/lib/utils/customCss";
 
 type Variant = { name: string; options: string | string[] };
 
@@ -206,9 +207,6 @@ const AddProductPage = () => {
     setImages(filter);
   };
 
-  const CartStyle =
-    "bg-primary/20 dark:bg-blue-300/20 border border-gray-200 dark:border-gray-700 shadow-[0px_0px_10px_0px_#00a8a8]";
-
   return (
     <div>
       <FormProvider {...methods}>
@@ -216,7 +214,7 @@ const AddProductPage = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 pt-2">
           {/* Basic Info */}
           <div className="flex gap-2 md:flex-row flex-col">
-            <Card className={`w-full md:w-2/3 ${CartStyle}`}>
+            <Card className={`w-full md:w-2/3 ${CardStyle}`}>
               <CardContent className="space-y-6 px-2">
                 {/* Title */}
                 <div className="grid gap-2">
@@ -328,7 +326,7 @@ const AddProductPage = () => {
             </Card>
 
             {/* Organization */}
-            <Card className={`${CartStyle} w-full md:w-1/3`}>
+            <Card className={`${CardStyle} w-full md:w-1/3`}>
               <CardHeader>
                 <CardTitle>Organization</CardTitle>
               </CardHeader>
@@ -398,7 +396,7 @@ const AddProductPage = () => {
           </div>
 
           {/* Pricing & Stock */}
-          <Card className={CartStyle}>
+          <Card className={CardStyle}>
             <CardHeader>
               <CardTitle>Pricing & Inventory</CardTitle>
             </CardHeader>
@@ -464,7 +462,7 @@ const AddProductPage = () => {
           </Card>
 
           {/* Variants */}
-          <Card className={CartStyle}>
+          <Card className={CardStyle}>
             <CardHeader>
               <CardTitle>Variants & Options</CardTitle>
             </CardHeader>

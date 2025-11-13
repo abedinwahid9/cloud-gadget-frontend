@@ -59,22 +59,25 @@ const ComboBox: React.FC<ComboBoxProps> = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full bg-transparent justify-between rounded-lg text-primary hover:text-primary capitalize"
+          className="w-full bg-transparent border-primary justify-between rounded-lg text-primary hover:text-primary capitalize"
         >
           {value ? value : `Select ${title}...`}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[250px] bg-gradient-to-b from-primary to-secondary p-0 ">
+      <PopoverContent className="w-[250px] bg-secondary/85 p-0 drop-shadow-sm drop-shadow-nav">
         <Command>
-          <CommandInput placeholder={`Search ${title}...`} className="h-9" />
+          <CommandInput
+            placeholder={`Search ${title}...`}
+            className="h-9 text-text dark:text-primary"
+          />
           <CommandList>
             <CommandEmpty>No {title} found.</CommandEmpty>
             <CommandGroup>
               {categories.map((category) => (
                 <CommandItem
                   key={category.id}
-                  className="text-nav text-base font-semibold data-[selected=true]:text-primary capitalize"
+                  className="text-text text-base font-semibold data-[selected=true]:text-nav data-[selected=true]:bg-primary capitalize"
                   value={category.id}
                   onSelect={(currentValue) => {
                     const selected = categories.find(

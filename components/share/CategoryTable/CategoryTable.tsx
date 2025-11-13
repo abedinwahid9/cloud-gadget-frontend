@@ -160,7 +160,7 @@ const CategoryTable = () => {
               <Button
                 size="sm"
                 variant="outline"
-                className="hover:bg-primary"
+                className="hover:bg-secondary"
                 // onClick={() => onEditCategory(cat.id)}
               >
                 <Edit className="h-4 w-4" />
@@ -168,7 +168,7 @@ const CategoryTable = () => {
               <Button
                 size="sm"
                 variant="outline"
-                className="hover:bg-primary"
+                className="hover:bg-secondary"
                 onClick={() =>
                   ConfirmToast(`Delete ${cat.label} category?`, () =>
                     handleDeleteCategory(cat.id)
@@ -193,7 +193,7 @@ const CategoryTable = () => {
             {cat.subCategory.map((sub) => (
               <div
                 key={sub.id}
-                className="flex items-center justify-between gap-2 border p-1 rounded-md bg-primary/20"
+                className="flex items-center justify-between gap-2 border p-1 rounded-md bg-secondary/20"
               >
                 <div className="w-20 h-16">
                   {sub.image && (
@@ -211,7 +211,7 @@ const CategoryTable = () => {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="hover:bg-primary"
+                    className="hover:bg-secondary"
                     // onClick={() => onEditSubCategory(cat.id, sub.id)}
                   >
                     <Edit className="h-4 w-4" />
@@ -220,7 +220,7 @@ const CategoryTable = () => {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="hover:bg-primary"
+                    className="hover:bg-secondary"
                     onClick={() =>
                       ConfirmToast(`Delete ${sub.label} sub-category?`, () =>
                         handleDeleteSubCategory(sub.id)
@@ -280,12 +280,12 @@ const CategoryTable = () => {
   return (
     <div className="rounded-md border p-2">
       <Table>
-        <TableHeader className="bg-primary/20 ">
+        <TableHeader className="bg-secondary/20 rounded-3xl">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <TableHead
-                  className="text-secondary font-semibold text-lg dark:text-nav underline"
+                  className="text-primary font-semibold text-lg dark:text-nav underline"
                   key={header.id}
                 >
                   {flexRender(
@@ -300,7 +300,7 @@ const CategoryTable = () => {
         <TableBody>
           {table?.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow className="text-secondary  dark:text-nav " key={row.id}>
+              <TableRow className="text-primary  dark:text-nav " key={row.id}>
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

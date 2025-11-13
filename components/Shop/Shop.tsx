@@ -83,15 +83,13 @@ const Shop = () => {
     maxPrice,
     minPrice,
   };
-  console.log(query);
 
-  const { data, isLoading } = useQuery({
+  const { data = [], isLoading } = useQuery({
     queryKey: ["products1", query],
     queryFn: async () => {
       const res = await axiosPublic.get("/product", { params: query });
       return res.data.allProduct;
     },
-    enabled: !!maxPrice,
   });
 
   // infinite scroll observe
@@ -127,7 +125,7 @@ const Shop = () => {
             <div>
               {/* <Title text="All Products" /> */}
               <p className="md:text-base text-xs text-secondary dark:text-nav">
-                search result (244 items)
+                search result ({data.length} items)
               </p>
             </div>
             <div className="lg:pr-1.5 pr-0 flex lg:gap-1 gap-2  justify-between lg:w-auto w-full">
