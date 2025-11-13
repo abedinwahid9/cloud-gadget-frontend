@@ -36,7 +36,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       {category && (
         <div>
           <div
-            className={`${style.tag} relative inline-block -top-1 -left-1 bg-gradient-to-tr from-text/20 to-secondary/20  text-[10px] sm:text-xs md:text-base rounded-xl border-8 border-background py-0.5 px-3 text-primary dark:text-nav font-semibold uppercase tracking-wide`}
+            className={`${style.tag} relative inline-block -top-1 -left-1 bg-gradient-to-tr from-nav/20 to-secondary/20  text-[10px] sm:text-xs md:text-base rounded-xl border-8 border-background py-0.5 px-3 text-primary dark:text-nav font-semibold uppercase tracking-wide`}
           >
             {category}
           </div>
@@ -82,7 +82,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* Price + Rating */}
         <div className="flex items-start flex-col w-full">
-          <div className="text-primary">
+          <div className="text-primary dark:text-secondary">
             <span className="text-sm sm:text-base md:text-lg font-bold">
               ৳ {price.toFixed(2)}
             </span>

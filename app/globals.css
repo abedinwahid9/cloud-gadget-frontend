@@ -118,6 +118,7 @@
   --card: oklch(0.21 0.006 285.885);
   --card-foreground: oklch(0.985 0 0);
   --text-color: #cdffdc;
+  --text-nav: #cdffdc;
   --popover-foreground: oklch(0.985 0 0);
   --primary: #18291d;
   --primary-foreground: oklch(0.21 0.006 285.885);
