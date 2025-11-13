@@ -23,7 +23,7 @@ export default function MobileNav() {
 
   return (
     <div className="fixed bottom-0 right-0 w-full  lg:hidden block z-50">
-      <div className="flex items-center justify-between  rounded-t-3xl py-2.5 px-2 bg-secondary shadow-xl">
+      <div className="flex items-center justify-between  rounded-t-3xl py-2.5 px-2 bg-primary shadow-xl">
         {navItems.map((item) => {
           const isActive =
             item.href &&
@@ -50,7 +50,7 @@ export default function MobileNav() {
               className={`flex items-center justify-center transition-all duration-300 ease-in-out py-1  rounded-full whitespace-nowrap
                   ${
                     isActive
-                      ? "bg-primary text-nav w-28 shadow-md "
+                      ? "bg-secondary text-nav w-28 shadow-md "
                       : "bg-transparent text-nav w-12"
                   }
                 `}

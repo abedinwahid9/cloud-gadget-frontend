@@ -18,6 +18,7 @@ import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { removeSeletedImageAll } from "@/lib/redux/slices/imageSeletedSlices";
 import ToastCustom from "@/components/share/ToastCustom/ToastCustom";
+import { CardStyle } from "@/lib/utils/customCss";
 
 // Form type
 type FormValues = {
@@ -90,7 +91,7 @@ const AddCategories = () => {
   };
 
   return (
-    <Card className="bg-primary/20 shadow-[0px_0px_10px_0px_#00a8a8] dark:bg-blue-300/20 gap-3 border border-gray-200 dark:border-gray-700 p-4">
+    <Card className={`p-4 ${CardStyle}`}>
       <CardHeader>
         <CardTitle className="text-secondary font-semibold text-lg dark:text-nav underline">
           Add Categories
@@ -132,7 +133,7 @@ const AddCategories = () => {
                       required: "category must be required",
                     })}
                     placeholder="Category Name"
-                    className="text-secondary placeholder:text-primary"
+                    className="text-secondary placeholder:text-primary border-primary"
                   />
                   <Button
                     type="button"

@@ -14,6 +14,7 @@ import { removeSeletedImageAll } from "@/lib/redux/slices/imageSeletedSlices";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CardStyle } from "@/lib/utils/customCss";
 
 interface Banner {
   _id?: string;
@@ -158,9 +159,10 @@ const Banner = ({ limit, nameIndex }: { limit: number; nameIndex: number }) => {
   return (
     <FormProvider {...method}>
       <form onSubmit={handleSubmit(submitForm)} className="space-y-4">
-        <div className="space-y-1 bg-primary/20  rounded-lg p-2">
-          <h3 className="text-lg font-semibold text-primary">
-            Banner #{nameIndex} (limit: {limit})
+        <div className={`space-y-1   rounded-lg p-2 ${CardStyle}`}>
+          <h3 className="text-lg font-semibold text-secondary">
+            Banner #{nameIndex}{" "}
+            <span className="text-nav">(limit: {limit})</span>
           </h3>
           <div className="flex gap-2">
             {fields.map((field, index) => {

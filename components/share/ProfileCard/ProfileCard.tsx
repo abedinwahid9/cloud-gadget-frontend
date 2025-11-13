@@ -10,10 +10,11 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { CardStyle } from "@/lib/utils/customCss";
 
 const ProfileCard = () => {
   return (
-    <Card className="bg-primary/20 shadow-[0px_0px_10px_0px_#00a8a8] dark:bg-blue-300/20  border border-gray-200 dark:border-gray-700">
+    <Card className={CardStyle}>
       <CardHeader className="flex flex-col items-center ">
         <Avatar className="w-24 h-24">
           <AvatarImage src="https://github.com/shadcn.png" alt="User Avatar" />

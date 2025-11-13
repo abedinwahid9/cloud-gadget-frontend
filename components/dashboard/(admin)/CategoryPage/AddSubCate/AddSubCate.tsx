@@ -21,6 +21,7 @@ import ToastCustom from "@/components/share/ToastCustom/ToastCustom";
 import UploadImages from "@/components/share/UploadImages/UploadImages";
 import { removeSeletedImageAll } from "@/lib/redux/slices/imageSeletedSlices";
 import { useAppDispatch } from "@/lib/redux/hooks";
+import { CardStyle } from "@/lib/utils/customCss";
 
 // Form data type
 type FormValues = {
@@ -88,7 +89,7 @@ const AddSubCate = () => {
   };
 
   return (
-    <Card className="bg-primary/20 shadow-[0px_0px_10px_0px_#00a8a8] dark:bg-blue-300/20 gap-3 border border-gray-200 dark:border-gray-700 p-4">
+    <Card className={`${CardStyle} p-4`}>
       <CardHeader>
         <CardTitle className="text-secondary font-semibold text-lg dark:text-nav underline">
           Add Sub-Categories
@@ -171,7 +172,7 @@ const AddSubCate = () => {
                       },
                     })}
                     placeholder="Add Sub-Category"
-                    className="text-secondary placeholder:text-primary"
+                    className="text-secondary placeholder:text-primary border-primary"
                   />
                   {errors.subCategories?.[index]?.value && (
                     <p className="text-red-500 text-sm ">

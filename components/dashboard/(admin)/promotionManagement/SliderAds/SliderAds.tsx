@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { removeSeletedImageAll } from "@/lib/redux/slices/imageSeletedSlices";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CardStyle } from "@/lib/utils/customCss";
 
 interface SliderItem {
   image: string;
@@ -130,7 +131,7 @@ const SliderAds = () => {
     <FormProvider {...methods}>
       <form
         onSubmit={handleSubmit(handleForm)}
-        className="bg-primary/10 text-white p-6 rounded-xl shadow-lg space-y-6"
+        className={` text-white p-6 rounded-xl shadow-lg space-y-6 ${CardStyle}`}
       >
         <div className="border-b border-primary/40 pb-2 mb-4">
           <Title text="📢 Slider Ads" />
@@ -141,13 +142,13 @@ const SliderAds = () => {
             key={field.id}
             className="bg-dark/80 border border-primary/30 rounded-lg p-5 space-y-4 relative hover:shadow-md transition"
           >
-            <h3 className="text-lg font-semibold text-primary">
+            <h3 className="text-lg font-semibold text-secondary">
               Slider #{index + 1}
             </h3>
 
             {/* Image */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-nav mb-2">
                 Banner Image
               </label>
               <Controller

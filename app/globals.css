@@ -97,10 +97,10 @@
   --background: oklch(0.955 0.0083 91.48);
   --card: oklch(1 0 0);
   --badge: oklch(0.628 0.2577 29.23);
-  --text-color: #cdffdc;
-  --text-nav: #ff6b00;
-  --primary: #233e2b;
-  --secondary: #69ba7f;
+  --text-color: oklch(95.612% 0.0692 154.484);
+  --text-nav: oklch(70.221% 0.20041 45.084);
+  --primary: oklch(33.593% 0.0472 152.693);
+  --secondary: oklch(72.145% 0.11751 151.306);
   --secondary-foreground: #2d6f3f;
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
@@ -113,11 +113,12 @@
 }
 
 .dark {
-  --background: oklch(0.141 0.005 285.823);
+  --background: oklch(25.277% 0.00375 286.023);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
   --card-foreground: oklch(0.985 0 0);
-  --text-color: #cdffdc;
+  --text-color: oklch(95.612% 0.0692 154.484);
+  --text-nav: oklch(95.612% 0.0692 154.484);
   --popover-foreground: oklch(0.985 0 0);
   --primary: #18291d;
   --primary-foreground: oklch(0.21 0.006 285.885);

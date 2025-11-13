@@ -25,7 +25,7 @@ const ProductsSection = ({
   loaderRef,
   loading,
 }: ProductsSectionProps) => {
-  if (isLoading) {
+  if (isLoading || data.length === 0) {
     return (
       <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-2 lg:pr-1 pr-0">
         {Array.from({ length: 8 }).map((_, i) => (

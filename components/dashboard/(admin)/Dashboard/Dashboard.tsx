@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-
 import SummaryCard from "@/components/share/SummaryCard/SummaryCard";
 import OrderHistory from "@/components/dashboard/(user)/OrderHistory/OrderHistory";
 import SalesChart from "@/components/share/SalesChart/SalesChart";
+import { FaChartLine, FaShoppingBag, FaStopwatch } from "react-icons/fa";
 
 const Dashboard = () => {
   return (
@@ -13,16 +13,19 @@ const Dashboard = () => {
       <div className="grid md:grid-cols-4 gap-6">
         {/* <ProfileCard /> */}
         <SummaryCard
+          IconComponent={FaShoppingBag}
           title="Total Orders"
           value={1200}
           gradient="from-green-400/30 to-teal-400/30"
         />
         <SummaryCard
+          IconComponent={FaChartLine}
           title="Total Revenue"
           value="$56,300"
           gradient="from-blue-400/30 to-indigo-400/30"
         />
         <SummaryCard
+          IconComponent={FaStopwatch}
           title="Pending Orders"
           value={15}
           gradient="from-yellow-400/30 to-orange-400/30"
