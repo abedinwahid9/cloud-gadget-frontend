@@ -26,50 +26,42 @@ import { Switch } from "@/components/ui/switch";
 import CustomBtn from "@/components/share/CustomBtn/CustomBtn";
 import { CiEdit } from "react-icons/ci";
 
-import AddProduct from "../AddProduct/AddProduct";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { toast } from "sonner";
+import { CardStyle } from "@/lib/utils/customCss";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 
 // --- Product type ---
 type Product = {
+  productId: string;
   id: number;
-  name: string;
+  title: string;
   category: string;
-  stock: string;
+  stock_quantity: string;
   price: number;
-  discountPercentage: number;
+  discount: number;
   status: string;
-  image: StaticImageData;
+  variants?: Array<{
+    name: string;
+    options: string[];
+  }>;
+  images: string[];
 };
-
-// --- Sample data ---
-const products: Product[] = Array.from({ length: 100 }, (_, i) => ({
-  id: i + 1,
-  name: `Product ${i + 1}`,
-  category: i % 2 === 0 ? "Clothes" : "Gadget",
-  stock: i % 3 === 0 ? "Out of Stock" : "124 Low Stock",
-  price: 47 * (i + 1),
-  discountPercentage: 15,
-  status: i % 2 === 0 ? "Published" : "Inactive",
-  image: img1,
-}));
 
 // --- Helpers ---
-const getStockClass = (stock: string) => {
-  if (stock.includes("Out")) return "text-red-500 font-medium";
-  if (stock.includes("Low")) return "text-orange-500 font-medium";
-  return "text-green-500 font-medium";
-};
+// const getStockClass = (stock: string) => {
+//   if (stock.includes("Out")) return "text-red-500 font-medium";
+//   if (stock.includes("Low")) return "text-orange-500 font-medium";
+//   return "text-green-500 font-medium";
+// };
 
 const calculateDiscountPrice = ({
   value,
@@ -79,6 +71,9 @@ const calculateDiscountPrice = ({
   percentage: number;
 }) => {
   const discountAmount = value * (percentage / 100);
+  if (discountAmount === 0) {
+    return 0;
+  }
   return Math.floor(value - discountAmount);
 };
 
@@ -88,18 +83,25 @@ const getColumns = (
   handleSwitchChange: (id: number, checked: boolean) => void
 ): ColumnDef<Product>[] => [
   {
+    accessorKey: "productId",
+    header: "Product ID",
+    cell: ({ row }) => <span>{row.original.productId}</span>,
+  },
+  {
     accessorKey: "name",
     header: "Product",
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <Image
-          src={row.original.image}
-          alt={row.original.name}
+          src={row.original.images[0]}
+          alt={row.original.title}
           width={40}
           height={40}
           className="rounded-md"
         />
-        <span className="font-medium">{row.original.name}</span>
+        <span className="font-medium text-wrap truncate w-28">
+          {row.original.title}
+        </span>
       </div>
     ),
   },
@@ -117,10 +119,10 @@ const getColumns = (
         $
         {calculateDiscountPrice({
           value: row.original.price,
-          percentage: row.original.discountPercentage,
+          percentage: row.original.discount,
         })}{" "}
         <span className="text-gray-500 text-xs">
-          ({row.original.discountPercentage}% off)
+          ({row.original.discount}% off)
         </span>
       </span>
     ),
@@ -129,17 +131,39 @@ const getColumns = (
     accessorKey: "stock",
     header: "Stock",
     cell: ({ row }) => (
-      <span className={getStockClass(row.original.stock)}>
-        {row.original.stock}
+      <span
+      //  className={getStockClass(row.original.stock_quantity)}
+      >
+        {row.original.stock_quantity}
       </span>
     ),
+  },
+  {
+    accessorKey: "color",
+    header: "Color",
+    cell: ({ row }) => {
+      const variants = row.original.variants || [];
+      const colorVariant = variants.find((v) => v.name === "color");
+
+      return (
+        <div className="flex gap-1">
+          {colorVariant?.options?.map((color: string) => (
+            <div
+              key={color}
+              className="w-3 h-3 rounded-full"
+              style={{ backgroundColor: color }}
+            ></div>
+          ))}
+        </div>
+      );
+    },
   },
   {
     id: "status",
     header: "Status",
     cell: ({ row }) => (
       <Switch
-        checked={!!switchStates[row.original.id]}
+        checked={Boolean(row.original.status)}
         onCheckedChange={(checked) =>
           handleSwitchChange(row.original.id, checked)
         }
@@ -241,10 +265,20 @@ const ProductListPage = ({ title }: { title: string }) => {
     pageIndex: 0,
     pageSize: 10,
   });
-
   const [switchStates, setSwitchStates] = React.useState<
     Record<number, boolean>
   >({});
+
+  const axiosPublic = useAxiosPublic();
+
+  // product data fetching
+  const { data: products = [] } = useQuery({
+    queryKey: ["products-all"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/product");
+      return res.data.allProduct;
+    },
+  });
 
   const handleSwitchChange = (id: number, checked: boolean) => {
     setSwitchStates((prev) => ({
@@ -268,8 +302,10 @@ const ProductListPage = ({ title }: { title: string }) => {
     pageCount: Math.ceil(products.length / pagination.pageSize),
   });
 
+  console.log("Products:", products);
+
   return (
-    <Card className="border shadow-sm  bg-primary/20 ">
+    <Card className={CardStyle}>
       {/* Header */}
       <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <CardTitle className="text-lg md:text-xl font-bold text-primary">
@@ -279,13 +315,9 @@ const ProductListPage = ({ title }: { title: string }) => {
         <div className="flex gap-2">
           <CustomBtn className="rounded-md" title="Import" />
           <CustomBtn className="rounded-md" title="Export" />
-          <Link href="/admin/products/add-product">
-            <CustomBtn
-              type="button"
-              className="rounded-md"
-              title="add product"
-            />
-          </Link>
+          {/* <Link className="w-full" href="/admin/products/add-product"> */}
+          <CustomBtn className="rounded-md w-36" title="add product" />
+          {/* </Link> */}
         </div>
       </CardHeader>
 
@@ -319,13 +351,13 @@ const ProductListPage = ({ title }: { title: string }) => {
       <CardContent>
         <div className="w-full overflow-x-auto">
           <Table>
-            <TableHeader className="bg-primary/20 ">
+            <TableHeader className="bg-secondary/20 ">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
                     <TableHead
                       key={header.id}
-                      className="text-secondary font-semibold text-lg dark:text-nav underline"
+                      className="text-primary font-semibold text-lg dark:text-nav underline"
                     >
                       {header.isPlaceholder
                         ? null
@@ -364,7 +396,7 @@ const ProductListPage = ({ title }: { title: string }) => {
         {/* Pagination */}
         {products.length > 10 && (
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 px-2 py-4 border-t mt-4">
-            <div className="text-sm text-secondary">
+            <div className="text-sm text-primary">
               Showing {pagination.pageIndex * pagination.pageSize + 1}–
               {Math.min(
                 (pagination.pageIndex + 1) * pagination.pageSize,
@@ -387,7 +419,7 @@ const ProductListPage = ({ title }: { title: string }) => {
                   key={i}
                   variant={i === pagination.pageIndex ? "default" : "outline"}
                   size="sm"
-                  className="hover:bg-primary/30"
+                  className="hover:bg-secondary/10 text-secondary"
                   onClick={() => table.setPageIndex(i)}
                 >
                   {i + 1}

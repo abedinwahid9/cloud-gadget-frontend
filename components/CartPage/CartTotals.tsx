@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useAppSelector } from "@/lib/redux/hooks";
 import Link from "next/link";
 import CustomBtn from "../share/CustomBtn/CustomBtn";
+import { CardStyle } from "@/lib/utils/customCss";
 
 const CartTotals = () => {
   const subtotal = useAppSelector((state) => state.cart.totalPrice);
@@ -29,9 +30,9 @@ const CartTotals = () => {
   const total = subtotal + shipping.price;
 
   return (
-    <Card className="lg:w-1/3 w-full bg-primary/10">
+    <Card className={`lg:w-1/3 w-full  ${CardStyle}`}>
       <CardHeader>
-        <CardTitle>CART TOTALS</CardTitle>
+        <CardTitle className="text-secondary ">CART TOTALS</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Subtotal */}

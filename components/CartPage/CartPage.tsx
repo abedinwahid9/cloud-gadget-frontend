@@ -27,6 +27,8 @@ const CartPage = () => {
   const cartItmes = useAppSelector((state) => state.cart.items);
   const dispatch = useAppDispatch();
 
+  console.log(cartItmes);
+
   if (cartItmes?.length === 0) {
     return <>no items is here</>;
   }
