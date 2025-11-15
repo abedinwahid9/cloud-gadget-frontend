@@ -38,6 +38,7 @@ import { toast } from "sonner";
 import { CardStyle } from "@/lib/utils/customCss";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // --- Product type ---
 type Product = {
@@ -173,19 +174,19 @@ const getColumns = (
   {
     id: "actions",
     header: "Actions",
-    cell: () => (
+    cell: ({ row }) => (
       <DropdownMenu>
         <DropdownMenuTrigger className="cursor-pointer">
           <MoreHorizontal className="h-4 w-4" />
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="bg-primary/70 text-secondary border-2 border-primary
+          className="bg-primary/85 blur-3xl text-text border-2 border-primary
          font-bold text-lg p-2 space-y-1 rounded-lg "
         >
           <DropdownMenuItem>
             <Link
-              className="hover:underline  flex items-center gap-1"
-              href={`/admin/products/edit-product/dsjfkladfk`}
+              className="hover:underline  hover:text-primary hover:bg-nav  px-3 py-1 rounded-md flex items-center gap-2"
+              href={`/admin/products/edit-product/${row.original.id}`}
             >
               <CiEdit /> Edit
             </Link>
@@ -194,13 +195,13 @@ const getColumns = (
             onClick={() =>
               toast.custom(
                 (id) => (
-                  <div className="bg-[#aacec8] text-gray-900 rounded-xl shadow-lg p-4 w-[320px] flex flex-col gap-3">
+                  <div className="bg-text/50 border-2 border-primary/10 text-primary rounded-xl blur-3xl shadow-lg p-4 w-[320px] flex flex-col gap-3">
                     <div className="flex items-center gap-2">
                       <RiDeleteBin5Line className="text-red-600 text-lg" />
                       <span className="font-semibold">Are you sure?</span>
                     </div>
-                    <p className="text-sm text-gray-700 ">
-                      This action cannot be undone.
+                    <p className="text-lg text-nav font-bold">
+                      {row.original.title} will be delete
                     </p>
                     <div className="flex justify-end gap-2 mt-2">
                       <button
@@ -239,7 +240,7 @@ const getColumns = (
                             },
                           });
                         }}
-                        className="px-3 py-1 text-sm rounded-md bg-secondary/50 text-white hover:bg-secondary"
+                        className="px-3 py-1 text-sm rounded-md bg-primary/50 text-white hover:bg-primary"
                       >
                         Confirm
                       </button>
@@ -251,7 +252,9 @@ const getColumns = (
             }
             className="hover:underline  flex items-center gap-1"
           >
-            <RiDeleteBin5Line /> Delete
+            <span className="hover:bg-nav hover:underline hover:text-primary px-3 py-1 rounded-md flex items-center gap-2">
+              <RiDeleteBin5Line /> Delete
+            </span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -272,7 +275,7 @@ const ProductListPage = ({ title }: { title: string }) => {
   const axiosPublic = useAxiosPublic();
 
   // product data fetching
-  const { data: products = [] } = useQuery({
+  const { data: products = [], isLoading } = useQuery({
     queryKey: ["products-all"],
     queryFn: async () => {
       const res = await axiosPublic.get("/product");
@@ -281,10 +284,7 @@ const ProductListPage = ({ title }: { title: string }) => {
   });
 
   const handleSwitchChange = (id: number, checked: boolean) => {
-    setSwitchStates((prev) => ({
-      ...prev,
-      [id]: checked,
-    }));
+    console.log(id);
   };
 
   const columns = React.useMemo(
@@ -302,7 +302,65 @@ const ProductListPage = ({ title }: { title: string }) => {
     pageCount: Math.ceil(products.length / pagination.pageSize),
   });
 
-  console.log("Products:", products);
+  if (isLoading && products.length === 0) {
+    return (
+      <Skeleton className="w-full h-full bg-primary/10 space-y-5">
+        <div className="flex justify-between  px-4 pt-6">
+          <Skeleton className="w-40 h-6 bg-primary/50"></Skeleton>
+          <div className="flex gap-3">
+            {Array.from({ length: 3 }).map((_, i) => {
+              return (
+                <Skeleton
+                  key={i}
+                  className="w-30 h-10 bg-primary/50"
+                ></Skeleton>
+              );
+            })}
+          </div>
+        </div>
+        <div className="flex justify-between px-4">
+          <Skeleton className="w-48 h-6 bg-primary/50"></Skeleton>
+          <div className="flex gap-3">
+            {Array.from({ length: 4 }).map((_, i) => {
+              return (
+                <Skeleton
+                  key={i}
+                  className="w-30 h-10 bg-primary/50"
+                ></Skeleton>
+              );
+            })}
+          </div>
+        </div>
+        <Skeleton className=" px-4  space-y-1">
+          <Skeleton className="flex bg-primary/30 p-3 justify-around">
+            {Array.from({ length: 6 }).map((_, i) => {
+              return (
+                <Skeleton key={i} className="w-30 h-4 bg-primary/50"></Skeleton>
+              );
+            })}
+          </Skeleton>
+          {Array.from({ length: 10 }).map((_, i) => {
+            return (
+              <Skeleton
+                key={i}
+                className="flex bg-primary/30 p-1.5 items-center justify-around"
+              >
+                {Array.from({ length: 5 }).map((_, i) => {
+                  return (
+                    <Skeleton
+                      key={i}
+                      className="w-30 h-4 bg-primary/50"
+                    ></Skeleton>
+                  );
+                })}
+                <Skeleton className="w-8 h-8 bg-primary/50"></Skeleton>
+              </Skeleton>
+            );
+          })}
+        </Skeleton>
+      </Skeleton>
+    );
+  }
 
   return (
     <Card className={CardStyle}>
