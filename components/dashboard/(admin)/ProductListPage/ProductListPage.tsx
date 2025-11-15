@@ -39,6 +39,7 @@ import { CardStyle } from "@/lib/utils/customCss";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { Skeleton } from "@/components/ui/skeleton";
+import ConfirmToast from "@/components/share/ToastCustom/ConfirmToast";
 
 // --- Product type ---
 type Product = {
@@ -193,62 +194,9 @@ const getColumns = (
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
-              toast.custom(
-                (id) => (
-                  <div className="bg-text/50 border-2 border-primary/10 text-primary rounded-xl blur-3xl shadow-lg p-4 w-[320px] flex flex-col gap-3">
-                    <div className="flex items-center gap-2">
-                      <RiDeleteBin5Line className="text-red-600 text-lg" />
-                      <span className="font-semibold">Are you sure?</span>
-                    </div>
-                    <p className="text-lg text-nav font-bold">
-                      {row.original.title} will be delete
-                    </p>
-                    <div className="flex justify-end gap-2 mt-2">
-                      <button
-                        onClick={() => {
-                          console.log("Cancelled ❌");
-                          toast.dismiss(id);
-                          toast("Delete cancelled", {
-                            position: "top-center",
-                            style: {
-                              backgroundColor: "#aacec8",
-                              color: "#004030",
-                            },
-                            action: {
-                              label: "Undo",
-                              onClick: () => console.log("Undo"),
-                            },
-                          });
-                        }}
-                        className="px-3 py-1 text-sm rounded-md bg-red-600 text-white hover:bg-red-500"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        onClick={() => {
-                          console.log("Deleted ✅");
-                          toast.dismiss(id);
-                          toast.success("Item deleted", {
-                            position: "top-center",
-                            style: {
-                              backgroundColor: "#aacec8",
-                              color: "#004030",
-                            },
-                            action: {
-                              label: "Undo",
-                              onClick: () => console.log("Undo"),
-                            },
-                          });
-                        }}
-                        className="px-3 py-1 text-sm rounded-md bg-primary/50 text-white hover:bg-primary"
-                      >
-                        Confirm
-                      </button>
-                    </div>
-                  </div>
-                ),
-                { position: "top-center" }
-              )
+              ConfirmToast(`${row.original.title} will be delete`, async () => {
+                return await handleProductDelete(row.original.id);
+              })
             }
             className="hover:underline  flex items-center gap-1"
           >
@@ -262,6 +210,22 @@ const getColumns = (
   },
 ];
 
+// delete product function
+
+const handleProductDelete = async (id: number) => {
+  try {
+    const res = await fetch(`/sub-category/${id}`);
+
+    if (res.status === 204) {
+      // refetch();
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 // --- Page Component ---
 const ProductListPage = ({ title }: { title: string }) => {
   const [pagination, setPagination] = React.useState({
