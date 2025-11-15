@@ -27,6 +27,7 @@ import { Spinner } from "@/components/ui/spinner";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { CardStyle } from "@/lib/utils/customCss";
 import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type Variant = { name: string; options: string | string[] };
 
@@ -57,7 +58,8 @@ const AddProductPage = () => {
   const [images, setImages] = useState<string[]>([]);
   const [saveLoad, setSaveLoad] = useState<boolean>(false);
   const { productId } = useParams();
-
+  const axiosPublic = useAxiosPublic();
+  const router = useRouter();
   const selectedImages = useSelector(
     (state: RootState) => state.imageSelete.imageSelected.addproduct
   );
@@ -94,8 +96,6 @@ const AddProductPage = () => {
     reset,
     formState: { errors },
   } = methods;
-
-  const axiosPublic = useAxiosPublic();
 
   const variantOptions: Variants[] = [
     { id: "1", category: "color", value: "color", label: "color" },
@@ -207,11 +207,11 @@ const AddProductPage = () => {
         status: true,
       };
 
-      const res = await axiosPublic.post("/product", product, {
+      const res = await axiosPublic.patch(`/product/${productId}`, product, {
         headers: { "Content-Type": "application/json" },
       });
 
-      if (res.status === 201) {
+      if (res.status === 203) {
         ToastCustom(`${data.title} product has saved`);
         setSaveLoad(false);
         reset({
@@ -227,6 +227,7 @@ const AddProductPage = () => {
           variants: [{ name: "", options: [] }],
         });
         setImages([]);
+        router.push("/admin/products");
       }
     } catch (err) {
       console.log(err);

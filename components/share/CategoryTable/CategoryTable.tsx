@@ -170,7 +170,7 @@ const CategoryTable = () => {
                 variant="outline"
                 className="hover:bg-secondary"
                 onClick={() =>
-                  ConfirmToast(`Delete ${cat.label} category?`, () =>
+                  ConfirmToast(` "${cat.label}" will be delete `, () =>
                     handleDeleteCategory(cat.id)
                   )
                 }
