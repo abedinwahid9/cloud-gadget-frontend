@@ -7,7 +7,6 @@ const ConfirmToast = (
   onConfirm?: () => Promise<boolean | undefined>,
   onCancel?: () => void
 ) => {
-  console.log(onConfirm);
   toast.custom(
     (id) => (
       <div className="bg-text/50 border-2 border-primary/10 text-primary rounded-xl blur-3xl shadow-lg p-4 w-[320px] flex flex-col gap-3">
@@ -19,7 +18,7 @@ const ConfirmToast = (
         <div className="flex justify-end gap-2 mt-2">
           <button
             onClick={() => {
-              console.log("Cancelled ❌");
+              // console.log("Cancelled ❌");
               onCancel?.();
               toast.dismiss(id);
               toast("Delete cancelled", {
@@ -40,7 +39,7 @@ const ConfirmToast = (
           </button>
           <button
             onClick={async () => {
-              console.log("Deleted ✅");
+              // console.log("Deleted ✅");
               toast.dismiss(id);
 
               if (!onConfirm) return;

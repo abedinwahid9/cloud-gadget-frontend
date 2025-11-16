@@ -40,6 +40,8 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { Skeleton } from "@/components/ui/skeleton";
 import ConfirmToast from "@/components/share/ToastCustom/ConfirmToast";
+import { Spinner } from "@/components/ui/spinner";
+import ToastCustom from "@/components/share/ToastCustom/ToastCustom";
 
 // --- Product type ---
 type Product = {
@@ -82,7 +84,8 @@ const calculateDiscountPrice = ({
 // --- Columns generator ---
 const getColumns = (
   switchStates: Record<number, boolean>,
-  handleSwitchChange: (id: number, checked: boolean) => void
+  handleSwitchChange: (id: number, checked: boolean) => void,
+  handleProductDelete: (id: number) => Promise<boolean | undefined>
 ): ColumnDef<Product>[] => [
   {
     accessorKey: "productId",
@@ -94,13 +97,17 @@ const getColumns = (
     header: "Product",
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <Image
-          src={row.original.images[0]}
-          alt={row.original.title}
-          width={40}
-          height={40}
-          className="rounded-md"
-        />
+        {row.original.images[0] ? (
+          <Image
+            src={row.original.images[0]}
+            alt={row.original.title}
+            width={40}
+            height={40}
+            className="rounded-md"
+          />
+        ) : (
+          <Spinner className="size-6" />
+        )}
         <span className="font-medium text-wrap truncate w-28">
           {row.original.title}
         </span>
@@ -165,9 +172,10 @@ const getColumns = (
     header: "Status",
     cell: ({ row }) => (
       <Switch
+        className="cursor-pointer"
         checked={Boolean(row.original.status)}
-        onCheckedChange={(checked) =>
-          handleSwitchChange(row.original.id, checked)
+        onCheckedChange={() =>
+          handleSwitchChange(row.original.id, Boolean(row.original.status))
         }
       />
     ),
@@ -210,22 +218,6 @@ const getColumns = (
   },
 ];
 
-// delete product function
-
-const handleProductDelete = async (id: number) => {
-  try {
-    const res = await fetch(`/sub-category/${id}`);
-
-    if (res.status === 204) {
-      // refetch();
-      return true;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
 // --- Page Component ---
 const ProductListPage = ({ title }: { title: string }) => {
   const [pagination, setPagination] = React.useState({
@@ -239,7 +231,11 @@ const ProductListPage = ({ title }: { title: string }) => {
   const axiosPublic = useAxiosPublic();
 
   // product data fetching
-  const { data: products = [], isLoading } = useQuery({
+  const {
+    data: products = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["products-all"],
     queryFn: async () => {
       const res = await axiosPublic.get("/product");
@@ -247,12 +243,39 @@ const ProductListPage = ({ title }: { title: string }) => {
     },
   });
 
-  const handleSwitchChange = (id: number, checked: boolean) => {
-    console.log(id);
+  const handleSwitchChange = async (id: number, checked: boolean) => {
+    try {
+      const changeStatus = checked ? false : true;
+
+      const res = await axiosPublic.patch(`/product/status/${id}`, {
+        status: changeStatus,
+      });
+      if (res.status === 203) {
+        refetch();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // delete product function
+  const handleProductDelete = async (id: number) => {
+    try {
+      const res = await axiosPublic.delete(`/product/${id}`);
+      if (res.status === 203) {
+        refetch();
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const columns = React.useMemo(
-    () => getColumns(switchStates, handleSwitchChange),
+    () => getColumns(switchStates, handleSwitchChange, handleProductDelete),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [switchStates]
   );
 
@@ -266,6 +289,7 @@ const ProductListPage = ({ title }: { title: string }) => {
     pageCount: Math.ceil(products.length / pagination.pageSize),
   });
 
+  // if no data showing skeleton
   if (isLoading && products.length === 0) {
     return (
       <Skeleton className="w-full h-full bg-primary/10 space-y-5">
