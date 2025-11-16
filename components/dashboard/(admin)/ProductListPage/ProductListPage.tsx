@@ -189,7 +189,7 @@ const getColumns = (
           <MoreHorizontal className="h-4 w-4" />
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="bg-primary/85 blur-3xl text-text border-2 border-primary
+          className="bg-primary/85 backdrop:blur-xl text-text border-2 border-primary
          font-bold text-lg p-2 space-y-1 rounded-lg "
         >
           <DropdownMenuItem>
