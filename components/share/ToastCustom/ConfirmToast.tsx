@@ -9,7 +9,7 @@ const ConfirmToast = (
 ) => {
   toast.custom(
     (id) => (
-      <div className="bg-text/50 border-2 border-primary/10 text-primary rounded-xl blur-3xl shadow-lg p-4 w-[320px] flex flex-col gap-3">
+      <div className="bg-text/50 border-2 border-primary/10 text-primary rounded-xl backdrop:blur-3xl shadow-lg p-4 w-[320px] flex flex-col gap-3">
         <div className="flex items-center gap-2">
           <RiDeleteBin5Line className="text-red-600 text-lg" />
           <span className="font-semibold">Are you sure?</span>
