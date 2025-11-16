@@ -26,50 +26,46 @@ import { Switch } from "@/components/ui/switch";
 import CustomBtn from "@/components/share/CustomBtn/CustomBtn";
 import { CiEdit } from "react-icons/ci";
 
-import AddProduct from "../AddProduct/AddProduct";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { toast } from "sonner";
+import { CardStyle } from "@/lib/utils/customCss";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { Skeleton } from "@/components/ui/skeleton";
+import ConfirmToast from "@/components/share/ToastCustom/ConfirmToast";
+import { Spinner } from "@/components/ui/spinner";
+import ToastCustom from "@/components/share/ToastCustom/ToastCustom";
 
 // --- Product type ---
 type Product = {
+  productId: string;
   id: number;
-  name: string;
+  title: string;
   category: string;
-  stock: string;
+  stock_quantity: string;
   price: number;
-  discountPercentage: number;
+  discount: number;
   status: string;
-  image: StaticImageData;
+  variants?: Array<{
+    name: string;
+    options: string[];
+  }>;
+  images: string[];
 };
-
-// --- Sample data ---
-const products: Product[] = Array.from({ length: 100 }, (_, i) => ({
-  id: i + 1,
-  name: `Product ${i + 1}`,
-  category: i % 2 === 0 ? "Clothes" : "Gadget",
-  stock: i % 3 === 0 ? "Out of Stock" : "124 Low Stock",
-  price: 47 * (i + 1),
-  discountPercentage: 15,
-  status: i % 2 === 0 ? "Published" : "Inactive",
-  image: img1,
-}));
 
 // --- Helpers ---
-const getStockClass = (stock: string) => {
-  if (stock.includes("Out")) return "text-red-500 font-medium";
-  if (stock.includes("Low")) return "text-orange-500 font-medium";
-  return "text-green-500 font-medium";
-};
+// const getStockClass = (stock: string) => {
+//   if (stock.includes("Out")) return "text-red-500 font-medium";
+//   if (stock.includes("Low")) return "text-orange-500 font-medium";
+//   return "text-green-500 font-medium";
+// };
 
 const calculateDiscountPrice = ({
   value,
@@ -79,27 +75,42 @@ const calculateDiscountPrice = ({
   percentage: number;
 }) => {
   const discountAmount = value * (percentage / 100);
+  if (discountAmount === 0) {
+    return 0;
+  }
   return Math.floor(value - discountAmount);
 };
 
 // --- Columns generator ---
 const getColumns = (
   switchStates: Record<number, boolean>,
-  handleSwitchChange: (id: number, checked: boolean) => void
+  handleSwitchChange: (id: number, checked: boolean) => void,
+  handleProductDelete: (id: number) => Promise<boolean | undefined>
 ): ColumnDef<Product>[] => [
+  {
+    accessorKey: "productId",
+    header: "Product ID",
+    cell: ({ row }) => <span>{row.original.productId}</span>,
+  },
   {
     accessorKey: "name",
     header: "Product",
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <Image
-          src={row.original.image}
-          alt={row.original.name}
-          width={40}
-          height={40}
-          className="rounded-md"
-        />
-        <span className="font-medium">{row.original.name}</span>
+        {row.original.images[0] ? (
+          <Image
+            src={row.original.images[0]}
+            alt={row.original.title}
+            width={40}
+            height={40}
+            className="rounded-md"
+          />
+        ) : (
+          <Spinner className="size-6" />
+        )}
+        <span className="font-medium text-wrap truncate w-28">
+          {row.original.title}
+        </span>
       </div>
     ),
   },
@@ -117,10 +128,10 @@ const getColumns = (
         $
         {calculateDiscountPrice({
           value: row.original.price,
-          percentage: row.original.discountPercentage,
+          percentage: row.original.discount,
         })}{" "}
         <span className="text-gray-500 text-xs">
-          ({row.original.discountPercentage}% off)
+          ({row.original.discount}% off)
         </span>
       </span>
     ),
@@ -129,19 +140,42 @@ const getColumns = (
     accessorKey: "stock",
     header: "Stock",
     cell: ({ row }) => (
-      <span className={getStockClass(row.original.stock)}>
-        {row.original.stock}
+      <span
+      //  className={getStockClass(row.original.stock_quantity)}
+      >
+        {row.original.stock_quantity}
       </span>
     ),
+  },
+  {
+    accessorKey: "color",
+    header: "Color",
+    cell: ({ row }) => {
+      const variants = row.original.variants || [];
+      const colorVariant = variants.find((v) => v.name === "color");
+
+      return (
+        <div className="flex gap-1">
+          {colorVariant?.options?.map((color: string) => (
+            <div
+              key={color}
+              className="w-3 h-3 rounded-full"
+              style={{ backgroundColor: color }}
+            ></div>
+          ))}
+        </div>
+      );
+    },
   },
   {
     id: "status",
     header: "Status",
     cell: ({ row }) => (
       <Switch
-        checked={!!switchStates[row.original.id]}
-        onCheckedChange={(checked) =>
-          handleSwitchChange(row.original.id, checked)
+        className="cursor-pointer"
+        checked={Boolean(row.original.status)}
+        onCheckedChange={() =>
+          handleSwitchChange(row.original.id, Boolean(row.original.status))
         }
       />
     ),
@@ -149,85 +183,34 @@ const getColumns = (
   {
     id: "actions",
     header: "Actions",
-    cell: () => (
+    cell: ({ row }) => (
       <DropdownMenu>
         <DropdownMenuTrigger className="cursor-pointer">
           <MoreHorizontal className="h-4 w-4" />
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="bg-primary/70 text-secondary border-2 border-primary
+          className="bg-primary/85 blur-3xl text-text border-2 border-primary
          font-bold text-lg p-2 space-y-1 rounded-lg "
         >
           <DropdownMenuItem>
             <Link
-              className="hover:underline  flex items-center gap-1"
-              href={`/admin/products/edit-product/dsjfkladfk`}
+              className="hover:underline  hover:text-primary hover:bg-nav  px-3 py-1 rounded-md flex items-center gap-2"
+              href={`/admin/products/edit-product/${row.original.id}`}
             >
               <CiEdit /> Edit
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
-              toast.custom(
-                (id) => (
-                  <div className="bg-[#aacec8] text-gray-900 rounded-xl shadow-lg p-4 w-[320px] flex flex-col gap-3">
-                    <div className="flex items-center gap-2">
-                      <RiDeleteBin5Line className="text-red-600 text-lg" />
-                      <span className="font-semibold">Are you sure?</span>
-                    </div>
-                    <p className="text-sm text-gray-700 ">
-                      This action cannot be undone.
-                    </p>
-                    <div className="flex justify-end gap-2 mt-2">
-                      <button
-                        onClick={() => {
-                          console.log("Cancelled ❌");
-                          toast.dismiss(id);
-                          toast("Delete cancelled", {
-                            position: "top-center",
-                            style: {
-                              backgroundColor: "#aacec8",
-                              color: "#004030",
-                            },
-                            action: {
-                              label: "Undo",
-                              onClick: () => console.log("Undo"),
-                            },
-                          });
-                        }}
-                        className="px-3 py-1 text-sm rounded-md bg-red-600 text-white hover:bg-red-500"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        onClick={() => {
-                          console.log("Deleted ✅");
-                          toast.dismiss(id);
-                          toast.success("Item deleted", {
-                            position: "top-center",
-                            style: {
-                              backgroundColor: "#aacec8",
-                              color: "#004030",
-                            },
-                            action: {
-                              label: "Undo",
-                              onClick: () => console.log("Undo"),
-                            },
-                          });
-                        }}
-                        className="px-3 py-1 text-sm rounded-md bg-secondary/50 text-white hover:bg-secondary"
-                      >
-                        Confirm
-                      </button>
-                    </div>
-                  </div>
-                ),
-                { position: "top-center" }
-              )
+              ConfirmToast(`${row.original.title} will be delete`, async () => {
+                return await handleProductDelete(row.original.id);
+              })
             }
             className="hover:underline  flex items-center gap-1"
           >
-            <RiDeleteBin5Line /> Delete
+            <span className="hover:bg-nav hover:underline hover:text-primary px-3 py-1 rounded-md flex items-center gap-2">
+              <RiDeleteBin5Line /> Delete
+            </span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -241,20 +224,58 @@ const ProductListPage = ({ title }: { title: string }) => {
     pageIndex: 0,
     pageSize: 10,
   });
-
   const [switchStates, setSwitchStates] = React.useState<
     Record<number, boolean>
   >({});
 
-  const handleSwitchChange = (id: number, checked: boolean) => {
-    setSwitchStates((prev) => ({
-      ...prev,
-      [id]: checked,
-    }));
+  const axiosPublic = useAxiosPublic();
+
+  // product data fetching
+  const {
+    data: products = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["products-all"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/product");
+      return res.data.allProduct;
+    },
+  });
+
+  const handleSwitchChange = async (id: number, checked: boolean) => {
+    try {
+      const changeStatus = checked ? false : true;
+
+      const res = await axiosPublic.patch(`/product/status/${id}`, {
+        status: changeStatus,
+      });
+      if (res.status === 203) {
+        refetch();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // delete product function
+  const handleProductDelete = async (id: number) => {
+    try {
+      const res = await axiosPublic.delete(`/product/${id}`);
+      if (res.status === 203) {
+        refetch();
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const columns = React.useMemo(
-    () => getColumns(switchStates, handleSwitchChange),
+    () => getColumns(switchStates, handleSwitchChange, handleProductDelete),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [switchStates]
   );
 
@@ -268,8 +289,69 @@ const ProductListPage = ({ title }: { title: string }) => {
     pageCount: Math.ceil(products.length / pagination.pageSize),
   });
 
+  // if no data showing skeleton
+  if (isLoading && products.length === 0) {
+    return (
+      <Skeleton className="w-full h-full bg-primary/10 space-y-5">
+        <div className="flex justify-between  px-4 pt-6">
+          <Skeleton className="w-40 h-6 bg-primary/50"></Skeleton>
+          <div className="flex gap-3">
+            {Array.from({ length: 3 }).map((_, i) => {
+              return (
+                <Skeleton
+                  key={i}
+                  className="w-30 h-10 bg-primary/50"
+                ></Skeleton>
+              );
+            })}
+          </div>
+        </div>
+        <div className="flex justify-between px-4">
+          <Skeleton className="w-48 h-6 bg-primary/50"></Skeleton>
+          <div className="flex gap-3">
+            {Array.from({ length: 4 }).map((_, i) => {
+              return (
+                <Skeleton
+                  key={i}
+                  className="w-30 h-10 bg-primary/50"
+                ></Skeleton>
+              );
+            })}
+          </div>
+        </div>
+        <Skeleton className=" px-4  space-y-1">
+          <Skeleton className="flex bg-primary/30 p-3 justify-around">
+            {Array.from({ length: 6 }).map((_, i) => {
+              return (
+                <Skeleton key={i} className="w-30 h-4 bg-primary/50"></Skeleton>
+              );
+            })}
+          </Skeleton>
+          {Array.from({ length: 10 }).map((_, i) => {
+            return (
+              <Skeleton
+                key={i}
+                className="flex bg-primary/30 p-1.5 items-center justify-around"
+              >
+                {Array.from({ length: 5 }).map((_, i) => {
+                  return (
+                    <Skeleton
+                      key={i}
+                      className="w-30 h-4 bg-primary/50"
+                    ></Skeleton>
+                  );
+                })}
+                <Skeleton className="w-8 h-8 bg-primary/50"></Skeleton>
+              </Skeleton>
+            );
+          })}
+        </Skeleton>
+      </Skeleton>
+    );
+  }
+
   return (
-    <Card className="border shadow-sm  bg-primary/20 ">
+    <Card className={CardStyle}>
       {/* Header */}
       <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <CardTitle className="text-lg md:text-xl font-bold text-primary">
@@ -279,13 +361,9 @@ const ProductListPage = ({ title }: { title: string }) => {
         <div className="flex gap-2">
           <CustomBtn className="rounded-md" title="Import" />
           <CustomBtn className="rounded-md" title="Export" />
-          <Link href="/admin/products/add-product">
-            <CustomBtn
-              type="button"
-              className="rounded-md"
-              title="add product"
-            />
-          </Link>
+          {/* <Link className="w-full" href="/admin/products/add-product"> */}
+          <CustomBtn className="rounded-md w-36" title="add product" />
+          {/* </Link> */}
         </div>
       </CardHeader>
 
@@ -319,13 +397,13 @@ const ProductListPage = ({ title }: { title: string }) => {
       <CardContent>
         <div className="w-full overflow-x-auto">
           <Table>
-            <TableHeader className="bg-primary/20 ">
+            <TableHeader className="bg-secondary/20 ">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
                     <TableHead
                       key={header.id}
-                      className="text-secondary font-semibold text-lg dark:text-nav underline"
+                      className="text-primary font-semibold text-lg dark:text-nav underline"
                     >
                       {header.isPlaceholder
                         ? null
@@ -364,7 +442,7 @@ const ProductListPage = ({ title }: { title: string }) => {
         {/* Pagination */}
         {products.length > 10 && (
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 px-2 py-4 border-t mt-4">
-            <div className="text-sm text-secondary">
+            <div className="text-sm text-primary">
               Showing {pagination.pageIndex * pagination.pageSize + 1}–
               {Math.min(
                 (pagination.pageIndex + 1) * pagination.pageSize,
@@ -387,7 +465,7 @@ const ProductListPage = ({ title }: { title: string }) => {
                   key={i}
                   variant={i === pagination.pageIndex ? "default" : "outline"}
                   size="sm"
-                  className="hover:bg-primary/30"
+                  className="hover:bg-secondary/10 text-secondary"
                   onClick={() => table.setPageIndex(i)}
                 >
                   {i + 1}

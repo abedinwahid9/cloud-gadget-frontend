@@ -119,7 +119,10 @@ const CategoryTable = () => {
   const handleDeleteCategory = async (id: string) => {
     try {
       const res = await axiosPublic.delete(`/category/${id}`);
-      refetch();
+      if (res.status === 204) {
+        refetch();
+        return true;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -129,7 +132,13 @@ const CategoryTable = () => {
   const handleDeleteSubCategory = async (id: string) => {
     try {
       const res = await axiosPublic.delete(`/sub-category/${id}`);
-      refetch();
+
+      if (res.status === 204) {
+        refetch();
+        return true;
+      } else {
+        return false;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -170,9 +179,9 @@ const CategoryTable = () => {
                 variant="outline"
                 className="hover:bg-secondary"
                 onClick={() =>
-                  ConfirmToast(`Delete ${cat.label} category?`, () =>
-                    handleDeleteCategory(cat.id)
-                  )
+                  ConfirmToast(`Delete ${cat.label} category?`, async () => {
+                    return await handleDeleteCategory(cat.id);
+                  })
                 }
               >
                 <Trash2 className="h-4 w-4 text-red-500" />
@@ -222,8 +231,11 @@ const CategoryTable = () => {
                     variant="outline"
                     className="hover:bg-secondary"
                     onClick={() =>
-                      ConfirmToast(`Delete ${sub.label} sub-category?`, () =>
-                        handleDeleteSubCategory(sub.id)
+                      ConfirmToast(
+                        `Delete ${sub.label} sub-category?`,
+                        async () => {
+                          return await handleDeleteSubCategory(sub.id);
+                        }
                       )
                     }
                   >
