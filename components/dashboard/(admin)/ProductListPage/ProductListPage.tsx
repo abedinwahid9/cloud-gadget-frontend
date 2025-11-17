@@ -42,6 +42,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import ConfirmToast from "@/components/share/ToastCustom/ConfirmToast";
 import { Spinner } from "@/components/ui/spinner";
 import ToastCustom from "@/components/share/ToastCustom/ToastCustom";
+import StatusSwitch from "@/components/share/StatusSwitch/StatusSwitch";
 
 // --- Product type ---
 type Product = {
@@ -52,7 +53,7 @@ type Product = {
   stock_quantity: string;
   price: number;
   discount: number;
-  status: string;
+  status: boolean;
   variants?: Array<{
     name: string;
     options: string[];
@@ -84,7 +85,7 @@ const calculateDiscountPrice = ({
 // --- Columns generator ---
 const getColumns = (
   switchStates: Record<number, boolean>,
-  handleSwitchChange: (id: number, checked: boolean) => void,
+  refetch: () => void,
   handleProductDelete: (id: number) => Promise<boolean | undefined>
 ): ColumnDef<Product>[] => [
   {
@@ -171,12 +172,10 @@ const getColumns = (
     id: "status",
     header: "Status",
     cell: ({ row }) => (
-      <Switch
-        className="cursor-pointer"
-        checked={Boolean(row.original.status)}
-        onCheckedChange={() =>
-          handleSwitchChange(row.original.id, Boolean(row.original.status))
-        }
+      <StatusSwitch
+        refetch={refetch}
+        status={row.original.status}
+        id={row.original.id}
       />
     ),
   },
@@ -243,21 +242,6 @@ const ProductListPage = ({ title }: { title: string }) => {
     },
   });
 
-  const handleSwitchChange = async (id: number, checked: boolean) => {
-    try {
-      const changeStatus = checked ? false : true;
-
-      const res = await axiosPublic.patch(`/product/status/${id}`, {
-        status: changeStatus,
-      });
-      if (res.status === 203) {
-        refetch();
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   // delete product function
   const handleProductDelete = async (id: number) => {
     try {
@@ -274,7 +258,7 @@ const ProductListPage = ({ title }: { title: string }) => {
   };
 
   const columns = React.useMemo(
-    () => getColumns(switchStates, handleSwitchChange, handleProductDelete),
+    () => getColumns(switchStates, refetch, handleProductDelete),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [switchStates]
   );

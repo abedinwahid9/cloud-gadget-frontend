@@ -65,7 +65,7 @@ const ComboBox: React.FC<ComboBoxProps> = ({
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[250px] bg-secondary/85 p-0 drop-shadow-sm drop-shadow-nav">
+      <PopoverContent className="w-[250px] backdrop-blur-md bg-secondary/85 p-0 drop-shadow-sm drop-shadow-nav">
         <Command>
           <CommandInput
             placeholder={`Search ${title}...`}

@@ -28,7 +28,7 @@ const UserProfile = () => {
         side="bottom"
         align="end" // aligns to the left of trigger
         sideOffset={15} // offset from the trigger (downward)
-        className="bg-primary/95 border-none text-secondary "
+        className="bg-primary/85 backdrop:blur-xl border-none text-secondary "
       >
         <DropdownMenuLabel className="font-bold">My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -36,6 +36,14 @@ const UserProfile = () => {
           <Link href="/my-account">
             <span className="relative">
               Profile
+              <span className={underlineclassName} />
+            </span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem className={menuItemclassName}>
+          <Link href="/admin">
+            <span className="relative">
+              Dashboard
               <span className={underlineclassName} />
             </span>
           </Link>
