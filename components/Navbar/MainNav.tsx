@@ -75,7 +75,7 @@ const MainNav = () => {
             {/* Logo + Menu */}
             <div className="flex items-center gap-2">
               <DrawerTrigger className="lg:hidden block" asChild>
-                <RiMenu2Line className="w-7 h-7 text-primary cursor-pointer" />
+                <RiMenu2Line className="w-7 h-7 text-primary dark:text-secondary cursor-pointer" />
               </DrawerTrigger>
 
               <Link className="" href="/">

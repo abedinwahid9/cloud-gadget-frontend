@@ -116,6 +116,8 @@ const getColumns = (
     ),
   },
   { accessorKey: "category", header: "Category" },
+  { accessorKey: "sub_category", header: "Sub Category" },
+  { accessorKey: "collections", header: "Category" },
   {
     accessorKey: "price",
     header: "Price",
@@ -379,7 +381,7 @@ const ProductListPage = ({ title }: { title: string }) => {
 
       {/* Table */}
       <CardContent>
-        <div className="w-full overflow-x-auto">
+        <div className="w-full ">
           <Table>
             <TableHeader className="bg-secondary/20 ">
               {table.getHeaderGroups().map((headerGroup) => (

@@ -77,11 +77,12 @@ const Shop = () => {
   // }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const query = {
-    fields: "id,title,price,images,category,discount",
+    fields: "id,title,price,images,category,discount,status",
     sortBy: "price",
     orderSort: sort === "default" ? "" : sort,
     maxPrice,
     minPrice,
+    status: true,
   };
 
   const { data = [], isLoading } = useQuery({
@@ -91,6 +92,7 @@ const Shop = () => {
       return res.data.allProduct;
     },
   });
+  console.log(data);
 
   // infinite scroll observe
 
