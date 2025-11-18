@@ -175,7 +175,7 @@ const adminItems = [
 
 const AdminSidebar = () => {
   return (
-    <Sidebar className="bg-gradient-to-t from-primary/20 to-secondary/20 border-r ">
+    <Sidebar className="bg-gradient-to-t backdrop-blur-3xl from-primary/20 to-secondary/20 border-r ">
       <SidebarContent>
         {/* --- Main Menu --- */}
         <SidebarGroup>

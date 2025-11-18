@@ -67,21 +67,27 @@ const SidebarNav = () => {
 
   // --- Main UI ---
   return (
-    <DrawerContent className="w-[300px] h-auto p-4 bg-secondary/60">
-      <DrawerTitle className="text-lg font-semibold mb-4 text-nav">
+    <DrawerContent className="w-[300px] h-auto p-4 backdrop-blur-2xl bg-primary/60">
+      <DrawerTitle className="text-xl  mb-4 text-nav font-bold">
         Categories
       </DrawerTitle>
 
-      <Accordion type="multiple" className="w-full overflow-y-scroll">
+      <Accordion
+        type="multiple"
+        className="w-full overflow-y-scroll overflow-x-hidden"
+      >
         {categories?.map((cat: NavItems) => (
           <AccordionItem value={`cat-${cat.id}`} key={cat.id}>
             {/* ✅ Show icon only if subcategories exist */}
             {cat.subCategory?.length > 0 ? (
-              <AccordionTrigger icon className="text-nav text-lg">
+              <AccordionTrigger
+                icon
+                className="text-nav font-semibold capitalize text-lg"
+              >
                 <Link href={`/shop/${cat.slug}`}>{cat.label}</Link>
               </AccordionTrigger>
             ) : (
-              <AccordionTrigger className="text-nav text-lg">
+              <AccordionTrigger className="text-nav font-semibold capitalize text-lg">
                 <Link href={`/shop/${cat.slug}`}>{cat.label}</Link>
               </AccordionTrigger>
             )}
@@ -94,7 +100,7 @@ const SidebarNav = () => {
                     <li key={sub.id}>
                       <Link
                         href={`/shop/${cat.slug}/${sub.slug}`}
-                        className="text-nav text-lg hover:text-primary transition"
+                        className="text-nav text-lg font-semibold capitalize hover:text-primary transition"
                       >
                         {sub.label}
                       </Link>
