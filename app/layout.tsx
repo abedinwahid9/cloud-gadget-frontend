@@ -11,13 +11,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={
-          `${baiJamjuree.variable} ${geistMono.variable}  antialiased ` || ""
-        }
-        cz-shortcut-listen="true"
-      >
+    <html
+      className={`${baiJamjuree.variable} ${geistMono.variable}`}
+      lang="en"
+      suppressHydrationWarning
+    >
+      <body className="antialiased" cz-shortcut-listen="true">
         <StoreProvider>
           <QueryProvider>
             <ThemeProvider

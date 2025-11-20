@@ -12,7 +12,7 @@ interface ProductCardProps {
   title: string;
   images: string[];
   price: number;
-  oldPrice?: number;
+  discount?: number;
   category?: string;
 }
 
@@ -21,7 +21,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   title,
   images,
   price,
-  oldPrice,
+  discount = 0,
   category,
 }) => {
   const dispatch = useAppDispatch();
@@ -33,15 +33,18 @@ const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div className="relative w-full max-w-[250px] mx-auto rounded-xl shadow-sm bg-gradient-to-tr from-text/20 to-secondary/20  transition flex flex-col group">
       {/* Category Badge */}
-      {category && (
-        <div>
-          <div
-            className={`${style.tag} relative inline-block -top-1 -left-1 bg-gradient-to-tr from-nav/20 to-secondary/20  text-[10px] sm:text-xs md:text-base rounded-xl border-8 border-background py-0.5 px-3 text-primary dark:text-nav font-semibold uppercase tracking-wide`}
-          >
-            {category}
-          </div>
+      <div className="relative">
+        <div
+          className={`${style.tag} relative inline-block -top-1 -left-1 bg-gradient-to-tr from-nav/20 to-secondary/20  text-[10px] sm:text-xs md:text-base rounded-xl border-8 border-background py-0.5 px-3 text-primary dark:text-nav font-semibold uppercase tracking-wide`}
+        >
+          {category && category}
         </div>
-      )}
+        {discount > 0 && (
+          <span className="border-2 bg-text/10 border-dashed border-nav relative left-3 -top-1 text-sm px-3 py-0.5 text-nav font-semibold rounded-xl font-mono">
+            {discount}% OFF
+          </span>
+        )}
+      </div>
 
       {/* Product Image with hover effect */}
       <Link
@@ -82,13 +85,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* Price + Rating */}
         <div className="flex items-start flex-col w-full">
-          <div className="text-primary dark:text-secondary">
+          <div className="text-primary dark:text-secondary ">
             <span className="text-sm sm:text-base md:text-lg font-bold">
-              ৳ {price.toFixed(2)}
+              ৳ {(price * (1 - discount / 100)).toFixed(2)}
             </span>
-            {oldPrice && (
-              <span className="text-[10px] sm:text-xs text-gray-500 line-through ml-1.5">
-                ৳ {oldPrice.toFixed(2)}
+            {discount > 0 && (
+              <span className="text-base sm:text-xs text-gray-500 line-through ml-3">
+                ৳ {price.toFixed(2)}
               </span>
             )}
           </div>

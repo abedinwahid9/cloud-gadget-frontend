@@ -3,6 +3,7 @@
 import ProductCard from "@/components/share/ProductCard/ProductCard";
 import type { RefObject } from "react";
 import { Skeleton } from "../ui/skeleton";
+import ProductSkeleton from "../share/CustomSkeleton/ProductSkeleton";
 
 export interface Product {
   id: number;
@@ -29,12 +30,7 @@ const ProductsSection = ({
     return (
       <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-2 lg:pr-1 pr-0">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div className="flex flex-col gap-0.5" key={i}>
-            <Skeleton className="h-[300px] rounded-t-md rounded-b-none bg-primary/25" />
-            <div className="space-y-2">
-              <Skeleton className="h-[50px] rounded-b-md rounded-t-none bg-primary/25" />
-            </div>
-          </div>
+          <ProductSkeleton key={i} />
         ))}
       </div>
     );
