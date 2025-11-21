@@ -56,6 +56,7 @@ type Variants = { id: string; category?: string; value: string; label: string };
 const AddProductPage = () => {
   const [images, setImages] = useState<string[]>([]);
   const [saveLoad, setSaveLoad] = useState<boolean>(false);
+  const [subCate, setSubCate] = useState("");
 
   const selectedImages = useSelector(
     (state: RootState) => state.imageSelete.imageSelected.addproduct
@@ -110,7 +111,6 @@ const AddProductPage = () => {
 
   const filterData = () => {
     const variantsValue = watch("variants").map((v) => v.name);
-
     const filter = variantOptions.filter(
       (v) => !variantsValue.includes(v.label)
     );
@@ -131,12 +131,15 @@ const AddProductPage = () => {
     },
   });
   const { data: subCategory } = useQuery({
-    queryKey: ["sub-Category"],
+    queryKey: ["sub-Category", subCate],
     queryFn: async () => {
-      const res = await axiosPublic.get("/sub-category");
+      const res = await axiosPublic.get(`/sub-category/${subCate}`);
       return res.data.sub_cate;
     },
+    enabled: !!subCate,
   });
+
+  console.log(subCategory);
 
   // ✅ Handle file upload
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -343,7 +346,10 @@ const AddProductPage = () => {
                         (c: { slug: string }) => c.slug === watch("category")
                       )?.label || ""
                     }
-                    onChange={(val) => setValue("category", val.slug ?? "")}
+                    onChange={(val) => {
+                      setSubCate(val.id);
+                      setValue("category", val.slug ?? "");
+                    }}
                   />
                 </div>
                 <div className="grid gap-2">

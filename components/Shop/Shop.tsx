@@ -18,7 +18,7 @@ const option = [
   { value: "desc", label: "Sort by price: high to low" },
 ];
 
-const Shop = () => {
+const Shop = ({ slug }: { slug: string[] }) => {
   const axiosPublic = useAxiosPublic();
   // const [posts, setPosts] = useState<Product[]>([]);
   const [page, setPage] = useState<number>(1);
@@ -83,6 +83,8 @@ const Shop = () => {
     maxPrice,
     minPrice,
     status: true,
+    category: slug && slug[0],
+    sub_category: slug && slug[1],
   };
 
   const { data = [], isLoading } = useQuery({
@@ -92,7 +94,6 @@ const Shop = () => {
       return res.data.allProduct;
     },
   });
-  console.log(data);
 
   // infinite scroll observe
 

@@ -32,7 +32,6 @@ const Range = ({ className, ...props }: SliderProps) => {
       return res.data.maxPrice;
     },
   });
-  console.log(maxPrice);
 
   useEffect(() => {
     if (maxPrice) {
