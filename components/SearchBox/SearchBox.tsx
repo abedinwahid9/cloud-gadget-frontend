@@ -8,10 +8,30 @@ import ProductSkeleton from "../share/CustomSkeleton/ProductSkeleton";
 import ProductCard from "../share/ProductCard/ProductCard";
 import { Product } from "../ProductsSection/ProductsSection";
 import { motion, AnimatePresence } from "framer-motion";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import useDebounce from "@/hooks/useDebounce";
 
-const SearchBox = ({ searchToggle }: { searchToggle: boolean }) => {
+interface SearchBoxProps {
+  searchToggle: boolean;
+  setSearchToggle: Dispatch<SetStateAction<boolean>>;
+}
+
+const SearchBox: React.FC<SearchBoxProps> = ({
+  searchToggle,
+  setSearchToggle,
+}) => {
   const userIcons = "w-6 h-6 text-primary group-hover:text-nav";
   const axiosPublic = useAxiosPublic();
+  const [searchBar, setSearchBar] = useState("");
+  const ref = useRef<HTMLDivElement>(null);
+
+  const value = useDebounce(searchBar, 500);
 
   const { data = [], isLoading } = useQuery({
     queryKey: ["trending-collection-search"],
@@ -22,6 +42,23 @@ const SearchBox = ({ searchToggle }: { searchToggle: boolean }) => {
       return res.data.allProduct;
     },
   });
+
+  const checkClickOutSide = (e: MouseEvent) => {
+    if (
+      searchToggle &&
+      ref.current &&
+      !ref.current.contains(e.target as Node)
+    ) {
+      setSearchToggle(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", checkClickOutSide);
+    return () => {
+      document.removeEventListener("mousedown", checkClickOutSide);
+    };
+  }, [searchToggle]);
 
   return (
     <AnimatePresence>
@@ -42,11 +79,15 @@ const SearchBox = ({ searchToggle }: { searchToggle: boolean }) => {
             transition={{ duration: 0.3 }}
             className="bg-background w-full md:w-4/5 max-w-5xl rounded-2xl shadow-lg overflow-hidden"
           >
-            <div className="shadow-[0px_0px_2px_0.5px_#00a8a8] border-primary bg-background border-2 rounded-2xl flex flex-col max-h-full">
+            <div
+              ref={ref}
+              className="shadow-[0px_0px_2px_0.5px_#00a8a8] border-primary bg-background border-2 rounded-2xl flex flex-col max-h-full"
+            >
               {/* Search Input */}
               <div className="p-4 border-b border-primary/20">
                 <div className="flex w-full">
                   <Input
+                    onChange={(e) => setSearchBar(e.target.value)}
                     placeholder="search product..."
                     className="h-10 w-4/5 rounded-r-none focus-visible:ring-0 placeholder:text-lg text-lg font-serif"
                   />

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaFacebookF,
   FaInstagram,
@@ -17,12 +17,11 @@ import { usePathname } from "next/navigation";
 import Cart from "../share/Cart/Cart";
 import Wishlist from "../share/Wishlist/Wishlist";
 import { ThemeBtn } from "../theme/ThemeBtn";
-import Image from "next/image";
-import logo1 from "@/public/logo1.png";
 import SearchBox from "../SearchBox/SearchBox";
 
 const MainNav = () => {
   const [searchToggle, setSearchToggle] = useState<boolean>(false);
+  const [scrolling, setScrolling] = useState(false);
 
   const socialIconStyle = "md:w-6 md:h-6 w-5 h-5 text-text";
   const userIcons = "w-6 h-6 text-secondary hover:text-nav";
@@ -35,10 +34,21 @@ const MainNav = () => {
   ];
 
   const pathname = usePathname();
+  // Scroll Listener
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolling(window.scrollY > 60);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <header>
-      <div>
+      <div
+        className={`${scrolling ? "fixed top-0 right-0 w-full z-[8888]" : ""}`}
+      >
         <Drawer direction="left">
           {/* top nav */}
           <div className="w-full bg-primary relative z-[150]">
@@ -147,14 +157,19 @@ const MainNav = () => {
             </div>
           </div>
           {/* category nav link */}
-          <div className="bg-secondary/50 mt-2 mx-2 shadow-[0px_0px_5px_0px_#233E2B]/50 rounded-xl hidden lg:block">
-            <CateNav />
-          </div>
+          {!scrolling && (
+            <div className="bg-secondary/50 mt-2 mx-2 shadow-[0px_0px_5px_0px_#233E2B]/50 rounded-xl hidden lg:block">
+              <CateNav />
+            </div>
+          )}
           {/* side nav */}
           <SidebarNav />
         </Drawer>
       </div>
-      <SearchBox searchToggle={searchToggle} />
+      <SearchBox
+        searchToggle={searchToggle}
+        setSearchToggle={setSearchToggle}
+      />
     </header>
   );
 };

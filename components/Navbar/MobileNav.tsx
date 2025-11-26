@@ -22,7 +22,7 @@ export default function MobileNav() {
   const iconStyle = "h-8 w-8 transition-colors duration-300 ease-in-out";
 
   return (
-    <div className="fixed bottom-0 right-0 w-full  lg:hidden block z-50">
+    <div className="fixed bottom-0 right-0 w-full  lg:hidden block z-[9999]">
       <div className="flex items-center justify-between  rounded-t-3xl py-2.5 px-2 bg-primary shadow-xl">
         {navItems.map((item) => {
           const isActive =
