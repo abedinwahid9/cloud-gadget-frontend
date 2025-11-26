@@ -14,6 +14,7 @@ import React, {
   useEffect,
   useRef,
   useState,
+  useMemo,
 } from "react";
 import useDebounce from "@/hooks/useDebounce";
 
@@ -26,14 +27,13 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   searchToggle,
   setSearchToggle,
 }) => {
-  const userIcons = "w-6 h-6 text-primary group-hover:text-nav";
   const axiosPublic = useAxiosPublic();
   const [searchBar, setSearchBar] = useState("");
   const ref = useRef<HTMLDivElement>(null);
+  const debouncedSearch = useDebounce(searchBar, 500);
 
-  const value = useDebounce(searchBar, 500);
-
-  const { data = [], isLoading } = useQuery({
+  // Fetch trending collections (cached for 5 minutes)
+  const { data: trendingData = [], isLoading: trendingLoading } = useQuery({
     queryKey: ["trending-collection-search"],
     queryFn: async () => {
       const res = await axiosPublic.get(
@@ -41,24 +41,45 @@ const SearchBox: React.FC<SearchBoxProps> = ({
       );
       return res.data.allProduct;
     },
+    staleTime: 1000 * 60 * 5,
   });
 
-  const checkClickOutSide = (e: MouseEvent) => {
-    if (
-      searchToggle &&
-      ref.current &&
-      !ref.current.contains(e.target as Node)
-    ) {
-      setSearchToggle(false);
-    }
-  };
+  // Fetch search results
+  const {
+    data: searchItem = [],
+    isLoading: searchLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["search-item", debouncedSearch],
+    queryFn: async () => {
+      const res = await axiosPublic.get(`/product?search=${debouncedSearch}`);
+      return res.data.allProduct;
+    },
+    enabled: !!debouncedSearch,
+  });
 
+  // Combined product list based on search or trending
+  const productList = useMemo(
+    () => (debouncedSearch ? searchItem : trendingData),
+    [debouncedSearch, searchItem, trendingData]
+  );
+
+  // Handle click outside to close search box
   useEffect(() => {
-    document.addEventListener("mousedown", checkClickOutSide);
-    return () => {
-      document.removeEventListener("mousedown", checkClickOutSide);
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        searchToggle &&
+        ref.current &&
+        !ref.current.contains(e.target as Node)
+      ) {
+        setSearchToggle(false);
+        setSearchBar("");
+      }
     };
-  }, [searchToggle]);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [searchToggle, setSearchToggle]);
 
   return (
     <AnimatePresence>
@@ -87,12 +108,18 @@ const SearchBox: React.FC<SearchBoxProps> = ({
               <div className="p-4 border-b border-primary/20">
                 <div className="flex w-full">
                   <Input
+                    value={searchBar}
                     onChange={(e) => setSearchBar(e.target.value)}
-                    placeholder="search product..."
+                    placeholder="Search products..."
+                    aria-label="Search products"
                     className="h-10 w-4/5 rounded-r-none focus-visible:ring-0 placeholder:text-lg text-lg font-serif"
                   />
-                  <button className="bg-secondary cursor-pointer w-1/5 group rounded-r-md flex justify-center items-center">
-                    <FaSearch className={userIcons} />
+                  <button
+                    className="bg-secondary cursor-pointer w-1/5 group rounded-r-md flex justify-center items-center"
+                    onClick={() => {}}
+                    aria-label="Search button"
+                  >
+                    <FaSearch className="w-6 h-6 text-primary group-hover:text-nav" />
                   </button>
                 </div>
               </div>
@@ -101,7 +128,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
               <div className="p-5 max-h-[550px] overflow-y-auto">
                 <Title text="Trending collection" />
                 <div className="py-10 px-2 rounded-2xl">
-                  {isLoading ? (
+                  {trendingLoading || searchLoading ? (
                     <motion.div
                       layout
                       className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-2"
@@ -110,15 +137,21 @@ const SearchBox: React.FC<SearchBoxProps> = ({
                         <ProductSkeleton key={i} />
                       ))}
                     </motion.div>
-                  ) : (
+                  ) : isError ? (
+                    <p>Error: {(error as Error).message}</p>
+                  ) : productList.length > 0 ? (
                     <motion.div
                       layout
                       className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-2"
                     >
-                      {data?.map((product: Product) => (
+                      {productList.map((product: Product) => (
                         <ProductCard {...product} key={product.id} />
                       ))}
                     </motion.div>
+                  ) : (
+                    <h3 className="font-semibold font-mono text-nav">
+                      No products found for &quot;{debouncedSearch}&quot;
+                    </h3>
                   )}
                 </div>
               </div>
