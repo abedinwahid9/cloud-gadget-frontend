@@ -8,7 +8,8 @@
   top: -0.285rem;
   right: -1.58rem;
   border-top-left-radius: 0.625rem;
-  box-shadow: -0.375rem -0.375rem var(--color-background);
+  box-shadow: -0.375rem -0.375rem rgba(0, 0, 0, 0);
+  /* box-shadow: -0.375rem -0.375rem var(--color-background); */
 }
 
 /* Left ribbon */
@@ -21,7 +22,7 @@
   bottom: -1.655rem;
   left: -0.295rem;
   border-top-left-radius: 0.625rem;
-  box-shadow: -0.375rem -0.375rem var(--color-background);
+  box-shadow: -0.375rem -0.375rem rgba(0, 0, 0, 0);
 }
 /* Right ribbon */
 .tag_btn::after {
@@ -33,7 +34,7 @@
   top: -1.55rem;
   right: -0.3rem;
   border-bottom-right-radius: 0.625rem;
-  box-shadow: 0.375rem 0.375rem var(--color-background);
+  box-shadow: 0.375rem 0.375rem rgba(0, 0, 0, 0);
 }
 
 /* Left ribbon */
@@ -46,7 +47,7 @@
   bottom: -0.3rem;
   left: -1.56em;
   border-bottom-right-radius: 0.625rem;
-  box-shadow: 0.375rem 0.375rem var(--color-background);
+  box-shadow: 0.375rem 0.375rem rgba(0, 0, 0, 0);
 }
 
 @media screen and (max-width: 768px) {

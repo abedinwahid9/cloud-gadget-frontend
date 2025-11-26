@@ -32,22 +32,22 @@ const UserProfile = () => {
       >
         <DropdownMenuLabel className="font-bold">My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className={menuItemclassName}>
-          <Link href="/my-account">
+        <Link href="/my-account">
+          <DropdownMenuItem className={menuItemclassName}>
             <span className="relative">
               Profile
               <span className={underlineclassName} />
             </span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem className={menuItemclassName}>
-          <Link href="/admin">
+          </DropdownMenuItem>
+        </Link>
+        <Link href="/admin">
+          <DropdownMenuItem className={menuItemclassName}>
             <span className="relative">
               Dashboard
               <span className={underlineclassName} />
             </span>
-          </Link>
-        </DropdownMenuItem>
+          </DropdownMenuItem>
+        </Link>
 
         <DropdownMenuItem className={menuItemclassName}>
           <span className="relative">

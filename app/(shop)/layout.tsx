@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer/Footer";
 import MobileNav from "@/components/Navbar/MobileNav";
+
 import dynamic from "next/dynamic";
 const MainNav = dynamic(() => import("@/components/Navbar/MainNav"));
 
