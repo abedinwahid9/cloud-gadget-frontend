@@ -255,15 +255,17 @@ const AddProductPage = () => {
                     >
                       <div className="flex flex-col items-center space-y-1">
                         <div className="flex gap-3">
-                          <span className="rounded text-secondary px-2 py-1 text-md flex flex-col items-center font-medium dark:text-primary">
+                          <span className="rounded text-primary  dark:text-secondary px-2 py-1 text-md flex flex-col items-center font-medium ">
                             <IoIosCloudUpload className="w-5 h-5" />
                             Upload new
                           </span>
-                          <span className="text-xs">
+                          <span className="text-xs ">
                             <ModelGallery imageIndex={`addproduct`} />
                           </span>
                         </div>
-                        <p className="text-xs">Accepts images</p>
+                        <p className="text-xs dark:text-secondary">
+                          Accepts images
+                        </p>
                       </div>
                     </label>
                   ) : (
@@ -338,51 +340,85 @@ const AddProductPage = () => {
                   <Label className="text-secondary font-bold dark:text-nav underline">
                     Categories
                   </Label>
-                  <ComboBox
-                    title="Categories"
-                    categories={category || []}
-                    value={
-                      category?.find(
-                        (c: { slug: string }) => c.slug === watch("category")
-                      )?.label || ""
-                    }
-                    onChange={(val) => {
-                      setSubCate(val.id);
-                      setValue("category", val.slug ?? "");
-                    }}
+
+                  <Controller
+                    name="category"
+                    control={control}
+                    rules={{ required: "Category is required" }}
+                    render={({ field }) => (
+                      <ComboBox
+                        title="Categories"
+                        categories={category || []}
+                        value={
+                          category?.find(
+                            (c: { slug: string }) => c.slug === field.value
+                          )?.label || ""
+                        }
+                        onChange={(val) => {
+                          field.onChange(val.slug);
+                          setSubCate(val.id);
+                        }}
+                      />
+                    )}
                   />
+
+                  {errors.category && (
+                    <p className="text-red-500 text-sm">
+                      {errors.category.message}
+                    </p>
+                  )}
                 </div>
+
                 <div className="grid gap-2">
                   <Label className="text-secondary font-bold dark:text-nav underline">
                     Subcategory (Optional)
                   </Label>
-                  <ComboBox
-                    title="Categories"
-                    categories={subCategory || []}
-                    value={
-                      subCategory?.find(
-                        (c: { slug: string }) =>
-                          c.slug === watch("sub_category")
-                      )?.label || ""
-                    }
-                    onChange={(val) => setValue("sub_category", val.slug)}
+
+                  <Controller
+                    name="sub_category"
+                    control={control}
+                    rules={{ required: "Sub-category is required" }}
+                    render={({ field }) => (
+                      <ComboBox
+                        title="Sub Category"
+                        categories={subCategory || []}
+                        value={
+                          subCategory?.find(
+                            (c: { slug: string }) => c.slug === field.value
+                          )?.label || ""
+                        }
+                        onChange={(val) => field.onChange(val.slug)}
+                      />
+                    )}
                   />
+                  {errors.sub_category && (
+                    <p className="text-red-500 text-sm">
+                      {errors.sub_category.message}
+                    </p>
+                  )}
                 </div>
                 <div className="grid gap-2">
                   <Label className="text-secondary font-bold dark:text-nav underline">
                     Collections (Optional)
                   </Label>
-                  <ComboBox
-                    title="Categories"
-                    categories={collections || []}
-                    value={
-                      collections?.find(
-                        (c: { slug: string }) => c.slug === watch("collections")
-                      )?.label || ""
-                    }
-                    onChange={(val) => setValue("collections", val.slug ?? "")}
+
+                  <Controller
+                    name="collections"
+                    control={control}
+                    render={({ field }) => (
+                      <ComboBox
+                        title="Collections"
+                        categories={collections}
+                        value={
+                          collections.find((c) => c.slug === field.value)
+                            ?.label || ""
+                        }
+                        onChange={(val) => field.onChange(val.slug)}
+                      />
+                    )}
                   />
                 </div>
+
                 <div className="grid gap-2">
                   <Label
                     htmlFor="tags"

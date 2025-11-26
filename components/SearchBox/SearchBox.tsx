@@ -32,7 +32,6 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   const ref = useRef<HTMLDivElement>(null);
   const debouncedSearch = useDebounce(searchBar, 500);
 
-  // Fetch trending collections (cached for 5 minutes)
   const { data: trendingData = [], isLoading: trendingLoading } = useQuery({
     queryKey: ["trending-collection-search"],
     queryFn: async () => {
@@ -41,7 +40,6 @@ const SearchBox: React.FC<SearchBoxProps> = ({
       );
       return res.data.allProduct;
     },
-    staleTime: 1000 * 60 * 5,
   });
 
   // Fetch search results
