@@ -7,6 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { RiLoginBoxFill } from "react-icons/ri";
 
 import { FaUserAlt } from "react-icons/fa";
 
@@ -17,46 +18,60 @@ const UserProfile = () => {
   const underlineclassName =
     "absolute left-0 -bottom-1 h-[2px] w-0 bg-nav transition-all duration-300 group-hover:w-full";
 
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="focus:outline-none group cursor-pointer flex items-center ">
-        <FaUserAlt
-          className={`${userIcons} group-data-[state=open]:text-nav`}
-        />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        side="bottom"
-        align="end" // aligns to the left of trigger
-        sideOffset={15} // offset from the trigger (downward)
-        className="bg-primary/85 backdrop:blur-xl border-none text-secondary "
-      >
-        <DropdownMenuLabel className="font-bold">My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <Link href="/my-account">
-          <DropdownMenuItem className={menuItemclassName}>
-            <span className="relative">
-              Profile
-              <span className={underlineclassName} />
-            </span>
-          </DropdownMenuItem>
-        </Link>
-        <Link href="/admin">
-          <DropdownMenuItem className={menuItemclassName}>
-            <span className="relative">
-              Dashboard
-              <span className={underlineclassName} />
-            </span>
-          </DropdownMenuItem>
-        </Link>
+  const isUser = false;
 
-        <DropdownMenuItem className={menuItemclassName}>
-          <span className="relative">
-            logout
-            <span className={underlineclassName} />
-          </span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+  return (
+    <>
+      {!isUser ? (
+        <Link href="/login">
+          <RiLoginBoxFill
+            className={`${userIcons} group-data-[state=open]:text-nav`}
+          />
+        </Link>
+      ) : (
+        <DropdownMenu>
+          <DropdownMenuTrigger className="focus:outline-none group cursor-pointer flex items-center ">
+            <FaUserAlt
+              className={`${userIcons} group-data-[state=open]:text-nav`}
+            />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            side="bottom"
+            align="end" // aligns to the left of trigger
+            sideOffset={15} // offset from the trigger (downward)
+            className="bg-primary/85 backdrop:blur-xl border-none text-secondary "
+          >
+            <DropdownMenuLabel className="font-bold">
+              My Account
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <Link href="/my-account">
+              <DropdownMenuItem className={menuItemclassName}>
+                <span className="relative">
+                  Profile
+                  <span className={underlineclassName} />
+                </span>
+              </DropdownMenuItem>
+            </Link>
+            <Link href="/admin">
+              <DropdownMenuItem className={menuItemclassName}>
+                <span className="relative">
+                  Dashboard
+                  <span className={underlineclassName} />
+                </span>
+              </DropdownMenuItem>
+            </Link>
+
+            <DropdownMenuItem className={menuItemclassName}>
+              <span className="relative">
+                logout
+                <span className={underlineclassName} />
+              </span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
+    </>
   );
 };
 

@@ -7,7 +7,7 @@ import {
   FaMobileAlt,
   FaSearch,
 } from "react-icons/fa";
-import { IoLogoYoutube } from "react-icons/io";
+import { IoLogoYoutube, IoMdClose } from "react-icons/io";
 import UserProfile from "../share/UserProfile/UserProfile";
 import CateNav from "./CateNav";
 import SidebarNav from "./SidebarNav";
@@ -142,11 +142,27 @@ const MainNav = () => {
                     <Cart css={userIcons} />
                   </Link>
                 </li>
-                <li>
-                  <div onClick={() => setSearchToggle(() => !searchToggle)}>
+                <button
+                  disabled={searchToggle}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSearchToggle(true);
+                  }}
+                >
+                  <FaSearch
+                    className={`${userIcons} ${
+                      searchToggle ? "!text-nav !cursor-no-drop" : ""
+                    } cursor-pointer`}
+                  />
+                </button>
+                {/* <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSearchToggle(false);
+                    }}
+                  >
                     <FaSearch className={userIcons} />
-                  </div>
-                </li>
+                  </div> */}
                 <li className="hidden lg:block">
                   <ThemeBtn />
                 </li>{" "}

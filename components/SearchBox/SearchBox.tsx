@@ -73,11 +73,12 @@ const SearchBox: React.FC<SearchBoxProps> = ({
       ) {
         setSearchToggle(false);
         setSearchBar("");
+        return;
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [searchToggle, setSearchToggle]);
+  }, [searchToggle]);
 
   return (
     <AnimatePresence>

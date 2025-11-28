@@ -6,6 +6,7 @@ import { addToCart } from "@/lib/redux/slices/cartSlices";
 import Link from "next/link";
 import CustomBtn from "../CustomBtn/CustomBtn";
 import style from "./productcard.module.css";
+import { FaRegHeart } from "react-icons/fa";
 
 interface ProductCardProps {
   id: number;
@@ -29,6 +30,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const handleBtn = () => {
     dispatch(addToCart({ id, title: title, qnt: 1, price }));
   };
+
+  const isWishlist = false;
 
   return (
     <div className="relative w-full max-w-[250px] mx-auto rounded-xl shadow-sm bg-gradient-to-tr from-text/20 to-secondary/20  transition flex flex-col group">
@@ -109,10 +112,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
       </div>
 
       {/* Footer (Wishlist + Button) */}
-      <div className="flex items-center justify-between w-full pt-1">
+      <div className="flex items-center justify-between w-full pt-1 ">
         {/* Wishlist Heart */}
-        <div className="w-1/4 flex items-center justify-center">
-          <FaHeart className="text-red-500 cursor-pointer text-lg sm:text-2xl transition" />
+        <div className="w-1/4  flex items-center justify-center ">
+          <div>
+            {!isWishlist ? (
+              <FaRegHeart className="text-badge size-8 border-[1px] rounded-full  border-badge cursor-pointer  p-1 transition" />
+            ) : (
+              <FaHeart className="text-badge size-8 border-[1px] rounded-full  border-badge cursor-pointer  p-1 transition" />
+            )}
+          </div>
         </div>
 
         {/* Add to Cart Button */}
