@@ -63,10 +63,10 @@ const UserProfile = () => {
             </Link>
 
             <DropdownMenuItem className={menuItemclassName}>
-              <span className="relative">
+              <button className="relative">
                 logout
                 <span className={underlineclassName} />
-              </span>
+              </button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
