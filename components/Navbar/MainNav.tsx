@@ -18,6 +18,7 @@ import Cart from "../share/Cart/Cart";
 import Wishlist from "../share/Wishlist/Wishlist";
 import { ThemeBtn } from "../theme/ThemeBtn";
 import SearchBox from "../SearchBox/SearchBox";
+import { useDispatch } from "react-redux";
 
 const MainNav = () => {
   const [searchToggle, setSearchToggle] = useState<boolean>(false);
@@ -142,11 +143,27 @@ const MainNav = () => {
                     <Cart css={userIcons} />
                   </Link>
                 </li>
-                <li>
-                  <div onClick={() => setSearchToggle(() => !searchToggle)}>
+                <button
+                  disabled={searchToggle}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSearchToggle(true);
+                  }}
+                >
+                  <FaSearch
+                    className={`${userIcons} ${
+                      searchToggle ? "!text-nav !cursor-no-drop" : ""
+                    } cursor-pointer`}
+                  />
+                </button>
+                {/* <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSearchToggle(false);
+                    }}
+                  >
                     <FaSearch className={userIcons} />
-                  </div>
-                </li>
+                  </div> */}
                 <li className="hidden lg:block">
                   <ThemeBtn />
                 </li>{" "}

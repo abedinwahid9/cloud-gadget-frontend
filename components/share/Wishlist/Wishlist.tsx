@@ -1,9 +1,16 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import { FaHeart } from "react-icons/fa";
 
 const Wishlist = ({ css }: { css: string }) => {
+  const pathname = usePathname();
+
   return (
     <div className="relative">
-      <FaHeart className={`${css} `} />{" "}
+      <FaHeart
+        className={`${pathname === "/wishlist" ? "!text-nav" : ""} ${css} `}
+      />
       <span
         style={{
           top: "50%",

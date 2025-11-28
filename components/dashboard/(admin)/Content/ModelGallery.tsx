@@ -1,4 +1,3 @@
-// components/ModelGallery.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -97,10 +96,10 @@ const ModelGallery = ({ imageIndex }: { imageIndex: string }) => {
     e.target.value = "";
   };
   return (
-    <div className="relative">
+    <div className="relative bg-secondary/20 rounded-xl p-1">
       <Drawer direction="top" open={open} onOpenChange={setOpen}>
         <DrawerTrigger asChild>
-          <button className="bg-transparent rounded text-secondary px-2 py-1 text-md flex flex-col text-sm hover:bg-primary/30 items-center font-medium dark:text-primary">
+          <button className="bg-transparent cursor-cell rounded text-primary px-2 py-1 text-md flex flex-col text-sm  items-center font-medium dark:text-secondary ">
             <FaDropbox className="w-5 h-5" />
             Select existing
           </button>
