@@ -3,10 +3,18 @@
 import { useState, useRef, ChangeEvent, KeyboardEvent } from "react";
 import { motion } from "framer-motion";
 import CustomBtn from "../CustomBtn/CustomBtn";
+import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 
-const Otp = ({ onSuccess }: { onSuccess: () => void }) => {
+const Otp = ({
+  onSuccess,
+  email,
+}: {
+  onSuccess: () => void;
+  email: string;
+}) => {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
+  const axiosPublic = useAxiosPublic();
 
   const handleChange = (value: string, index: number) => {
     if (/^\d?$/.test(value)) {
@@ -24,6 +32,24 @@ const Otp = ({ onSuccess }: { onSuccess: () => void }) => {
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>, index: number) => {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputsRef.current[index - 1]?.focus();
+    }
+  };
+
+  const handleVerify = async () => {
+    const otpValue = otp.join("");
+
+    if (otpValue.length === 6) {
+      // TODO: call API to validate OTP
+
+      const varifyOtp = await axiosPublic.post("/otp/verify-otp", {
+        email: email,
+        otp: otpValue,
+      });
+      if (varifyOtp.status === 200) {
+        onSuccess();
+      }
+    } else {
+      alert("Please enter all 6 digits");
     }
   };
 
@@ -61,17 +87,7 @@ const Otp = ({ onSuccess }: { onSuccess: () => void }) => {
       <CustomBtn
         className="w-full rounded-lg"
         title="Verify"
-        handleBtn={() => {
-          const otpValue = otp.join("");
-
-          if (otpValue.length === 6) {
-            // TODO: call API to validate OTP
-
-            onSuccess(); // 🔥 Go to next step
-          } else {
-            alert("Please enter all 6 digits");
-          }
-        }}
+        handleBtn={handleVerify}
       />
 
       <button className="w-full mt-4 text-nav text-sm hover:underline">

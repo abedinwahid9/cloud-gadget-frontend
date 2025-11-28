@@ -12,29 +12,39 @@ import { FaHome } from "react-icons/fa";
 import { ThemeBtn } from "../theme/ThemeBtn";
 import Title from "../share/Title/Title";
 import Otp from "../share/Otp/Otp";
+import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 
 interface FormValues {
   email: string;
-  fullname: string;
+  name: string;
   password: string;
 }
 
 const SignUp = () => {
-  const { handleSubmit, control } = useForm<FormValues>({
-    defaultValues: { email: "", fullname: "", password: "" },
+  const { handleSubmit, control, watch } = useForm<FormValues>({
+    defaultValues: { email: "", name: "", password: "" },
   });
 
   const [step, setStep] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
+  const axoisPublic = useAxiosPublic();
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = async (data: FormValues) => {
     console.log("FORM DATA:", data);
 
     if (step === 0) {
       if (!data.email) return;
-      setStep(1);
+      const res = await axoisPublic.post("otp/sent-otp", { email: data.email });
+      if (res.status === 201) {
+        setStep(1);
+      }
     } else if (step === 2) {
-      alert("Signup Completed!");
+      const res = await axoisPublic.post("auth/signup", {
+        email: data.email,
+        name: data.name,
+        password: data.password,
+      });
+      console.log(res);
     }
   };
 
@@ -78,7 +88,7 @@ const SignUp = () => {
 
       // ----------------------- STEP 1 (OTP) -------------------------
       case 1:
-        return <Otp onSuccess={() => setStep(2)} />;
+        return <Otp email={watch("email")} onSuccess={() => setStep(2)} />;
 
       // ----------------------- STEP 2 -------------------------
       case 2:
@@ -86,20 +96,20 @@ const SignUp = () => {
           <>
             <div>
               <Label
-                htmlFor="fullname"
+                htmlFor="name"
                 className="text-secondary font-bold dark:text-nav underline"
               >
                 Full Name
               </Label>
 
               <Controller
-                name="fullname"
+                name="name"
                 control={control}
-                rules={{ required: "Full name required" }}
+                rules={{ required: "name is required" }}
                 render={({ field }) => (
                   <Input
                     {...field}
-                    id="fullname"
+                    id="name"
                     className="text-primary mt-3"
                     placeholder="Enter full name"
                   />
