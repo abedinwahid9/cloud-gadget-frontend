@@ -220,12 +220,17 @@ const SignUp = () => {
               >
                 {renderStep()}
 
-                <p className="text-center text-sm text-secondary dark:text-nav">
-                  Already have an account?{" "}
-                  <Link href="/login" className="text-primary hover:underline">
-                    Log in
-                  </Link>
-                </p>
+                {step !== 2 && (
+                  <p className="text-center text-sm text-secondary dark:text-nav">
+                    Already have an account?{" "}
+                    <Link
+                      href="/login"
+                      className="text-primary hover:underline"
+                    >
+                      Log in
+                    </Link>
+                  </p>
+                )}
               </form>
             </div>
 

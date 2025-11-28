@@ -12,20 +12,42 @@ import { ThemeBtn } from "../theme/ThemeBtn";
 import { FaHome } from "react-icons/fa";
 import CustomBtn from "../share/CustomBtn/CustomBtn";
 import Title from "../share/Title/Title";
+import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+
+interface FormValues {
+  email: string;
+  password: string;
+}
 
 const SignIn = () => {
-  const { handleSubmit, control } = useForm({
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<FormValues>({
     defaultValues: { email: "", password: "" },
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [ballToggle, setBallToggle] = useState(false);
+  const axiosPublic = useAxiosPublic();
+  const [errorMess, setErrorMess] = useState({ type: "", message: "" });
 
-  console.log(ballToggle);
+  const onSubmit = async (data: FormValues) => {
+    const res = await axiosPublic.post("auth/login", {
+      email: data.email,
+      password: data.password,
+    });
+    console.log(res);
 
-  const onSubmit = () => {};
-  const transition = {
-    duration: 0.8,
-    ease: [0, 0.71, 0.2, 1.01],
+    if (res.status === 202) {
+      setErrorMess({ type: "email", message: res.data.message });
+      return;
+    }
+    if (res.status === 203) {
+      setErrorMess({ type: "password", message: res.data.message });
+      return;
+    }
+
+    setErrorMess({ type: "", message: "" });
   };
 
   return (
@@ -54,33 +76,9 @@ const SignIn = () => {
 
           {/* Decorative Circles */}
           <div className="absolute inset-0 -z-10 overflow-hidden">
-            <motion.div
-              initial={{ x: 0 }}
-              animate={{ x: ballToggle ? -500 : 0 }}
-              transition={{
-                duration: 2,
-                ease: [0, 0.71, 0.2, 1.01],
-              }}
-              className="absolute -top-20 -left-20 h-full w-full rounded-full bg-gradient-to-br from-primary to-secondary"
-            />
-            <motion.div
-              initial={{ x: 0 }}
-              animate={{ x: ballToggle ? -350 : 0 }}
-              transition={{
-                duration: 1.5,
-                ease: [0, 0.71, 0.2, 1.01],
-              }}
-              className="absolute -bottom-1/5 -left-1/5 h-3/5 w-3/5 rounded-full bg-gradient-to-br from-primary to-secondary shadow-[0px_10px_50px_10px_rgba(0,_0,_0,_0.25)]"
-            />
-            <motion.div
-              initial={{ x: 0 }}
-              animate={{ x: ballToggle ? -500 : 0 }}
-              transition={{
-                duration: 0.8,
-                ease: [0, 0.71, 0.2, 1.01],
-              }}
-              className="absolute bottom-1/6 right-1/6 h-1/3 w-1/3 rounded-full bg-gradient-to-br from-primary to-secondary shadow-[0px_10px_50px_10px_rgba(0,_0,_0,_0.25)]"
-            />
+            <motion.div className="absolute -top-20 -left-20 h-full w-full rounded-full bg-gradient-to-br from-primary to-secondary" />
+            <motion.div className="absolute -bottom-1/5 -left-1/5 h-3/5 w-3/5 rounded-full bg-gradient-to-br from-primary to-secondary shadow-[0px_10px_50px_10px_rgba(0,_0,_0,_0.25)]" />
+            <motion.div className="absolute bottom-1/6 right-1/6 h-1/3 w-1/3 rounded-full bg-gradient-to-br from-primary to-secondary shadow-[0px_10px_50px_10px_rgba(0,_0,_0,_0.25)]" />
           </div>
         </motion.div>
 
@@ -120,9 +118,18 @@ const SignIn = () => {
                     id="email"
                     className="text-primary mt-3"
                     placeholder="Enter Your Email"
-
-                    // {...register("title", { required: "Title is required" })}
+                    {...register("email", { required: "Email is required" })}
                   />
+                  {errors.email && (
+                    <p className="text-badge text-sm mt-1">
+                      {errors.email.message}
+                    </p>
+                  )}
+                  {errorMess.type === "email" && (
+                    <p className="text-badge text-sm mt-1">
+                      {errorMess.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Password */}
@@ -137,10 +144,15 @@ const SignIn = () => {
                     <Input
                       id="password"
                       className="text-primary"
-                      name="password"
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter password"
-                      // {...register("title", { required: "Title is required" })}
+                      {...register("password", {
+                        required: "Password is required",
+                        minLength: {
+                          value: 6,
+                          message: "Password must be 6+ characters",
+                        },
+                      })}
                     />
 
                     <button
@@ -155,6 +167,18 @@ const SignIn = () => {
                       )}
                     </button>
                   </div>
+
+                  {errors.password && (
+                    <p className="text-badge text-sm mt-1">
+                      {errors.password.message}
+                    </p>
+                  )}
+                  {errorMess.type === "password" && (
+                    <p className="text-badge text-sm mt-1">
+                      {errorMess.message}
+                    </p>
+                  )}
+
                   <div className="mt-2 flex items-center justify-between text-sm">
                     <div className="flex items-center space-x-2">
                       <input
@@ -193,12 +217,7 @@ const SignIn = () => {
                 </p>
               </form>
             </CardContent>
-            <motion.div
-              initial={{ x: 0 }}
-              animate={{ x: ballToggle ? 200 : 0 }}
-              // transition={transition}
-              className="absolute -bottom-14 -right-14 -z-30  h-1/3 w-1/3 rounded-full bg-gradient-to-br from-primary to-secondary shadow-[0px_10px_50px_10px_rgba(0,_0,_0,_0.25)]"
-            />
+            <motion.div className="absolute -bottom-14 -right-14 -z-30  h-1/3 w-1/3 rounded-full bg-gradient-to-br from-primary to-secondary shadow-[0px_10px_50px_10px_rgba(0,_0,_0,_0.25)]" />
           </Card>
         </motion.div>
       </motion.div>
