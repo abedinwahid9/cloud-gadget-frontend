@@ -28,9 +28,9 @@ const LayoutCom = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] py-2  ">
+    <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] py-2  relative z-20">
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:block border-r p-3 border-r-secondary/50 border-t-md bg-secondary/20 dark:bg-blue-300/20 border border-gray-200 dark:border-gray-700 shadow-[0px_0px_1px_0px_#00a8a8] rounded-t-xl ">
+      <aside className="hidden  lg:block border-r p-3 border-r-secondary/50 border-t-md bg-secondary/20 dark:bg-blue-300/20 border border-gray-200 dark:border-gray-700 shadow-[0px_0px_1px_0px_#00a8a8] rounded-t-xl ">
         <h2 className="text-lg font-semibold mb-4 text-primary dark:text-nav">
           My Account
         </h2>
@@ -87,7 +87,7 @@ const LayoutCom = ({ children }: { children: React.ReactNode }) => {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", stiffness: 120, damping: 20 }}
-              className="absolute inset-y-0 left-0 w-[250px] bg-primary/90 dark:bg-gray-900 shadow-xl p-4 z-40 "
+              className="absolute inset-y-0 rounded-tr-4xl left-0 w-[250px] bg-primary/90 dark:bg-gray-900 shadow-xl p-4 z-40 "
             >
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-lg font-semibold text-nav ">My Account</h2>
