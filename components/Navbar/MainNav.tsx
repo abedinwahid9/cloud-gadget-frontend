@@ -47,12 +47,10 @@ const MainNav = () => {
 
   return (
     <header>
-      <div
-        className={`${scrolling ? "fixed top-0 right-0 w-full z-[8888]" : ""}`}
-      >
+      <div className={`${scrolling ? "fixed top-0 right-0 w-full z-40" : ""}`}>
         <Drawer direction="left">
           {/* top nav */}
-          <div className="w-full bg-primary relative z-[150]">
+          <div className="w-full bg-primary relative z-30">
             <div className="container mx-auto py-2 lg:px-5 px-1 flex justify-between">
               <Link
                 href="tel:01716893200"
@@ -84,7 +82,7 @@ const MainNav = () => {
             </div>
           </div>
           {/* main nav */}
-          <div className="w-full shadow-md shadow-primary/20 to-70%  py-4 lg:px-5 relative z-[150] bg-background px-1 ">
+          <div className="w-full shadow-md shadow-primary/20 to-70%  py-4 lg:px-5 relative z-30 bg-background px-1 ">
             <div className="container mx-auto flex justify-between items-center">
               {/* Logo + Menu */}
               <div className="flex items-center gap-2">
@@ -179,8 +177,10 @@ const MainNav = () => {
               <CateNav />
             </div>
           )}
-          {/* side nav */}
-          <SidebarNav />
+          <div className="relative z-[200]">
+            {/* side nav */}
+            <SidebarNav />
+          </div>
         </Drawer>
       </div>
       <SearchBox

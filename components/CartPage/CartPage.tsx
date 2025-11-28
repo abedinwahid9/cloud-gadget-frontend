@@ -22,15 +22,23 @@ import CartTotals from "./CartTotals";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { useEffect, useState } from "react";
 
 const CartPage = () => {
+  const [isClient, setIsClient] = useState(false);
   const cartItmes = useAppSelector((state) => state.cart.items);
   const dispatch = useAppDispatch();
 
-  console.log(cartItmes);
-
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  if (!isClient) return null;
   if (cartItmes?.length === 0) {
-    return <>no items is here</>;
+    return (
+      <div className="text-center mt-10 text-lg font-medium">
+        No items are here
+      </div>
+    );
   }
 
   return (
@@ -49,14 +57,20 @@ const CartPage = () => {
               return (
                 <TableRow key={i}>
                   <TableCell className="flex items-start md:items-center gap-2 md:flex-row flex-col ">
-                    <Image className="w-16 h-16" src={img} alt="img" />
+                    <Image
+                      width={500}
+                      height={500}
+                      className="w-16 h-16"
+                      src={item.imageUrl || img}
+                      alt="img"
+                    />
                     <div>
                       <Link href={`/shop/${item.id}`}>
-                        <h3 className="md:text-lg text-sm capitalize font-semibold truncate w-28 text-secondary dark:text-nav hover:underline">
-                          {item.id} smart watch
+                        <h3 className="md:text-lg text-sm capitalize font-semibold truncate w-28 md:w-40 text-primary dark:text-nav hover:underline">
+                          {item.title}
                         </h3>
                       </Link>
-                      <p className="text-secondary dark:text-nav">
+                      <p className="text-nav dark:text-nav">
                         price: ৳ {item.price}
                       </p>
                     </div>
@@ -72,11 +86,11 @@ const CartPage = () => {
                       }
                     />
                   </TableCell>
-                  <TableCell className="text-center text-secondary dark:text-nav text-lg font-semibold ">
+                  <TableCell className="text-center text-primary dark:text-nav text-lg font-semibold ">
                     <div className=" flex justify-center items-center  flex-col md:flex-row gap-3">
                       <span className="md:w-3/4 w-full">
                         {" "}
-                        ৳ {(item.qnt * item.price).toFixed(2)}
+                        ৳ {(item?.qnt * item?.price).toFixed(2)}
                       </span>
                       <div
                         onClick={() => dispatch(removeCart(item.id))}

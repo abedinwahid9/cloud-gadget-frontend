@@ -67,7 +67,7 @@ const SidebarNav = () => {
 
   // --- Main UI ---
   return (
-    <DrawerContent className="w-[300px] h-auto p-4 backdrop-blur-2xl bg-primary/60">
+    <DrawerContent className="w-[300px] h-auto p-4 backdrop-blur-2xl bg-primary/60 ">
       <DrawerTitle className="text-xl  mb-4 text-nav font-bold">
         Categories
       </DrawerTitle>
