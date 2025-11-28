@@ -51,6 +51,8 @@ const SignIn = () => {
     setSaveLoad(true);
     if (res.status === 200) {
       dispatch(setUser(res.data.user));
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      ("use server");
       redirect("/");
       setSaveLoad(false);
     }

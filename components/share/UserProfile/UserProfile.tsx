@@ -29,7 +29,7 @@ const UserProfile = () => {
   const handleLogout = async () => {
     const res = await axiosPublic.get("/auth/logout");
     if (res.status === 203) {
-      dispatch(setUser(""));
+      dispatch(setUser(null));
     }
   };
 
@@ -66,14 +66,16 @@ const UserProfile = () => {
                 </span>
               </DropdownMenuItem>
             </Link>
-            <Link href="/admin">
-              <DropdownMenuItem className={menuItemclassName}>
-                <span className="relative">
-                  Dashboard
-                  <span className={underlineclassName} />
-                </span>
-              </DropdownMenuItem>
-            </Link>
+            {user?.role === "ADMIN" && (
+              <Link href="/admin">
+                <DropdownMenuItem className={menuItemclassName}>
+                  <span className="relative">
+                    Dashboard
+                    <span className={underlineclassName} />
+                  </span>
+                </DropdownMenuItem>
+              </Link>
+            )}
 
             <DropdownMenuItem className={menuItemclassName}>
               <button onClick={handleLogout} className="relative">
