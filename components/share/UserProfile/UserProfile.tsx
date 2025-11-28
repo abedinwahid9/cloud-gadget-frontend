@@ -1,3 +1,4 @@
+"use client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,6 +11,10 @@ import Link from "next/link";
 import { RiLoginBoxFill } from "react-icons/ri";
 
 import { FaUserAlt } from "react-icons/fa";
+import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { setUser } from "@/lib/redux/slices/userSlices";
 
 const UserProfile = () => {
   const userIcons: string = "w-6 h-6 text-secondary hover:text-nav";
@@ -17,12 +22,20 @@ const UserProfile = () => {
     "group relative text-md font-semibold transition-colors duration-300 hover:text-secondary";
   const underlineclassName =
     "absolute left-0 -bottom-1 h-[2px] w-0 bg-nav transition-all duration-300 group-hover:w-full";
+  const { user } = useAppSelector((state) => state.userSlices);
+  const axiosPublic = useAxiosPublic();
+  const dispatch = useAppDispatch();
 
-  const isUser = false;
+  const handleLogout = async () => {
+    const res = await axiosPublic.get("/auth/logout");
+    if (res.status === 203) {
+      dispatch(setUser(""));
+    }
+  };
 
   return (
     <>
-      {!isUser ? (
+      {!user ? (
         <Link href="/login">
           <RiLoginBoxFill
             className={`${userIcons} group-data-[state=open]:text-nav`}
@@ -63,7 +76,7 @@ const UserProfile = () => {
             </Link>
 
             <DropdownMenuItem className={menuItemclassName}>
-              <button className="relative">
+              <button onClick={handleLogout} className="relative">
                 logout
                 <span className={underlineclassName} />
               </button>

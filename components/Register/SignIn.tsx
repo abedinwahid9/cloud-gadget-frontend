@@ -1,18 +1,21 @@
 "use client";
 import { motion } from "framer-motion";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useState } from "react";
-import { Eye, EyeOff, User, Lock } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { ThemeBtn } from "../theme/ThemeBtn";
 import { FaHome } from "react-icons/fa";
 import CustomBtn from "../share/CustomBtn/CustomBtn";
 import Title from "../share/Title/Title";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { setUser } from "@/lib/redux/slices/userSlices";
+import { redirect } from "next/navigation";
+import { Spinner } from "../ui/spinner";
 
 interface FormValues {
   email: string;
@@ -23,6 +26,7 @@ const SignIn = () => {
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: { email: "", password: "" },
@@ -30,14 +34,27 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const axiosPublic = useAxiosPublic();
   const [errorMess, setErrorMess] = useState({ type: "", message: "" });
+  const dispatch = useAppDispatch();
+  const [saveLoad, setSaveLoad] = useState<boolean>(false);
 
   const onSubmit = async (data: FormValues) => {
-    const res = await axiosPublic.post("auth/login", {
-      email: data.email,
-      password: data.password,
-    });
-    console.log(res);
-
+    const res = await axiosPublic.post(
+      "auth/login",
+      {
+        email: data.email,
+        password: data.password,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+    setSaveLoad(true);
+    if (res.status === 200) {
+      dispatch(setUser(res.data.user));
+      redirect("/");
+      setSaveLoad(false);
+    }
+    reset({ email: "", password: "" });
     if (res.status === 202) {
       setErrorMess({ type: "email", message: res.data.message });
       return;
@@ -196,10 +213,20 @@ const SignIn = () => {
                   </div>
                 </div>
 
-                <CustomBtn
+                {/* <CustomBtn
                   className="w-full rounded-lg"
                   type="submit"
-                  title="Log In"
+                  title=""
+                /> */}
+                <CustomBtn
+                  disabled={saveLoad}
+                  title={saveLoad ? <Spinner className="size-10" /> : "Log In"}
+                  type="submit"
+                  className={`rounded-lg w-full ${
+                    saveLoad
+                      ? "disabled:cursor-not-allowed cursor-not-allowed opacity-35"
+                      : ""
+                  }`}
                 />
 
                 {/* <Button

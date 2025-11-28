@@ -7,7 +7,7 @@ import {
   FaMobileAlt,
   FaSearch,
 } from "react-icons/fa";
-import { IoLogoYoutube, IoMdClose } from "react-icons/io";
+import { IoLogoYoutube } from "react-icons/io";
 import UserProfile from "../share/UserProfile/UserProfile";
 import CateNav from "./CateNav";
 import SidebarNav from "./SidebarNav";
@@ -18,6 +18,7 @@ import Cart from "../share/Cart/Cart";
 import Wishlist from "../share/Wishlist/Wishlist";
 import { ThemeBtn } from "../theme/ThemeBtn";
 import SearchBox from "../SearchBox/SearchBox";
+import { useDispatch } from "react-redux";
 
 const MainNav = () => {
   const [searchToggle, setSearchToggle] = useState<boolean>(false);

@@ -1,6 +1,7 @@
 import cartReducer from "./slices/cartSlices";
 import imageSeletedReducer from "./slices/imageSeletedSlices";
 import filterSlices from "./slices/filterSlices";
+import userSlices from "./slices/userSlices";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
@@ -8,6 +9,7 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   imageSelete: imageSeletedReducer,
   filterSlices: filterSlices,
+  userSlices: userSlices,
 });
 
 export const makeStore = () => {

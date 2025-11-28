@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "@/lib/tanstackprovider/Tanstackprovider";
+import LoginCheck from "@/components/share/LoginCheck/LoginCheck";
 
 export default function RootLayout({
   children,
@@ -27,6 +28,7 @@ export default function RootLayout({
             >
               {children}
               <Toaster />
+              <LoginCheck />
             </ThemeProvider>
           </QueryProvider>
         </StoreProvider>

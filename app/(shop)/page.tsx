@@ -1,8 +1,5 @@
 import HeroSection from "@/components/HeroSection/HeroSection";
 import { Metadata } from "next";
-import cover5 from "@/app/assets/cover5.png";
-import cover3 from "@/app/assets/cover3.jpg";
-import cover2 from "@/app/assets/cover2.jpg";
 import AdsBanner from "@/components/share/AdsBanner/AdsBanner";
 import Category from "@/components/Category/Category";
 import FeatureHighlights from "@/components/FeatureHighlights/FeatureHighlights";
