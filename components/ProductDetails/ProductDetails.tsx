@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { addToCart } from "@/lib/redux/slices/cartSlices";
+import WishlistIcon from "../share/WishlistIcon/WishlistIcon";
+import CustomBtn from "../share/CustomBtn/CustomBtn";
 
 // Types
 interface Variant {
@@ -17,6 +19,7 @@ interface Product {
   price: number;
   discount?: number;
   stock_quantity: number;
+  images: string[];
   variants?: Variant[];
 }
 
@@ -29,7 +32,15 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
   const dispatch = useAppDispatch();
 
-  const { id, price, discount = 0, title, stock_quantity, variants } = product;
+  const {
+    id,
+    price,
+    discount = 0,
+    title,
+    images,
+    stock_quantity,
+    variants,
+  } = product;
 
   const handleQuantity = (type: "inc" | "dec") => {
     setQuantity((prev) => {
@@ -38,29 +49,36 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
       return prev;
     });
   };
+  const handleBtn = () => {
+    dispatch(
+      addToCart({ id, title: title, qnt: 1, price, imageUrl: images[0] })
+    );
+  };
 
   return (
     <div className="lg:w-1/2 w-full space-y-2">
       {/* Title */}
-      <h1 className="text-xl md:text-2xl font-semibold text-secondary dark:text-nav capitalize">
+      <h1 className="text-2xl font-mono md:text-3xl font-semibold text-primary tracking-tighter dark:text-nav capitalize">
         {title}
       </h1>
 
       {/* Price */}
       <div className="flex items-center gap-3">
-        <span className="text-2xl font-bold text-primary">{price}৳</span>
-        {discount > 0 && (
-          <span className="text-lg text-gray-400 line-through">
-            {discount}৳
+        <div className="text-primary dark:text-secondary ">
+          <span className="text-sm sm:text-base md:text-2xl font-bold">
+            ৳ {(price * (1 - discount / 100)).toFixed(2)}
           </span>
-        )}
+          {discount > 0 && (
+            <span className="text-base sm:text-xs text-gray-500 line-through ml-3">
+              ৳ {price.toFixed(2)}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Wishlist */}
       <div className="flex items-center gap-4">
-        <button className="border rounded-full p-2 hover:bg-gray-100">
-          ❤️
-        </button>
+        <WishlistIcon />
         {/* <span className="text-secondary dark:text-nav">Share :</span> */}
         {/* <div className="flex gap-2">
           <FaFacebookF className="cursor-pointer text-gray-600 hover:text-blue-600" />
@@ -70,7 +88,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
       </div>
 
       {/* Highlights */}
-      <div className="space-y-1 text-sm text-secondary dark:text-nav">
+      <div className="space-y-1 text-sm text-nav dark:text-nav">
         <h3 className="font-semibold">Product Highlights</h3>
         <ul className="list-disc list-inside space-y-1">
           <li>Brand: JBL</li>
@@ -87,9 +105,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
 
       {/* Stock */}
       {stock_quantity > 0 ? (
-        <div className="flex items-center gap-2 text-primary font-medium">
-          <span className="w-3 h-3 bg-primary rounded-full"></span>
-          In Stock
+        <div className="flex items-center gap-2 text-nav font-medium">
+          <span className="w-3 h-3 bg-nav rounded-full"></span>({stock_quantity}
+          ) In Stock
         </div>
       ) : (
         <div className="flex items-center gap-2 text-badge font-medium">
@@ -167,37 +185,28 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
 
       {/* Quantity + Add to Cart */}
       <div className="flex items-center gap-4">
-        <div className="flex items-center border rounded-md">
+        <div className="flex items-center border overflow-hidden rounded-md">
           <button
             onClick={() => handleQuantity("dec")}
-            className="px-3 py-1 text-lg font-bold hover:bg-gray-100"
+            className="px-3 py-1 text-lg font-bold cursor-pointer hover:bg-secondary/50"
           >
             -
           </button>
           <span className="px-4">{quantity}</span>
           <button
             onClick={() => handleQuantity("inc")}
-            className="px-3 py-1 text-lg font-bold hover:bg-gray-100"
+            className="px-3 py-1 text-lg cursor-pointer font-bold hover:bg-secondary/50"
           >
             +
           </button>
         </div>
-
-        <Button
-          onClick={() =>
-            dispatch(
-              addToCart({
-                id,
-                title,
-                qnt: quantity,
-                price: price * quantity,
-              })
-            )
-          }
-          className="rounded-md bg-primary/50 py-5 hover:bg-secondary hover:text-nav text-secondary font-semibold md:text-lg text-sm"
-        >
-          Add to Cart
-        </Button>
+        <div className=" w-1/3">
+          <CustomBtn
+            title="Add To Cart"
+            className=" text-xs sm:text-sm md:text-base font-semibold shadow-md hover:opacity-90 w-full rounded-none"
+            handleBtn={handleBtn}
+          />
+        </div>
       </div>
     </div>
   );

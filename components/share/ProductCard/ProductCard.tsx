@@ -7,6 +7,8 @@ import Link from "next/link";
 import CustomBtn from "../CustomBtn/CustomBtn";
 import style from "./productcard.module.css";
 import { FaRegHeart } from "react-icons/fa";
+import { IoIosHeartEmpty, IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
+import WishlistIcon from "../WishlistIcon/WishlistIcon";
 
 interface ProductCardProps {
   id: number;
@@ -33,8 +35,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
     );
   };
 
-  const isWishlist = false;
-
   return (
     <div className="relative w-full max-w-[250px] mx-auto rounded-xl shadow-sm bg-gradient-to-tr from-text/20 to-secondary/20  transition flex flex-col group">
       {/* Category Badge */}
@@ -45,7 +45,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           {category && category}
         </div>
         {discount > 0 && (
-          <span className="border-2 bg-text/10 border-dashed border-nav relative left-3 -top-1 text-sm px-3 py-0.5 text-nav font-semibold rounded-xl font-mono">
+          <span className="border-2 bg-text/10 border-dashed border-nav relative md:left-5 md:-top-1 top-0 left-8 text-xs px-3 py-0.5 text-nav font-semibold rounded-xl font-mono">
             {discount}% OFF
           </span>
         )}
@@ -117,13 +117,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <div className="flex items-center justify-between w-full pt-1 ">
         {/* Wishlist Heart */}
         <div className="w-1/4  flex items-center justify-center ">
-          <div>
-            {!isWishlist ? (
-              <FaRegHeart className="text-badge size-8 border-[1px] rounded-full  border-badge cursor-pointer  p-1 transition" />
-            ) : (
-              <FaHeart className="text-badge size-8 border-[1px] rounded-full  border-badge cursor-pointer  p-1 transition" />
-            )}
-          </div>
+          <WishlistIcon />
         </div>
 
         {/* Add to Cart Button */}

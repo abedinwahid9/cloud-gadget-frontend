@@ -35,7 +35,7 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    if (!user || user !== "admin") {
+    if (!user || user !== "ADMIN") {
       return NextResponse.redirect(new URL("/", request.url));
     }
   }

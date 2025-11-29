@@ -20,12 +20,12 @@ import { ThemeBtn } from "../theme/ThemeBtn";
 import SearchBox from "../SearchBox/SearchBox";
 import { useDispatch } from "react-redux";
 
+export const userIcons = "w-7 h-7 text-secondary hover:text-nav";
 const MainNav = () => {
   const [searchToggle, setSearchToggle] = useState<boolean>(false);
   const [scrolling, setScrolling] = useState(false);
 
   const socialIconStyle = "md:w-6 md:h-6 w-5 h-5 text-text";
-  const userIcons = "w-6 h-6 text-secondary hover:text-nav";
 
   const navLink = [
     { name: "Home", href: "/" },
@@ -82,7 +82,7 @@ const MainNav = () => {
             </div>
           </div>
           {/* main nav */}
-          <div className="w-full shadow-md shadow-primary/20 to-70%  py-4 lg:px-5 relative z-30 bg-background px-1 ">
+          <div className="w-full shadow-md shadow-primary/20 to-70%  py-4 lg:px-5 relative z-30 bg-background px-2 ">
             <div className="container mx-auto flex justify-between items-center">
               {/* Logo + Menu */}
               <div className="flex items-center gap-2">
@@ -130,7 +130,7 @@ const MainNav = () => {
               </ul>
 
               {/* User icons */}
-              <ul className="text-nav flex items-center gap-4">
+              <ul className="text-nav flex items-center md:gap-4 gap-2">
                 <li className="hidden lg:block">
                   <Link href="/wishlist">
                     <Wishlist css={userIcons} />

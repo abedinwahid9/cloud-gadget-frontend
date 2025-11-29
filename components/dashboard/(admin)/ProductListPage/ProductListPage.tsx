@@ -1,5 +1,4 @@
 "use client";
-
 import * as React from "react";
 import {
   ColumnDef,
@@ -19,13 +18,10 @@ import {
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MoreHorizontal, Search, Sheet } from "lucide-react";
-import Image, { StaticImageData } from "next/image";
-import img1 from "@/app/assets/img1.png";
-import { Switch } from "@/components/ui/switch";
+import { MoreHorizontal, Search } from "lucide-react";
+import Image from "next/image";
 import CustomBtn from "@/components/share/CustomBtn/CustomBtn";
 import { CiEdit } from "react-icons/ci";
-
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -34,14 +30,12 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { toast } from "sonner";
 import { CardStyle } from "@/lib/utils/customCss";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { Skeleton } from "@/components/ui/skeleton";
 import ConfirmToast from "@/components/share/ToastCustom/ConfirmToast";
 import { Spinner } from "@/components/ui/spinner";
-import ToastCustom from "@/components/share/ToastCustom/ToastCustom";
 import StatusSwitch from "@/components/share/StatusSwitch/StatusSwitch";
 
 // --- Product type ---
@@ -84,7 +78,6 @@ const calculateDiscountPrice = ({
 
 // --- Columns generator ---
 const getColumns = (
-  switchStates: Record<number, boolean>,
   refetch: () => void,
   handleProductDelete: (id: number) => Promise<boolean | undefined>
 ): ColumnDef<Product>[] => [
@@ -225,9 +218,6 @@ const ProductListPage = ({ title }: { title: string }) => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const [switchStates, setSwitchStates] = React.useState<
-    Record<number, boolean>
-  >({});
 
   const axiosPublic = useAxiosPublic();
 
@@ -260,9 +250,9 @@ const ProductListPage = ({ title }: { title: string }) => {
   };
 
   const columns = React.useMemo(
-    () => getColumns(switchStates, refetch, handleProductDelete),
+    () => getColumns(refetch, handleProductDelete),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [switchStates]
+    []
   );
 
   const table = useReactTable({

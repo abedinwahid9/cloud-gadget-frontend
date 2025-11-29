@@ -8,16 +8,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { RiLoginBoxFill } from "react-icons/ri";
+import { RiLoginBoxFill, RiLoginCircleFill } from "react-icons/ri";
 
 import { FaUserAlt } from "react-icons/fa";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setUser } from "@/lib/redux/slices/userSlices";
+import { userIcons } from "@/components/Navbar/MainNav";
 
 const UserProfile = () => {
-  const userIcons: string = "w-6 h-6 text-secondary hover:text-nav";
+  // const userIcons: string = "w-7 h-7 text-secondary hover:text-nav";
   const menuItemclassName =
     "group relative text-md font-semibold transition-colors duration-300 hover:text-secondary";
   const underlineclassName =
@@ -37,8 +38,8 @@ const UserProfile = () => {
     <>
       {!user ? (
         <Link href="/login">
-          <RiLoginBoxFill
-            className={`${userIcons} group-data-[state=open]:text-nav`}
+          <RiLoginCircleFill
+            className={`${userIcons}  group-data-[state=open]:text-nav`}
           />
         </Link>
       ) : (
@@ -67,7 +68,7 @@ const UserProfile = () => {
               </DropdownMenuItem>
             </Link>
             {user?.role === "ADMIN" && (
-              <Link href="/admin">
+              <Link href="/admin" prefetch={true}>
                 <DropdownMenuItem className={menuItemclassName}>
                   <span className="relative">
                     Dashboard
