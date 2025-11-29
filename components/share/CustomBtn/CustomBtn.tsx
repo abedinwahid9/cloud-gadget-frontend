@@ -18,7 +18,7 @@ const CustomBtn = ({ title, handleBtn, className, type, disabled }: Btn) => {
         disabled={disabled}
         type={type}
         onClick={handleBtn}
-        className={`${className}   bg-gradient-to-tl from-nav/20 
+        className={`${className}  rounded-lg bg-gradient-to-tl from-nav/20 
   to-secondary/20  hover:from-nav hover:to-text hover:text-pretty   text-primary md:font-bold dark:text-text hover:dark:text-primary font-semibold md:text-lg text-sm capitalize  cursor-pointer `}
       >
         {title}

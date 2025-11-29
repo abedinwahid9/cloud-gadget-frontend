@@ -35,7 +35,7 @@ const CartPage = () => {
   if (!isClient) return null;
   if (cartItmes?.length === 0) {
     return (
-      <div className="text-center mt-10 text-lg font-medium">
+      <div className="text-center mt-10 md:text-lg text-sm text-nav font-medium">
         No items are here
       </div>
     );

@@ -97,17 +97,17 @@ const getColumns = (): ColumnDef<Users>[] => [
   },
 ];
 
-const Customers = ({ role }: { role: string }) => {
+const Users = ({ role }: { role: string }) => {
   const columns = React.useMemo(() => getColumns(), []);
   const axiosPublic = useAxiosPublic();
 
-  const { data, isLoading } = useQuery({
+  const { data = [], isLoading } = useQuery({
     queryKey: ["role", role],
     queryFn: async () => {
-      const res = await axiosPublic.get(`/user/${role}`);
-
-      return res.data.user;
+      const res = await axiosPublic.get("/user", { params: { role } });
+      return res.data.users;
     },
+    enabled: !!role,
   });
 
   const table = useReactTable({
@@ -165,4 +165,4 @@ const Customers = ({ role }: { role: string }) => {
   );
 };
 
-export default Customers;
+export default Users;

@@ -38,6 +38,7 @@ const SignIn = () => {
   const [saveLoad, setSaveLoad] = useState<boolean>(false);
 
   const onSubmit = async (data: FormValues) => {
+    setSaveLoad(true);
     const res = await axiosPublic.post(
       "auth/login",
       {
@@ -48,7 +49,7 @@ const SignIn = () => {
         withCredentials: true,
       }
     );
-    setSaveLoad(true);
+
     if (res.status === 200) {
       dispatch(setUser(res.data.user));
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -135,6 +136,7 @@ const SignIn = () => {
                   </Label>
                   <Input
                     id="email"
+                    autoComplete="email"
                     className="text-primary mt-3"
                     placeholder="Enter Your Email"
                     {...register("email", { required: "Email is required" })}
@@ -162,6 +164,7 @@ const SignIn = () => {
                   <div className="relative mt-3">
                     <Input
                       id="password"
+                      autoComplete="current-password"
                       className="text-primary"
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter password"

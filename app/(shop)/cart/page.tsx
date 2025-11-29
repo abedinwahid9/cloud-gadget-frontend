@@ -1,5 +1,5 @@
 import CartPage from "@/components/CartPage/CartPage";
-import CartTotals from "@/components/CartPage/CartTotals";
+
 import Title from "@/components/share/Title/Title";
 
 const page = () => {

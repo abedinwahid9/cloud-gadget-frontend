@@ -89,7 +89,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed top-6 inset-0 z-[100] bg-black/50 backdrop-blur-sm flex justify-center items-start pt-20 overflow-y-auto"
+          className="fixed top-6 inset-0 z-20 bg-black/50 backdrop-blur-sm flex justify-center items-start pt-20 overflow-y-auto"
         >
           <motion.div
             key="search-container"
