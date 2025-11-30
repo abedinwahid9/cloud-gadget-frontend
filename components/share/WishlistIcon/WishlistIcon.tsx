@@ -1,10 +1,28 @@
+import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { useAppSelector } from "@/lib/redux/hooks";
 import React from "react";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 
-const WishlistIcon = () => {
+const WishlistIcon = ({ productId }: { productId: string }) => {
   const isWishlist = false;
+  const user = useAppSelector((state) => state.userSlices.user);
+  const axiosPublic = useAxiosPublic();
+
+  const handleWishlist = async () => {
+    const data = {
+      userId: user?.id,
+      productId: productId,
+    };
+    try {
+      const res = await axiosPublic.post("/wishlist", data);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <div>
+    <div onClick={handleWishlist}>
       {!isWishlist ? (
         <IoMdHeartEmpty className="text-badge size-8 border-[1px] rounded-full  border-badge cursor-pointer  p-1 transition" />
       ) : (

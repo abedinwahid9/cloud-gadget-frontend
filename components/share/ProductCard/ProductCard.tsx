@@ -11,7 +11,7 @@ import { IoIosHeartEmpty, IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import WishlistIcon from "../WishlistIcon/WishlistIcon";
 
 interface ProductCardProps {
-  id: number;
+  id: string;
   title: string;
   images: string[];
   price: number;
@@ -117,7 +117,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <div className="flex items-center justify-between w-full pt-1 ">
         {/* Wishlist Heart */}
         <div className="w-1/4  flex items-center justify-center ">
-          <WishlistIcon />
+          <WishlistIcon productId={id} />
         </div>
 
         {/* Add to Cart Button */}

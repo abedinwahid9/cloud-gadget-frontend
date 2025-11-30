@@ -1,16 +1,29 @@
 "use client";
 
-import { useState, useRef, ChangeEvent, KeyboardEvent } from "react";
+import {
+  useState,
+  useRef,
+  ChangeEvent,
+  KeyboardEvent,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { motion } from "framer-motion";
 import CustomBtn from "../CustomBtn/CustomBtn";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { UseFormSetValue } from "react-hook-form";
+import { FormValues } from "@/components/Register/SignUp";
 
 const Otp = ({
   onSuccess,
   email,
+  setSaveLoad,
+  setValue,
 }: {
   onSuccess: () => void;
+  setSaveLoad: Dispatch<SetStateAction<boolean>>;
   email: string;
+  setValue: UseFormSetValue<FormValues>;
 }) => {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
@@ -37,16 +50,17 @@ const Otp = ({
 
   const handleVerify = async () => {
     const otpValue = otp.join("");
-
+    setValue("otpCode", otpValue);
     if (otpValue.length === 6) {
       // TODO: call API to validate OTP
-
+      setSaveLoad(true);
       const varifyOtp = await axiosPublic.post("/otp/verify-otp", {
         email: email,
         otp: otpValue,
       });
       if (varifyOtp.status === 200) {
         onSuccess();
+        setSaveLoad(false);
       }
     } else {
       alert("Please enter all 6 digits");

@@ -58,6 +58,7 @@ const SignIn = () => {
       setSaveLoad(false);
     }
     reset({ email: "", password: "" });
+
     if (res.status === 202) {
       setErrorMess({ type: "email", message: res.data.message });
       return;
@@ -66,7 +67,7 @@ const SignIn = () => {
       setErrorMess({ type: "password", message: res.data.message });
       return;
     }
-
+    setSaveLoad(false);
     setErrorMess({ type: "", message: "" });
   };
 

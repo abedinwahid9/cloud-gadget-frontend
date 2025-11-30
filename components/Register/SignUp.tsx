@@ -13,38 +13,53 @@ import { ThemeBtn } from "../theme/ThemeBtn";
 import Title from "../share/Title/Title";
 import Otp from "../share/Otp/Otp";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { Spinner } from "../ui/spinner";
+import { redirect } from "next/navigation";
 
-interface FormValues {
+export interface FormValues {
   email: string;
   name: string;
+  otpCode: number | string;
   password: string;
 }
 
 const SignUp = () => {
-  const { handleSubmit, control, watch } = useForm<FormValues>({
-    defaultValues: { email: "", name: "", password: "" },
-  });
+  const { handleSubmit, control, watch, setValue, reset } = useForm<FormValues>(
+    {
+      defaultValues: { email: "", name: "", otpCode: "", password: "" },
+    }
+  );
 
   const [step, setStep] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
-  const axoisPublic = useAxiosPublic();
+  const axiosPublic = useAxiosPublic();
+  const [saveLoad, setSaveLoad] = useState<boolean>(false);
 
   const onSubmit = async (data: FormValues) => {
     console.log("FORM DATA:", data);
 
     if (step === 0) {
+      setSaveLoad(true);
       if (!data.email) return;
-      const res = await axoisPublic.post("otp/sent-otp", { email: data.email });
+      const res = await axiosPublic.post("otp/send-otp", { email: data.email });
       if (res.status === 201) {
         setStep(1);
+        setSaveLoad(false);
       }
     } else if (step === 2) {
-      const res = await axoisPublic.post("auth/signup", {
+      setSaveLoad(true);
+      const res = await axiosPublic.post("auth/signup", {
         email: data.email,
         name: data.name,
+        otp: data.otpCode,
         password: data.password,
       });
-      console.log(res);
+
+      if (res.status === 200) {
+        setSaveLoad(false);
+        reset({ email: "", name: "", otpCode: "", password: "" });
+        redirect("/");
+      }
     }
   };
 
@@ -77,18 +92,28 @@ const SignUp = () => {
                 )}
               />
             </div>
-
             <CustomBtn
-              className="w-full rounded-lg"
-              type="submit"
-              title="Sign Up"
+              disabled={saveLoad}
+              title={saveLoad ? <Spinner className="size-10" /> : "Sign Up"}
+              className={`rounded-lg w-full ${
+                saveLoad
+                  ? "disabled:cursor-not-allowed cursor-not-allowed opacity-35"
+                  : ""
+              }`}
             />
           </>
         );
 
       // ----------------------- STEP 1 (OTP) -------------------------
       case 1:
-        return <Otp email={watch("email")} onSuccess={() => setStep(2)} />;
+        return (
+          <Otp
+            email={watch("email")}
+            setValue={setValue}
+            setSaveLoad={setSaveLoad}
+            onSuccess={() => setStep(2)}
+          />
+        );
 
       // ----------------------- STEP 2 -------------------------
       case 2:
@@ -157,9 +182,14 @@ const SignUp = () => {
             </div>
 
             <CustomBtn
-              className="w-full rounded-lg"
+              disabled={saveLoad}
+              title={saveLoad ? <Spinner className="size-10" /> : "Complete"}
               type="submit"
-              title="Complete"
+              className={`rounded-lg w-full ${
+                saveLoad
+                  ? "disabled:cursor-not-allowed cursor-not-allowed opacity-35"
+                  : ""
+              }`}
             />
           </>
         );
