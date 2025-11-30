@@ -15,6 +15,7 @@ const LoginCheck = () => {
       const res = await axiosPublic.get("/auth/me");
       return res.data.payload;
     },
+    retry: false,
   });
 
   useEffect(() => {
