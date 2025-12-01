@@ -15,7 +15,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     dispatch(getAuthMe());
   }, [dispatch]);
 
-  if (loading) return <p>Loading user...</p>;
+  // if (loading) return <p>Loading user...</p>;
 
   return <>{children}</>;
 };

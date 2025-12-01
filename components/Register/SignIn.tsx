@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -17,7 +17,7 @@ import Title from "../share/Title/Title";
 import { ThemeBtn } from "../theme/ThemeBtn";
 
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
-import { useAppDispatch } from "@/lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { getAuthMe } from "@/lib/redux/auth/authThunks";
 
 interface FormValues {
@@ -38,7 +38,6 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [saveLoad, setSaveLoad] = useState(false);
   const [errorMess, setErrorMess] = useState({ type: "", message: "" });
-
   const axiosPublic = useAxiosPublic();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -53,45 +52,38 @@ const SignIn = () => {
         password: data.password,
       });
 
-      if (res.status === 200) {
-        // 1. Immediately fire the action without awaiting it.
-        // The Redux store will update in the background.
-        dispatch(getAuthMe());
+      const promise = await dispatch(getAuthMe());
 
-        // 2. Immediately push the user to the new page.
-        // This is now the priority.
+      if (promise.meta.requestStatus === "fulfilled") {
         router.push("/");
 
-        // 3. Set loading state to false and reset form (optional, as the component will unmount)
-        setSaveLoad(false);
-        reset({ email: "", password: "" });
-
-        return;
+        setTimeout(() => {
+          setSaveLoad(false);
+          reset({ email: "", password: "" });
+        }, 1000);
       }
-
-      // ... (rest of the error handling remains the same)
-
-      setSaveLoad(false);
     } catch (err) {
-      // ... (error handling)
       console.log(err);
       setSaveLoad(false);
     }
   };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br shadow-[0px_10px_50px_20px_rgba(0,_0,_0,_0.25)]">
       <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        initial={false}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 1 }}
         className="w-full max-w-5xl overflow-hidden rounded-2xl shadow-2xl flex"
       >
         {/* Left Section */}
-        <motion.div className="relative lg:flex hidden flex-col items-center justify-center w-1/2">
+        <motion.div
+          initial={false} // <-- prevents re-animation
+          className="relative lg:flex hidden flex-col items-center justify-center w-1/2"
+        >
           <motion.div
-            initial={{ y: -40, opacity: 0 }}
+            initial={false} // <-- prevents re-animation
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
             className="text-center absolute top-1/5 left-1/5 text-nav"
           >
             <h1 className="text-4xl [text-shadow:_0px_0px_3px_#000000] font-bold tracking-wide">
@@ -104,14 +96,23 @@ const SignIn = () => {
 
           {/* Decorative Circles */}
           <div className="absolute inset-0 -z-10 overflow-hidden">
-            <motion.div className="absolute -top-20 -left-20 h-full w-full rounded-full bg-gradient-to-br from-primary to-secondary" />
-            <motion.div className="absolute -bottom-1/5 -left-1/5 h-3/5 w-3/5 rounded-full bg-gradient-to-br from-primary to-secondary shadow-[0px_10px_50px_10px_rgba(0,_0,_0,_0.25)]" />
-            <motion.div className="absolute bottom-1/6 right-1/6 h-1/3 w-1/3 rounded-full bg-gradient-to-br from-primary to-secondary shadow-[0px_10px_50px_10px_rgba(0,_0,_0,_0.25)]" />
+            <motion.div
+              initial={false}
+              className="absolute -top-20 -left-20 h-full w-full rounded-full bg-gradient-to-br from-primary to-secondary"
+            />
+            <motion.div
+              initial={false}
+              className="absolute -bottom-1/5 -left-1/5 h-3/5 w-3/5 rounded-full bg-gradient-to-br from-primary to-secondary shadow-[0px_10px_50px_10px_rgba(0,_0,_0,_0.25)]"
+            />
+            <motion.div
+              initial={false}
+              className="absolute bottom-1/6 right-1/6 h-1/3 w-1/3 rounded-full bg-gradient-to-br from-primary to-secondary shadow-[0px_10px_50px_10px_rgba(0,_0,_0,_0.25)]"
+            />
           </div>
         </motion.div>
 
         {/* Right Section */}
-        <motion.div className="lg:w-1/2 w-full">
+        <motion.div initial={false} className="lg:w-1/2 w-full">
           <Card className="border-none relative bg-transparent shadow-none py-10">
             <div className="w-full flex justify-center items-center gap-3">
               <Link href="/" className="bg-primary p-3 rounded-lg">
@@ -137,6 +138,7 @@ const SignIn = () => {
                   >
                     Email
                   </Label>
+
                   <Input
                     id="email"
                     autoComplete="email"
@@ -144,11 +146,13 @@ const SignIn = () => {
                     placeholder="Enter Your Email"
                     {...register("email", { required: "Email is required" })}
                   />
+
                   {errors.email && (
                     <p className="text-badge text-sm mt-1">
                       {errors.email.message}
                     </p>
                   )}
+
                   {errorMess.type === "email" && (
                     <p className="text-badge text-sm mt-1">
                       {errorMess.message}
@@ -164,6 +168,7 @@ const SignIn = () => {
                   >
                     Password
                   </Label>
+
                   <div className="relative mt-3">
                     <Input
                       id="password"
@@ -179,6 +184,7 @@ const SignIn = () => {
                         },
                       })}
                     />
+
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
@@ -191,6 +197,7 @@ const SignIn = () => {
                       )}
                     </button>
                   </div>
+
                   {errors.password && (
                     <p className="text-badge text-sm mt-1">
                       {errors.password.message}
@@ -240,7 +247,10 @@ const SignIn = () => {
               </form>
             </CardContent>
 
-            <motion.div className="absolute -bottom-14 -right-14 -z-30 h-1/3 w-1/3 rounded-full bg-gradient-to-br from-primary to-secondary shadow-[0px_10px_50px_10px_rgba(0,_0,_0,_0.25)]" />
+            <motion.div
+              initial={false}
+              className="absolute -bottom-14 -right-14 -z-30 h-1/3 w-1/3 rounded-full bg-gradient-to-br from-primary to-secondary shadow-[0px_10px_50px_10px_rgba(0,_0,_0,_0.25)]"
+            />
           </Card>
         </motion.div>
       </motion.div>
