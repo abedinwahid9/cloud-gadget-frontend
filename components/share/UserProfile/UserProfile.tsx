@@ -8,14 +8,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { RiLoginBoxFill, RiLoginCircleFill } from "react-icons/ri";
-
+import { RiLoginCircleFill } from "react-icons/ri";
 import { FaUserAlt } from "react-icons/fa";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
-
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { setUser } from "@/lib/redux/slices/userSlices";
 import { userIcons } from "@/components/Navbar/MainNav";
+import { getAuthMe } from "@/lib/redux/auth/authThunks";
 
 const UserProfile = () => {
   // const userIcons: string = "w-7 h-7 text-secondary hover:text-nav";
@@ -23,14 +21,13 @@ const UserProfile = () => {
     "group relative text-md font-semibold transition-colors duration-300 hover:text-secondary";
   const underlineclassName =
     "absolute left-0 -bottom-1 h-[2px] w-0 bg-nav transition-all duration-300 group-hover:w-full";
-  const { user } = useAppSelector((state) => state.userSlices);
+  const { user } = useAppSelector((state) => state.authSlices);
   const axiosPublic = useAxiosPublic();
   const dispatch = useAppDispatch();
-
   const handleLogout = async () => {
     const res = await axiosPublic.get("/auth/logout");
     if (res.status === 203) {
-      dispatch(setUser(null));
+      dispatch(getAuthMe());
     }
   };
 
