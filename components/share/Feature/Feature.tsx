@@ -20,11 +20,11 @@ interface Query {
 }
 
 interface ProductCardProps {
-  id: number;
+  id: string;
   title: string;
   images: string[];
   price: number;
-  oldPrice?: number;
+  discount?: number;
   category?: string;
 }
 

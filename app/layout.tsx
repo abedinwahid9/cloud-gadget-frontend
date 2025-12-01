@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "@/lib/tanstackprovider/Tanstackprovider";
 import LoginCheck from "@/components/share/LoginCheck/LoginCheck";
+import AuthProvider from "@/components/Provider/AuthProvider";
 
 export default function RootLayout({
   children,
@@ -26,9 +27,8 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              {children}
+              <AuthProvider>{children}</AuthProvider>
               <Toaster />
-              <LoginCheck />
             </ThemeProvider>
           </QueryProvider>
         </StoreProvider>
