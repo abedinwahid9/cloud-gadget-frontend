@@ -42,18 +42,28 @@ const SignUp = () => {
       setSaveLoad(true);
       if (!data.email) return;
       const res = await axiosPublic.post("otp/send-otp", { email: data.email });
+      if (res.status) {
+        setSaveLoad(false);
+      }
       if (res.status === 201) {
         setStep(1);
-        setSaveLoad(false);
       }
     } else if (step === 2) {
       setSaveLoad(true);
-      const res = await axiosPublic.post("auth/signup", {
-        email: data.email,
-        name: data.name,
-        otp: data.otpCode,
-        password: data.password,
-      });
+      const res = await axiosPublic.post(
+        "auth/signup",
+        {
+          email: data.email,
+          name: data.name,
+          otp: data.otpCode,
+          password: data.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (res.status === 200) {
         setSaveLoad(false);

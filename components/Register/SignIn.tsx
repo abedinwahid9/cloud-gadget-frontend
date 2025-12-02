@@ -19,6 +19,7 @@ import { ThemeBtn } from "../theme/ThemeBtn";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { getAuthMe } from "@/lib/redux/auth/authThunks";
+import axios, { AxiosError } from "axios";
 
 interface FormValues {
   email: string;
@@ -52,18 +53,38 @@ const SignIn = () => {
         password: data.password,
       });
 
-      const promise = await dispatch(getAuthMe());
+      // Handle backend error responses
+      if (res.status !== 200) {
+        setErrorMess({ type: "error", message: res.data.message });
+        setSaveLoad(false);
+        return;
+      }
 
-      if (promise.meta.requestStatus === "fulfilled") {
+      // Fetch user info
+      const result = await dispatch(getAuthMe());
+
+      if (result.meta.requestStatus === "fulfilled") {
         router.push("/");
 
         setTimeout(() => {
-          setSaveLoad(false);
           reset({ email: "", password: "" });
-        }, 1000);
+          setSaveLoad(false);
+        }, 800);
       }
-    } catch (err) {
-      console.log(err);
+    } catch (err: unknown) {
+      let errorMessage = "Login failed";
+
+      if (axios.isAxiosError(err)) {
+        errorMessage = err.response?.data?.message || errorMessage;
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+
+      setErrorMess({
+        type: "error",
+        message: errorMessage,
+      });
+
       setSaveLoad(false);
     }
   };
