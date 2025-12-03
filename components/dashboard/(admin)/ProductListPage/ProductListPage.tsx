@@ -37,23 +37,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import ConfirmToast from "@/components/share/ToastCustom/ConfirmToast";
 import { Spinner } from "@/components/ui/spinner";
 import StatusSwitch from "@/components/share/StatusSwitch/StatusSwitch";
-
-// --- Product type ---
-type Product = {
-  productId: string;
-  id: number;
-  title: string;
-  category: string;
-  stock_quantity: string;
-  price: number;
-  discount: number;
-  status: boolean;
-  variants?: Array<{
-    name: string;
-    options: string[];
-  }>;
-  images: string[];
-};
+import { Product } from "@/types/product";
 
 // --- Helpers ---
 // const getStockClass = (stock: string) => {
@@ -79,7 +63,7 @@ const calculateDiscountPrice = ({
 // --- Columns generator ---
 const getColumns = (
   refetch: () => void,
-  handleProductDelete: (id: number) => Promise<boolean | undefined>
+  handleProductDelete: (id: string) => Promise<boolean | undefined>
 ): ColumnDef<Product>[] => [
   {
     accessorKey: "productId",
@@ -235,7 +219,7 @@ const ProductListPage = ({ title }: { title: string }) => {
   });
 
   // delete product function
-  const handleProductDelete = async (id: number) => {
+  const handleProductDelete = async (id: string) => {
     try {
       const res = await axiosPublic.delete(`/product/${id}`);
       if (res.status === 203) {

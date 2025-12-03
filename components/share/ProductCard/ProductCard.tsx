@@ -1,25 +1,15 @@
 "use client";
 import Image from "next/image";
-import { FaHeart, FaStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { addToCart } from "@/lib/redux/slices/cartSlices";
 import Link from "next/link";
 import CustomBtn from "../CustomBtn/CustomBtn";
 import style from "./productcard.module.css";
-import { FaRegHeart } from "react-icons/fa";
-import { IoIosHeartEmpty, IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import WishlistIcon from "../WishlistIcon/WishlistIcon";
+import { Product } from "@/types/product";
 
-interface ProductCardProps {
-  id: string;
-  title: string;
-  images: string[];
-  price: number;
-  discount?: number;
-  category?: string;
-}
-
-const ProductCard: React.FC<ProductCardProps> = ({
+const ProductCard: React.FC<Product> = ({
   id,
   title,
   images,

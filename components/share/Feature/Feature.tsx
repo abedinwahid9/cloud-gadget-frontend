@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import ProductCard from "../ProductCard/ProductCard";
 import { REVALIDATE_TIME } from "@/lib/constants";
+import { Product } from "@/types/product";
 
 interface Query {
   id: boolean;
@@ -76,7 +77,7 @@ const Feature = async ({
         </div>
         <Separator className="md:my-[15px] my-[8px] bg-secondary dark:bg-nav w-full h-[1px] " />
         <CarouselContent className="p-1">
-          {products?.map((product: ProductCardProps) => (
+          {products?.map((product: Product) => (
             <CarouselItem
               key={product.id}
               className="md:basis-1/3 basis-1/2 lg:basis-1/4 xl:basis-1/5"

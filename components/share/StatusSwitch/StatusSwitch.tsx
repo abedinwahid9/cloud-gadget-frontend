@@ -9,7 +9,7 @@ const StatusSwitch = ({
   refetch,
 }: {
   status: boolean;
-  id: number;
+  id: string;
   refetch: () => void;
 }) => {
   const axiosPublic = useAxiosPublic();

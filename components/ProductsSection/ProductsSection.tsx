@@ -2,17 +2,9 @@
 
 import ProductCard from "@/components/share/ProductCard/ProductCard";
 import type { RefObject } from "react";
-import { Skeleton } from "../ui/skeleton";
 import ProductSkeleton from "../share/CustomSkeleton/ProductSkeleton";
+import { Product } from "@/types/product";
 
-export interface Product {
-  id: number;
-  title: string;
-  price: number;
-  images: string[];
-  category: string;
-  discount?: number;
-}
 interface ProductsSectionProps {
   data: Product[];
   isLoading: boolean;
