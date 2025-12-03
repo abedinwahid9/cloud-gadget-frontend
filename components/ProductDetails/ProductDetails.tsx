@@ -6,22 +6,9 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { addToCart } from "@/lib/redux/slices/cartSlices";
 import WishlistIcon from "../share/WishlistIcon/WishlistIcon";
 import CustomBtn from "../share/CustomBtn/CustomBtn";
+import { Product } from "@/types/product";
 
 // Types
-interface Variant {
-  name: "color" | "size" | "material" | string;
-  options: string[];
-}
-
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  discount?: number;
-  stock_quantity: number;
-  images: string[];
-  variants?: Variant[];
-}
 
 interface ProductDetailsProps {
   product: Product;
@@ -78,7 +65,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
 
       {/* Wishlist */}
       <div className="flex items-center gap-4">
-        <WishlistIcon />
+        <WishlistIcon productId={id} />
         {/* <span className="text-secondary dark:text-nav">Share :</span> */}
         {/* <div className="flex gap-2">
           <FaFacebookF className="cursor-pointer text-gray-600 hover:text-blue-600" />

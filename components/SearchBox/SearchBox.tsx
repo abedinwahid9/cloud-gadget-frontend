@@ -6,7 +6,7 @@ import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import ProductSkeleton from "../share/CustomSkeleton/ProductSkeleton";
 import ProductCard from "../share/ProductCard/ProductCard";
-import { Product } from "../ProductsSection/ProductsSection";
+
 import { motion, AnimatePresence } from "framer-motion";
 import React, {
   Dispatch,
@@ -17,6 +17,7 @@ import React, {
   useMemo,
 } from "react";
 import useDebounce from "@/hooks/useDebounce";
+import { Product } from "@/types/product";
 
 interface SearchBoxProps {
   searchToggle: boolean;
