@@ -1,5 +1,6 @@
 import ProductPage from "@/components/ProductPage/ProductPage";
 import CustomBreadCrumb from "@/components/share/CustomBreadCrumb/CustomBreadCrumb";
+import { cookies } from "next/headers";
 import React from "react";
 
 const Page = async ({ params }: { params: Promise<{ productId: string }> }) => {

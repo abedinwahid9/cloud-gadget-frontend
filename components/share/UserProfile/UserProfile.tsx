@@ -14,6 +14,7 @@ import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { userIcons } from "@/components/Navbar/MainNav";
 import { getAuthMe } from "@/lib/redux/auth/authThunks";
+import { useRouter } from "next/navigation";
 
 const UserProfile = () => {
   // const userIcons: string = "w-7 h-7 text-secondary hover:text-nav";
@@ -24,10 +25,14 @@ const UserProfile = () => {
   const { user } = useAppSelector((state) => state.authSlices);
   const axiosPublic = useAxiosPublic();
   const dispatch = useAppDispatch();
+  const router = useRouter();
+
   const handleLogout = async () => {
     const res = await axiosPublic.get("/auth/logout");
-    if (res.status === 203) {
+
+    if (res.status === 200) {
       dispatch(getAuthMe());
+      router.push("/");
     }
   };
 

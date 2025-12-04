@@ -14,6 +14,14 @@ const nextConfig: NextConfig = {
     ],
     domains: ["localhost", "cloud-gadget-server.onrender.com"],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/api/v1/:path*",
+        destination: "https://cloud-gadget-server.onrender.com/api/v1/:path*",
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -23,6 +23,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useEffect, useState } from "react";
+import NotFound from "../share/NotFound/NotFound";
 
 const CartPage = () => {
   const [isClient, setIsClient] = useState(false);
@@ -34,11 +35,7 @@ const CartPage = () => {
   }, []);
   if (!isClient) return null;
   if (cartItmes?.length === 0) {
-    return (
-      <div className="text-center mt-10 md:text-lg text-sm text-nav font-medium">
-        No items are here
-      </div>
-    );
+    return <NotFound />;
   }
 
   return (
