@@ -48,11 +48,19 @@ const SignIn = () => {
       setSaveLoad(true);
       setErrorMess({ type: "", message: "" });
 
-      const res = await axiosPublic.post("/auth/login", {
-        email: data.email,
-        password: data.password,
-      });
-
+      const res = await axiosPublic.post(
+        "/auth/login",
+        {
+          email: data.email,
+          password: data.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(res);
       // Handle backend error responses
       if (res.status !== 200) {
         setErrorMess({ type: "error", message: res.data.message });
@@ -71,6 +79,7 @@ const SignIn = () => {
           setSaveLoad(false);
         }, 800);
       }
+      setSaveLoad(false);
     } catch (err: unknown) {
       let errorMessage = "Login failed";
 
