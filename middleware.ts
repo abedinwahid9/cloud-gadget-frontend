@@ -1,12 +1,15 @@
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
+  const cookiesStore = await cookies();
 
-  const accessToken = request.cookies.get("access_token")?.value;
-  const role = request.cookies.get("user_role")?.value;
+  const accessToken = await request.cookies.get("access_token")?.value;
+  const role = await request.cookies.get("user_role")?.value;
 
-  console.log("cookies-----", request.cookies);
+  console.log("cookies-----", accessToken);
+  console.log("cookies-----*------", cookiesStore.get("access_token"));
 
   // Route groups
   const publicRoutes = ["/login", "/signup"];
@@ -58,4 +61,5 @@ export const config = {
     "/cart/checkout/:path*",
     "/admin/:path*",
   ],
+  cookies: ["access_token", "user_role"],
 };
