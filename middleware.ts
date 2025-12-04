@@ -6,6 +6,8 @@ export function middleware(request: NextRequest) {
   const accessToken = request.cookies.get("access_token")?.value;
   const role = request.cookies.get("user_role")?.value;
 
+  console.log("cookies-----", request.cookies);
+
   // Route groups
   const publicRoutes = ["/login", "/signup"];
   const privateRoutes = [
