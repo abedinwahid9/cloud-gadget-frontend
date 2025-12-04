@@ -41,7 +41,15 @@ const SignUp = () => {
     if (step === 0) {
       setSaveLoad(true);
       if (!data.email) return;
-      const res = await axiosPublic.post("otp/send-otp", { email: data.email });
+      const res = await axiosPublic.post(
+        "otp/send-otp",
+        { email: data.email },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (res.status) {
         setSaveLoad(false);
       }

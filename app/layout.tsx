@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "@/lib/tanstackprovider/Tanstackprovider";
 import AuthProvider from "@/components/Provider/AuthProvider";
+export const dynamic = "force-dynamic";
 
 export default function RootLayout({
   children,

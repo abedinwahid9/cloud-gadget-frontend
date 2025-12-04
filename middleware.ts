@@ -1,12 +1,12 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  const cookie = request.cookies.get("access_token")?.value;
-  const user = request.cookies.get("user_role")?.value;
 
-  // Route categories
+  const accessToken = request.cookies.get("access_token")?.value;
+  const role = request.cookies.get("user_role")?.value;
+
+  // Route groups
   const publicRoutes = ["/login", "/signup"];
   const privateRoutes = [
     "/my-account",
@@ -18,28 +18,29 @@ export function middleware(request: NextRequest) {
   ];
   const adminRoutes = ["/admin"];
 
-  // PUBLIC → Logged users cannot visit login/register
-  if (publicRoutes.includes(path) && cookie) {
+  /**Prevent logged user entering login/signup */
+  if (publicRoutes.includes(path) && accessToken) {
     return NextResponse.redirect(new URL("/", request.url));
   }
-  // PRIVATE → Block if no token
-  if (privateRoutes.some((r) => path.startsWith(r))) {
-    if (!cookie) {
-      return NextResponse.redirect(new URL(`/login`, request.url));
+
+  /** 🔐 Private protected routes */
+  if (privateRoutes.some((route) => path.startsWith(route))) {
+    if (!accessToken) {
+      return NextResponse.redirect(new URL("/login", request.url));
     }
   }
-  // admin protect route
-  // Admin-only route check
-  if (adminRoutes.some((r) => path.startsWith(r))) {
-    if (!user) {
+
+  /** 🔐 Admin-only routes */
+  if (adminRoutes.some((route) => path.startsWith(route))) {
+    if (!accessToken) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    if (!user || user !== "ADMIN") {
+    if (role !== "ADMIN") {
       return NextResponse.redirect(new URL("/", request.url));
     }
   }
-  // Allow all other requests
+
   return NextResponse.next();
 }
 
@@ -47,9 +48,8 @@ export const config = {
   matcher: [
     "/login",
     "/signup",
-    "/dashboard/:path*",
-    "/profile/:path*",
     "/my-account/:path*",
+    "/profile/:path*",
     "/wishlist/:path*",
     "/orders/:path*",
     "/checkout/:path*",
