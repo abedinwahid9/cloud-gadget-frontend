@@ -1,10 +1,24 @@
 "use client";
 
+import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { useAppSelector } from "@/lib/redux/hooks";
+import { useQuery } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import { FaHeart } from "react-icons/fa";
 
 const Wishlist = ({ css }: { css: string }) => {
   const pathname = usePathname();
+  const { user } = useAppSelector((state) => state.authSlices);
+
+  const useAxios = useAxiosPublic();
+  const { data = [] } = useQuery({
+    queryKey: ["wishlist"],
+    queryFn: async () => {
+      const res = await useAxios.get(`/wishlist/${user?.id}`);
+      return res.data.wishlistProducts;
+    },
+    enabled: !!user,
+  });
 
   return (
     <div className="relative">
@@ -19,7 +33,7 @@ const Wishlist = ({ css }: { css: string }) => {
         }}
         className="absolute text-xs font-bold tabular-nums leading-none text-primary"
       >
-        5
+        {user ? data.length : 0}
       </span>
     </div>
   );
