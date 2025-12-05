@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import ProductCard from "../share/ProductCard/ProductCard";
 import { Product } from "@/types/product";
 import NotFound from "../share/NotFound/NotFound";
+import ProductSkeleton from "../share/CustomSkeleton/ProductSkeleton";
 
 const WishList = () => {
   const { user } = useAppSelector((state) => state.authSlices);
@@ -21,7 +22,13 @@ const WishList = () => {
   });
 
   if (isLoading) {
-    return <h2>Loading...</h2>;
+    return (
+      <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-2 lg:pr-1 pr-0">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <ProductSkeleton key={i} />
+        ))}
+      </div>
+    );
   }
 
   if (data.length === 0) {

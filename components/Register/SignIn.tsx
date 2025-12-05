@@ -58,12 +58,13 @@ const SignIn = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true,
         }
       );
-      console.log(res);
+
       // Handle backend error responses
       if (res.status !== 200) {
-        setErrorMess({ type: "error", message: res.data.message });
+        setErrorMess({ type: res.data.type, message: res.data.message });
         setSaveLoad(false);
         return;
       }
@@ -177,11 +178,11 @@ const SignIn = () => {
                     {...register("email", { required: "Email is required" })}
                   />
 
-                  {errors.email && (
+                  {/* {errors.email && (
                     <p className="text-badge text-sm mt-1">
                       {errors.email.message}
                     </p>
-                  )}
+                  )} */}
 
                   {errorMess.type === "email" && (
                     <p className="text-badge text-sm mt-1">
@@ -228,11 +229,11 @@ const SignIn = () => {
                     </button>
                   </div>
 
-                  {errors.password && (
+                  {/* {errors.password && (
                     <p className="text-badge text-sm mt-1">
                       {errors.password.message}
                     </p>
-                  )}
+                  )} */}
                   {errorMess.type === "password" && (
                     <p className="text-badge text-sm mt-1">
                       {errorMess.message}
