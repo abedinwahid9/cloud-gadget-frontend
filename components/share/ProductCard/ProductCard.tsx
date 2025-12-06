@@ -35,7 +35,7 @@ const ProductCard: React.FC<Product> = ({
           {category && category}
         </div>
         {discount > 0 && (
-          <span className="border-2 bg-text/10 border-dashed border-nav relative md:left-5 md:-top-1 top-0 left-8 text-xs px-3 py-0.5 text-nav font-semibold rounded-xl font-mono">
+          <span className="border-2 bg-text/10 border-dashed border-nav relative  -top-[5%] md:left-[10%] left-[5%] md:text-xs text-[8px] px-3  py-0.5 text-nav font-semibold rounded-xl font-mono">
             {discount}% OFF
           </span>
         )}
@@ -107,7 +107,7 @@ const ProductCard: React.FC<Product> = ({
       <div className="flex items-center justify-between w-full pt-1 ">
         {/* Wishlist Heart */}
         <div className="w-1/4  flex items-center justify-center ">
-          <WishlistIcon productId={id} />
+          <WishlistIcon title={title} productId={id} />
         </div>
 
         {/* Add to Cart Button */}

@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 import { IoStorefrontSharp } from "react-icons/io5";
 import Cart from "../share/Cart/Cart";
-import Wishlist from "../share/Wishlist/Wishlist";
+import Wishlist from "../share/NavWishList/NavWishList";
 import { ThemeBtn } from "../theme/ThemeBtn";
 
 export default function MobileNav() {
