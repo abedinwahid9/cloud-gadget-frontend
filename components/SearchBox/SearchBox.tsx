@@ -125,9 +125,9 @@ const SearchBox: React.FC<SearchBoxProps> = ({
               </div>
 
               {/* Content */}
-              <div className="p-5 max-h-[550px] overflow-y-auto">
+              <div className="px-2 py-3 max-h-[550px] overflow-y-auto">
                 <Title text="Trending collection" />
-                <div className="py-10 px-2 rounded-2xl">
+                <div className=" py-2 rounded-2xl">
                   {trendingLoading || searchLoading ? (
                     <motion.div
                       layout

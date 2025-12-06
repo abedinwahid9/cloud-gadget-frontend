@@ -15,11 +15,10 @@ import { Spinner } from "@/components/ui/spinner";
 import CustomBtn from "../share/CustomBtn/CustomBtn";
 import Title from "../share/Title/Title";
 import { ThemeBtn } from "../theme/ThemeBtn";
-
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { getAuthMe } from "@/lib/redux/auth/authThunks";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 interface FormValues {
   email: string;

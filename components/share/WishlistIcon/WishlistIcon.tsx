@@ -4,8 +4,15 @@ import { redirect } from "next/navigation";
 
 import React from "react";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
+import ToastCustom from "../ToastCustom/ToastCustom";
 
-const WishlistIcon = ({ productId }: { productId: string }) => {
+const WishlistIcon = ({
+  productId,
+  title,
+}: {
+  productId: string;
+  title: string;
+}) => {
   const isWishlist = false;
   const user = useAppSelector((state) => state.authSlices.user);
   const axiosPublic = useAxiosPublic();
@@ -18,7 +25,10 @@ const WishlistIcon = ({ productId }: { productId: string }) => {
     };
     try {
       const res = await axiosPublic.post("/wishlist", data);
-      console.log(res);
+
+      if (res.status === 201) {
+        ToastCustom(`${res.data.message} is ${title}`);
+      }
     } catch (err) {
       console.log(err);
     }

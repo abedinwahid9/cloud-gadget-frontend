@@ -65,7 +65,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
 
       {/* Wishlist */}
       <div className="flex items-center gap-4">
-        <WishlistIcon productId={id} />
+        <WishlistIcon title={title} productId={id} />
         {/* <span className="text-secondary dark:text-nav">Share :</span> */}
         {/* <div className="flex gap-2">
           <FaFacebookF className="cursor-pointer text-gray-600 hover:text-blue-600" />

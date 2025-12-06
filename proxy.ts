@@ -1,41 +1,37 @@
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  const cookiesStore = await cookies();
 
-  const accessToken = await request.cookies.get("access_token")?.value;
-  const role = await request.cookies.get("user_role")?.value;
+  const accessToken = request.cookies.get("access_token")?.value;
+  const role = request.cookies.get("user_role")?.value;
 
-  console.log("cookies-----", accessToken);
-  console.log("cookies-----*------", cookiesStore.get("access_token"));
+  console.log("ALL COOKIES:", request.cookies.getAll());
 
-  // Route groups
   const publicRoutes = ["/login", "/signup"];
   const privateRoutes = [
     "/my-account",
     "/profile",
     "/wishlist",
     "/orders",
-    "/cart/checkout",
     "/checkout",
+    "/cart/checkout",
   ];
   const adminRoutes = ["/admin"];
 
-  /**Prevent logged user entering login/signup */
+  // 🚫 Logged-in user can’t access login/signup
   if (publicRoutes.includes(path) && accessToken) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  /** 🔐 Private protected routes */
+  // 🔐 Private routes
   if (privateRoutes.some((route) => path.startsWith(route))) {
     if (!accessToken) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }
 
-  /** 🔐 Admin-only routes */
+  // 👑 Admin routes
   if (adminRoutes.some((route) => path.startsWith(route))) {
     if (!accessToken) {
       return NextResponse.redirect(new URL("/login", request.url));
@@ -61,5 +57,4 @@ export const config = {
     "/cart/checkout/:path*",
     "/admin/:path*",
   ],
-  cookies: ["access_token", "user_role"],
 };

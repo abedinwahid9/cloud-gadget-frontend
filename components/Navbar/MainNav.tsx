@@ -15,7 +15,7 @@ import { Drawer, DrawerTrigger } from "../ui/drawer";
 import { RiMenu2Line } from "react-icons/ri";
 import { usePathname } from "next/navigation";
 import Cart from "../share/Cart/Cart";
-import Wishlist from "../share/Wishlist/Wishlist";
+import Wishlist from "../share/NavWishList/NavWishList";
 import { ThemeBtn } from "../theme/ThemeBtn";
 import SearchBox from "../SearchBox/SearchBox";
 import { useDispatch } from "react-redux";
