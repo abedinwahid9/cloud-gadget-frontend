@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import CustomBtn from "../share/CustomBtn/CustomBtn";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { FaHome } from "react-icons/fa";
 import { ThemeBtn } from "../theme/ThemeBtn";
@@ -14,7 +14,9 @@ import Title from "../share/Title/Title";
 import Otp from "../share/Otp/Otp";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { Spinner } from "../ui/spinner";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { getAuthMe } from "@/lib/redux/auth/authThunks";
 
 export interface FormValues {
   email: string;
@@ -34,10 +36,15 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const axiosPublic = useAxiosPublic();
   const [saveLoad, setSaveLoad] = useState<boolean>(false);
+  const [errorMess, setErrorMess] = useState<string>("");
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  useEffect(() => {
+    setErrorMess("");
+  }, [watch("email")]);
 
   const onSubmit = async (data: FormValues) => {
-    console.log("FORM DATA:", data);
-
     if (step === 0) {
       setSaveLoad(true);
       if (!data.email) return;
@@ -50,6 +57,11 @@ const SignUp = () => {
           },
         }
       );
+
+      if (res.status === 202) {
+        setErrorMess(res.data.message);
+      }
+
       if (res.status) {
         setSaveLoad(false);
       }
@@ -73,10 +85,16 @@ const SignUp = () => {
         }
       );
 
-      if (res.status === 200) {
-        setSaveLoad(false);
-        reset({ email: "", name: "", otpCode: "", password: "" });
-        redirect("/");
+      // Fetch user info
+      const result = await dispatch(getAuthMe());
+
+      if (result.meta.requestStatus === "fulfilled") {
+        router.push("/");
+
+        setTimeout(() => {
+          reset({ email: "", name: "", otpCode: "", password: "" });
+          setSaveLoad(false);
+        }, 800);
       }
     }
   };
@@ -109,6 +127,9 @@ const SignUp = () => {
                   />
                 )}
               />
+              {errorMess && (
+                <p className="text-badge text-sm mt-1">{errorMess}</p>
+              )}
             </div>
             <CustomBtn
               disabled={saveLoad}
