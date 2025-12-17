@@ -13,8 +13,9 @@ import { FaUserAlt } from "react-icons/fa";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { userIcons } from "@/components/Navbar/MainNav";
-import { getAuthMe } from "@/lib/redux/auth/authThunks";
+
 import { useRouter } from "next/navigation";
+import { getAuthMe } from "@/lib/redux/thunks/authThunks";
 
 const UserProfile = () => {
   // const userIcons: string = "w-7 h-7 text-secondary hover:text-nav";

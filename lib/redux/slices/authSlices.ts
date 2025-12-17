@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAuthMe } from "../auth/authThunks";
+import { getAuthMe } from "../thunks/authThunks";
 
 export interface User {
   id: string;

@@ -2,6 +2,7 @@ import cartReducer from "./slices/cartSlices";
 import imageSeletedReducer from "./slices/imageSeletedSlices";
 import filterSlices from "./slices/filterSlices";
 import authSlices from "./slices/authSlices";
+import wishlistSlices from "./slices/wishlistSlices";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
@@ -9,7 +10,7 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   imageSelete: imageSeletedReducer,
   filterSlices: filterSlices,
-
+  wishlistSlices: wishlistSlices,
   authSlices: authSlices,
 });
 

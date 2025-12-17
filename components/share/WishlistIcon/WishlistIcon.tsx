@@ -1,10 +1,11 @@
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
-import { useAppSelector } from "@/lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { redirect } from "next/navigation";
 
 import React from "react";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import ToastCustom from "../ToastCustom/ToastCustom";
+import { getWishList } from "@/lib/redux/thunks/wishlistThunks";
 
 const WishlistIcon = ({
   productId,
@@ -16,6 +17,7 @@ const WishlistIcon = ({
   const isWishlist = false;
   const user = useAppSelector((state) => state.authSlices.user);
   const axiosPublic = useAxiosPublic();
+  const dispatch = useAppDispatch();
 
   const handleWishlist = async () => {
     if (!user?.email) return redirect("/login");
@@ -28,6 +30,7 @@ const WishlistIcon = ({
 
       if (res.status === 201) {
         ToastCustom(`${res.data.message} is ${title}`);
+        dispatch(getWishList());
       }
     } catch (err) {
       console.log(err);

@@ -1,8 +1,8 @@
 "use client";
 
-import { getAuthMe } from "@/lib/redux/auth/authThunks";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { RootState } from "@/lib/redux/store";
+import { getAuthMe } from "@/lib/redux/thunks/authThunks";
 import { useEffect } from "react";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
