@@ -6,8 +6,6 @@ export function proxy(request: NextRequest) {
   const accessToken = request.cookies.get("access_token")?.value;
   const role = request.cookies.get("user_role")?.value;
 
-  console.log("ALL COOKIES:", request.cookies.getAll());
-
   const publicRoutes = ["/login", "/signup"];
   const privateRoutes = [
     "/my-account",

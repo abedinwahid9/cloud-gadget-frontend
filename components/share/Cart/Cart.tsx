@@ -28,7 +28,7 @@ const Cart = ({ css }: { css: string }) => {
       <FaCartArrowDown
         className={`${pathname === "/cart" ? "!text-nav" : ""} ${css} `}
       />
-      <Badge className="h-5 w-5 absolute -top-2 -right-2 bg-badge text-primary rounded-full font-bold tabular-nums">
+      <Badge className="h-5 w-5 absolute -top-2 -right-2 bg-badge text-primary rounded-full font-bold tabular-nums pointer-events-none">
         {cartLength}
       </Badge>
     </div>

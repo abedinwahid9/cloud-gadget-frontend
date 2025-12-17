@@ -14,9 +14,9 @@ import Title from "../share/Title/Title";
 import Otp from "../share/Otp/Otp";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
 import { Spinner } from "../ui/spinner";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/lib/redux/hooks";
-import { getAuthMe } from "@/lib/redux/auth/authThunks";
+import { getAuthMe } from "@/lib/redux/thunks/authThunks";
 
 export interface FormValues {
   email: string;
@@ -57,6 +57,7 @@ const SignUp = () => {
           },
         }
       );
+      console.log(res.data.otp);
 
       if (res.status === 202) {
         setErrorMess(res.data.message);

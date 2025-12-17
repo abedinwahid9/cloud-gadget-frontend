@@ -107,6 +107,10 @@ const Otp = ({
       <button className="w-full mt-4 text-nav text-sm hover:underline">
         Resend
       </button>
+
+      <span className="text-badge text-sm mt-1 uppercase font-bold">
+        otp check in console
+      </span>
     </motion.div>
   );
 };
