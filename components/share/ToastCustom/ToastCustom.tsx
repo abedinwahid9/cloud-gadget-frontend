@@ -4,7 +4,7 @@ import { toast } from "sonner";
 const ToastCustom = (title: string) => {
   toast.custom(
     (id) => (
-      <div className="bg-text/50 border-2 border-primary/10 text-primary rounded-xl backdrop:blur-3xl shadow-lg p-4 w-fit flex  gap-3">
+      <div className="bg-text/90 border-2 border-primary/10 text-primary rounded-xl backdrop:blur-3xl shadow-lg p-4 w-fit flex  gap-3">
         <p className="font-semibold ">{title}</p>
         <div className="flex justify-end  w-2/6">
           <button

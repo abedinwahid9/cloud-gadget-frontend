@@ -16,6 +16,7 @@ import { userIcons } from "@/components/Navbar/MainNav";
 
 import { useRouter } from "next/navigation";
 import { getAuthMe } from "@/lib/redux/thunks/authThunks";
+import { getWishList } from "@/lib/redux/thunks/wishlistThunks";
 
 const UserProfile = () => {
   // const userIcons: string = "w-7 h-7 text-secondary hover:text-nav";
@@ -33,6 +34,7 @@ const UserProfile = () => {
 
     if (res.status === 200) {
       dispatch(getAuthMe());
+      dispatch(getWishList());
       router.push("/");
     }
   };
