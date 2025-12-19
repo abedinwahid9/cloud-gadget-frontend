@@ -1,7 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getWishList } from "../thunks/wishlistThunks";
+import { WishlistItem } from "@/types/wishlist";
 
-const initialState = {
+interface WishlistState {
+  wishlist: WishlistItem[] | null;
+  loading: boolean;
+  error: boolean | null;
+}
+
+const initialState: WishlistState = {
   wishlist: null,
   loading: true,
   error: null,
