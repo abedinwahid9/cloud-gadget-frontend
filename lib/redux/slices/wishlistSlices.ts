@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getWishList } from "../thunks/wishlistThunks";
-import { WishlistItem } from "@/types/wishlist";
+import { Product } from "@/types/product";
 
 interface WishlistState {
-  wishlist: WishlistItem[] | null;
+  wishlist: Product[] | null;
   loading: boolean;
   error: boolean | null;
 }
