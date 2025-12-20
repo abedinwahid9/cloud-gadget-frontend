@@ -15,7 +15,9 @@ const WishlistIcon = ({
   title: string;
 }) => {
   const user = useAppSelector((state) => state.authSlices.user);
-  const { wishlist } = useAppSelector((state) => state.wishlistSlices);
+  const wishlist = useAppSelector(
+    (state) => state.wishlistSlices.wishlist ?? []
+  );
   const axiosPublic = useAxiosPublic();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -23,13 +25,13 @@ const WishlistIcon = ({
   const [loading, setLoading] = React.useState(false);
 
   const wishlistSet = React.useMemo(
-    () => new Set(wishlist?.map((item) => item.id)),
+    () => new Set(wishlist.map((item) => item.id)),
     [wishlist]
   );
 
   const isWishlist = wishlistSet.has(productId);
 
-  const handleWishlist = async () => {
+  const handleWishlist = React.useCallback(async () => {
     if (loading) return;
 
     if (!user?.email) {
@@ -38,14 +40,17 @@ const WishlistIcon = ({
     }
 
     setLoading(true);
-    try {
-      const res = await axiosPublic.post("/wishlist", {
-        userId: user.id,
-        productId,
-      });
 
-      if (res.status === 201) {
-        ToastCustom(`${title} ${res.data.message}`);
+    try {
+      const res = isWishlist
+        ? await axiosPublic.delete(`/wishlist/${productId}`)
+        : await axiosPublic.post("/wishlist", {
+            userId: user.id,
+            productId,
+          });
+
+      if ([200, 201, 204].includes(res.status)) {
+        ToastCustom(`${title} ${res.data?.message || "updated"}`);
         dispatch(getWishList());
       }
     } catch (err) {
@@ -53,16 +58,31 @@ const WishlistIcon = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [
+    loading,
+    user,
+    isWishlist,
+    productId,
+    title,
+    axiosPublic,
+    dispatch,
+    router,
+  ]);
 
   return (
-    <div onClick={handleWishlist}>
-      {!isWishlist ? (
-        <IoMdHeartEmpty className="text-badge size-8 border-[0.2px] rounded-full border-badge cursor-pointer p-1 transition" />
+    <button
+      type="button"
+      onClick={handleWishlist}
+      disabled={loading}
+      aria-label={isWishlist ? "Remove from wishlist" : "Add to wishlist"}
+      className="disabled:opacity-50"
+    >
+      {isWishlist ? (
+        <IoMdHeart className="text-badge size-8 border rounded-full border-badge p-1 transition" />
       ) : (
-        <IoMdHeart className="text-badge size-8 border-[1px] rounded-full border-badge cursor-pointer p-1 transition" />
+        <IoMdHeartEmpty className="text-badge size-8 border rounded-full border-badge p-1 transition" />
       )}
-    </div>
+    </button>
   );
 };
 
