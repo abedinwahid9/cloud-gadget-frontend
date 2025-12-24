@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 import CustomBtn from "@/components/share/CustomBtn/CustomBtn";
+import { CardStyle } from "@/lib/utils/customCss";
 
 type AddressFormValues = {
   fullName: string;
@@ -40,11 +41,9 @@ const Address = ({
   };
 
   return (
-    <Card className="bg-primary/20 dark:bg-blue-300/20 border border-gray-200 dark:border-gray-700 shadow-[0px_0px_10px_0px_#00a8a8]">
+    <Card className={`${CardStyle}`}>
       <CardHeader>
-        <CardTitle className="text-xl font-bold text-primary">
-          {title}
-        </CardTitle>
+        <CardTitle className="text-xl font-bold text-nav">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -220,7 +219,7 @@ const Address = ({
               </Label>
               <Textarea
                 id="note"
-                className="text-primary"
+                className="text-primary border-secondary"
                 placeholder="Any specific delivery instruction..."
                 {...register("note")}
               />
