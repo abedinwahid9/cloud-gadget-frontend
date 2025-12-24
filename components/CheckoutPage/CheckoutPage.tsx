@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Address from "../dashboard/(user)/Address/Address";
 import CustomBtn from "../share/CustomBtn/CustomBtn";
+import { CardStyle } from "@/lib/utils/customCss";
 
 const CheckoutPage = () => {
   const router = useRouter();
@@ -62,11 +63,11 @@ const CheckoutPage = () => {
 
       {/* Order Summary */}
 
-      <Card className="lg:w-1/3 w-full  bg-primary/10 shadow-[0px_0px_10px_0px_#00a8a8]">
+      <Card className={`lg:w-1/3 w-full ${CardStyle} h-fit`}>
         <CardHeader>
-          <CardTitle>Order Summary</CardTitle>
+          <CardTitle className="text-nav">Order Summary</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 text-primary dark:text-nav font-semibold ">
           <div className="flex justify-between">
             <span>Subtotal</span>
             <span>৳ {subtotal.toFixed(2)}</span>
@@ -75,7 +76,7 @@ const CheckoutPage = () => {
             <span>Shipping</span>
             <span>৳ {shipping.price}</span>
           </div>
-          <hr />
+          <hr className="bg-secondary h-[0.5px] border-none" />
           <div className="flex justify-between font-bold text-lg">
             <span>Total</span>
             <span>৳ {total.toFixed(2)}</span>
