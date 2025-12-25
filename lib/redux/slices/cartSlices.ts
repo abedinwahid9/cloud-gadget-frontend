@@ -89,6 +89,7 @@ const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem>) => {
       const exists = state.items.find((item) => item.id === action.payload.id);
+
       if (exists) {
         exists.qnt += action.payload.qnt;
         ToastCustom(`This ${action.payload.title} is already add to cart`);

@@ -11,14 +11,7 @@ interface Btn {
   disabled?: boolean;
 }
 
-const CustomBtn = ({
-  title,
-  handleBtn,
-  className,
-
-  disabled,
-  ...rest
-}: Btn) => {
+const CustomBtn = ({ title, handleBtn, className, disabled, ...rest }: Btn) => {
   return (
     <motion.div className="w-full" whileTap={{ scale: 0.95 }}>
       <Button
