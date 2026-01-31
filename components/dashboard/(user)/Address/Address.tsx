@@ -5,9 +5,7 @@ import { useForm } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
 import { Textarea } from "@/components/ui/textarea";
-
 import CustomBtn from "@/components/share/CustomBtn/CustomBtn";
 import { CardStyle } from "@/lib/utils/customCss";
 
@@ -91,14 +89,14 @@ const Address = ({
               htmlFor="email"
               className="text-secondary font-bold dark:text-nav underline"
             >
-              Email Address
+              Email Address(Optional)
             </Label>
             <Input
               id="email"
               type="email"
               className="text-primary"
               placeholder="example@mail.com"
-              {...register("email", { required: "Email is required" })}
+              // {...register("email", { required: "Email is required" })}
             />
             {errors.email && (
               <p className="text-red-500 text-sm">{errors.email.message}</p>
@@ -111,7 +109,7 @@ const Address = ({
               htmlFor="street"
               className="text-secondary font-bold dark:text-nav underline"
             >
-              Street Address
+              Address
             </Label>
             <Input
               id="street"
@@ -130,15 +128,15 @@ const Address = ({
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
               <Label
-                htmlFor="city"
+                htmlFor="upazila"
                 className="text-secondary font-bold dark:text-nav underline"
               >
-                City
+                Upazila/Thana
               </Label>
               <Input
-                id="city"
+                id="upazila"
                 className="text-primary"
-                placeholder="Enter city"
+                placeholder="Enter upazila"
                 {...register("city", { required: "City is required" })}
               />
               {errors.city && (
@@ -148,62 +146,19 @@ const Address = ({
 
             <div className="space-y-1">
               <Label
-                htmlFor="state"
+                htmlFor="district"
                 className="text-secondary font-bold dark:text-nav underline"
               >
-                State
+                District
               </Label>
               <Input
-                id="state"
+                id="district"
                 className="text-primary"
-                placeholder="Enter state"
+                placeholder="Enter district"
                 {...register("state", { required: "State is required" })}
               />
               {errors.state && (
                 <p className="text-red-500 text-sm">{errors.state.message}</p>
-              )}
-            </div>
-          </div>
-
-          {/* Postal & Country */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <Label
-                htmlFor="postalCode"
-                className="text-secondary font-bold dark:text-nav underline"
-              >
-                Postal Code
-              </Label>
-              <Input
-                id="postalCode"
-                className="text-primary"
-                placeholder="e.g. 1212"
-                {...register("postalCode", {
-                  required: "Postal code is required",
-                })}
-              />
-              {errors.postalCode && (
-                <p className="text-red-500 text-sm">
-                  {errors.postalCode.message}
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-1">
-              <Label
-                htmlFor="country"
-                className="text-secondary font-bold dark:text-nav underline"
-              >
-                Country
-              </Label>
-              <Input
-                id="country"
-                className="text-primary"
-                placeholder="Bangladesh"
-                {...register("country", { required: "Country is required" })}
-              />
-              {errors.country && (
-                <p className="text-red-500 text-sm">{errors.country.message}</p>
               )}
             </div>
           </div>
