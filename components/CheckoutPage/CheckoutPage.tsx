@@ -14,11 +14,8 @@ const CheckoutPage = () => {
   const router = useRouter();
   const cartItems = useAppSelector((state) => state.cart.items);
   const subtotal = useAppSelector((state) => state.cart.totalPrice);
-
-  const [shipping, setShipping] = useState<{ id: string; price: number }>({
-    id: "insideDhaka",
-    price: 70,
-  });
+  const deliveryCharge = useAppSelector((state) => state.cart.deliveryCharge);
+  console.log(deliveryCharge);
 
   const [form, setForm] = useState({
     name: "",
@@ -29,19 +26,8 @@ const CheckoutPage = () => {
     postalCode: "",
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleShippingChange = (value: string) => {
-    setShipping(
-      value === "insideDhaka"
-        ? { id: "insideDhaka", price: 70 }
-        : { id: "outsideDhaka", price: 130 }
-    );
-  };
-
-  const total = subtotal + shipping.price;
+  const charge = deliveryCharge ? deliveryCharge?.charge : 0;
+  const total = subtotal + charge;
 
   const handleCheckout = () => {
     if (cartItems.length === 0) {
@@ -73,8 +59,15 @@ const CheckoutPage = () => {
             <span>৳ {subtotal.toFixed(2)}</span>
           </div>
           <div className="flex justify-between">
-            <span>Shipping</span>
-            <span>৳ {shipping.price}</span>
+            <h3>
+              Shipping:
+              <br />
+              <span className="text-nav capitalize">
+                ({deliveryCharge?.zone})
+              </span>
+            </h3>
+
+            <span>৳ {deliveryCharge?.charge.toFixed(2)}</span>
           </div>
           <hr className="bg-secondary h-[0.5px] border-none" />
           <div className="flex justify-between font-bold text-lg">

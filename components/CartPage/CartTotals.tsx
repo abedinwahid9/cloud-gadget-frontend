@@ -4,14 +4,15 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { useAppSelector } from "@/lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import Link from "next/link";
 import CustomBtn from "../share/CustomBtn/CustomBtn";
 import { CardStyle } from "@/lib/utils/customCss";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import { deliveryCharge } from "@/lib/redux/slices/cartSlices";
 
-interface ZoneCharge {
+export interface ZoneCharge {
   id: string;
   zone: string;
   charge: number;
@@ -20,6 +21,7 @@ interface ZoneCharge {
 const CartTotals = () => {
   const subtotal = useAppSelector((state) => state.cart.totalPrice);
   const axiosPublic = useAxiosPublic();
+  const dispatch = useAppDispatch();
 
   const [shipping, setShipping] = useState<ZoneCharge | null>(null);
 
@@ -35,6 +37,7 @@ const CartTotals = () => {
   useEffect(() => {
     if (data.length > 0 && !shipping) {
       setShipping(data[0]);
+      dispatch(deliveryCharge(data[0]));
     }
   }, [data, shipping]);
 
@@ -42,6 +45,7 @@ const CartTotals = () => {
     const selected = data.find((item) => item.id === id);
     if (selected) {
       setShipping(selected);
+      dispatch(deliveryCharge(selected));
     }
   };
 
