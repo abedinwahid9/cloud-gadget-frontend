@@ -3,6 +3,10 @@
 import React from "react";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Package, Truck, CheckCircle2, MapPin, Headphones } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface Order {
   orderId: string;
@@ -14,101 +18,149 @@ interface Order {
 }
 
 const dummyOrder: Order = {
-  orderId: "123456",
-  trackingNumber: "TRACK78910",
-  estimatedDelivery: "Sep 15, 2025",
+  orderId: "GS-123456",
+  trackingNumber: "TRACK-78910",
+  estimatedDelivery: "15 Sep, 2025",
   shippingAddress: "123 Main St, Dhaka, Bangladesh",
   stages: [
     { name: "Ordered", completed: true },
     { name: "Shipped", completed: true },
-    { name: "In Transit", completed: false },
+    { name: "In Transit", completed: true },
     { name: "Out for Delivery", completed: false },
     { name: "Delivered", completed: false },
   ],
   items: [
-    { id: "1", name: "T-Shirt", qty: 2, price: "৳600" },
-    { id: "2", name: "Shoes", qty: 1, price: "৳1800" },
+    { id: "1", name: "Wireless Headphone", qty: 1, price: "৳6,500" },
+    { id: "2", name: "USB‑C Charger", qty: 2, price: "৳1,800" },
   ],
 };
 
-const OrderTracking = () => (
-  <div className="max-w-2xl mx-auto py-8">
-    <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-      <CardHeader>
-        <CardTitle className="text-2xl font-semibold text-primary">
-          Order Tracking
-        </CardTitle>
-        <p className="text-secondary dark:text-nav">
-          Order #: {dummyOrder.orderId} &mdash; Tracking #:{" "}
-          {dummyOrder.trackingNumber}
-        </p>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        {/* Stepper */}
-        <div className="flex justify-between items-center">
-          {dummyOrder.stages.map((stage, idx) => (
-            <div key={idx} className="flex-1 text-center">
-              <div
-                className={`mx-auto w-8 h-8 rounded-full border-2 ${
-                  stage.completed
-                    ? "border-primary bg-primary"
-                    : "border-gray-300"
-                }`}
-              ></div>
-              <p
-                className={`mt-2 text-sm ${
-                  stage.completed ? "text-primary" : "text-gray-500"
-                }`}
-              >
-                {stage.name}
-              </p>
-              {idx < dummyOrder.stages.length - 1 && (
-                <div className="absolute top-4 left-full w-full h-0.5 bg-gray-300"></div>
-              )}
+export default function OrderTrackingPage() {
+  const completedCount = dummyOrder.stages.filter((s) => s.completed).length;
+  const progress = (completedCount / dummyOrder.stages.length) * 100;
+
+  return (
+    <div className="min-h-screen bg-background px-4 py-10">
+      <div className="mx-auto max-w-3xl space-y-6">
+        {/* Header */}
+        <div className="text-center space-y-2">
+          <h1 className="text-3xl font-bold tracking-tight">Order Tracking</h1>
+          <p className="text-muted-foreground">
+            Track your gadget order in real time
+          </p>
+        </div>
+
+        {/* Order Summary */}
+        <Card className="shadow-lg">
+          <CardHeader className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <CardTitle>Order #{dummyOrder.orderId}</CardTitle>
+            <Badge variant="secondary">In Transit</Badge>
+          </CardHeader>
+
+          <CardContent className="space-y-6">
+            <p className="text-sm text-muted-foreground">
+              Tracking Number:{" "}
+              <span className="font-medium">{dummyOrder.trackingNumber}</span>
+            </p>
+
+            {/* Progress */}
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>Order Placed</span>
+                <span>Delivered</span>
+              </div>
+              <Progress value={progress} />
             </div>
-          ))}
-        </div>
 
-        <div className="text-sm text-gray-700 dark:text-gray-300">
-          Estimated Delivery:{" "}
-          <span className="font-medium">{dummyOrder.estimatedDelivery}</span>
-        </div>
+            {/* Timeline */}
+            <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+              {dummyOrder.stages.map((stage, i) => (
+                <StatusItem
+                  key={i}
+                  title={stage.name}
+                  active={stage.completed}
+                  icon={
+                    stage.name === "Ordered" ? (
+                      <Package />
+                    ) : stage.name === "Shipped" ? (
+                      <Truck />
+                    ) : stage.name === "Delivered" ? (
+                      <CheckCircle2 />
+                    ) : (
+                      <Truck />
+                    )
+                  }
+                />
+              ))}
+            </div>
 
-        {/* Items */}
-        <div>
-          <h3 className="text-lg font-semibold text-primary">
-            Items in your order:
-          </h3>
-          <ul className="mt-2 space-y-2">
-            {dummyOrder.items.map((item) => (
-              <li key={item.id} className="flex justify-between">
-                <span>
-                  {item.name} × {item.qty}
-                </span>
-                <span className="font-medium text-primary">{item.price}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+            {/* ETA */}
+            <div className="rounded-lg border p-4 text-sm">
+              <p className="text-muted-foreground">Estimated Delivery</p>
+              <p className="font-semibold">{dummyOrder.estimatedDelivery}</p>
+            </div>
 
-        {/* Shipping Address */}
-        <div className="text-sm text-gray-700 dark:text-gray-300">
-          <h3 className="font-semibold text-secondary dark:text-nav underline">
-            Shipping Address
-          </h3>
-          <p>{dummyOrder.shippingAddress}</p>
-        </div>
+            {/* Items */}
+            <div className="space-y-3">
+              <h3 className="font-semibold text-lg">Items in your order</h3>
+              <div className="divide-y rounded-lg border">
+                {dummyOrder.items.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex justify-between p-4 text-sm"
+                  >
+                    <span>
+                      {item.name} × {item.qty}
+                    </span>
+                    <span className="font-medium">{item.price}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-4">
-          <Button variant="outline" className="flex-1">
-            View in Carrier Site
-          </Button>
-          <Button className="flex-1">Contact Support</Button>
-        </div>
-      </CardContent>
-    </Card>
-  </div>
-);
+            {/* Address */}
+            <div className="rounded-lg border p-4 text-sm space-y-1">
+              <div className="flex items-center gap-2 font-semibold">
+                <MapPin size={16} /> Shipping Address
+              </div>
+              <p className="text-muted-foreground">
+                {dummyOrder.shippingAddress}
+              </p>
+            </div>
 
-export default OrderTracking;
+            {/* Actions */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button variant="outline" className="flex-1 gap-2">
+                <Truck size={16} /> Carrier Website
+              </Button>
+              <Button className="flex-1 gap-2">
+                <Headphones size={16} /> Contact Support
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+function StatusItem({ title, active, icon }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className={`flex flex-col items-center gap-2 rounded-xl border p-3 text-center text-sm transition ${
+        active ? "border-primary bg-primary/5" : "opacity-60"
+      }`}
+    >
+      <div
+        className={`rounded-full p-2 ${
+          active ? "bg-primary text-primary-foreground" : "bg-muted"
+        }`}
+      >
+        {icon}
+      </div>
+      <span className="font-medium">{title}</span>
+    </motion.div>
+  );
+}

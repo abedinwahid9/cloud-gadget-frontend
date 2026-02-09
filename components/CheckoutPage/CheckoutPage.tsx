@@ -6,16 +6,18 @@ import { useAppSelector } from "@/lib/redux/hooks";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Address from "../dashboard/(user)/Address/Address";
+import Address, {
+  AddressFormValues,
+} from "../dashboard/(user)/Address/Address";
 import CustomBtn from "../share/CustomBtn/CustomBtn";
 import { CardStyle } from "@/lib/utils/customCss";
+import { useForm } from "react-hook-form";
 
 const CheckoutPage = () => {
   const router = useRouter();
   const cartItems = useAppSelector((state) => state.cart.items);
   const subtotal = useAppSelector((state) => state.cart.totalPrice);
   const deliveryCharge = useAppSelector((state) => state.cart.deliveryCharge);
-  console.log(deliveryCharge);
 
   const [form, setForm] = useState({
     name: "",
@@ -29,22 +31,40 @@ const CheckoutPage = () => {
   const charge = deliveryCharge ? deliveryCharge?.charge : 0;
   const total = subtotal + charge;
 
-  const handleCheckout = () => {
-    if (cartItems.length === 0) {
-      alert("Your cart is empty!");
-      return;
-    }
+  // const handleCheckout = () => {
+  //   if (cartItems.length === 0) {
+  //     alert("Your cart is empty!");
+  //     return;
+  //   }
 
-    // Here you can integrate your payment gateway or redirect to payment page
-    alert(`Order placed! Total: ৳ ${total.toFixed(2)}`);
-    router.push("/"); // redirect to home or order confirmation
+  //   // Here you can integrate your payment gateway or redirect to payment page
+  //   alert(`Order placed! Total: ৳ ${total.toFixed(2)}`);
+  //   router.push("/"); // redirect to home or order confirmation
+  // };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AddressFormValues>();
+
+  const onSubmit = (data: AddressFormValues) => {
+    console.log("Delivery Address:", data);
   };
 
   return (
-    <div className=" px-4 py-5 flex flex-col lg:flex-row gap-6">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className=" px-4 py-5 flex flex-col lg:flex-row gap-6"
+    >
       {/* Billing Form */}
       <div className="lg:w-2/3 w-full">
-        <Address title="Billing & Shipping Details " isNote={true} />
+        <Address
+          register={register}
+          errors={errors}
+          title="Billing & Shipping Details "
+          isNote={true}
+        />
       </div>
 
       {/* Order Summary */}
@@ -76,13 +96,14 @@ const CheckoutPage = () => {
           </div>
 
           <CustomBtn
-            handleBtn={handleCheckout}
+            // handleBtn={handleCheckout}
+            type="submit"
             className="w-full mt-4 rounded-md"
-            title="Proceed to Payment"
+            title="Place to order"
           />
         </CardContent>
       </Card>
-    </div>
+    </form>
   );
 };
 

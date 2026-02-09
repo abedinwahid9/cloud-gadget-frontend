@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useForm } from "react-hook-form";
+import { FieldErrors, useForm, UseFormRegister } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import CustomBtn from "@/components/share/CustomBtn/CustomBtn";
 import { CardStyle } from "@/lib/utils/customCss";
 
-type AddressFormValues = {
+export type AddressFormValues = {
   fullName: string;
   phone: string;
   email: string;
@@ -24,27 +24,22 @@ type AddressFormValues = {
 const Address = ({
   title,
   isNote = false,
+  register,
+  errors,
 }: {
   title: string;
-  isNote?: true | false;
+  isNote?: boolean;
+  button?: boolean;
+  register: UseFormRegister<AddressFormValues>;
+  errors: FieldErrors<AddressFormValues>;
 }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<AddressFormValues>();
-
-  const onSubmit = (data: AddressFormValues) => {
-    console.log("Delivery Address:", data);
-  };
-
   return (
     <Card className={`${CardStyle}`}>
       <CardHeader>
         <CardTitle className="text-xl font-bold text-nav">{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div className="space-y-4">
           {/* Full Name */}
           <div className="space-y-1">
             <Label
@@ -182,12 +177,14 @@ const Address = ({
           )}
 
           {/* Submit */}
-          <CustomBtn
-            title="Save Address"
-            type="submit"
-            className="w-full mt-2 rounded-md"
-          />
-        </form>
+          {/* {button && (
+            <CustomBtn
+              title="Save Address"
+              type="submit"
+              className="w-full mt-2 rounded-md"
+            />
+          )} */}
+        </div>
       </CardContent>
     </Card>
   );

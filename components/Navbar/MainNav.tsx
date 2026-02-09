@@ -20,6 +20,7 @@ import Wishlist from "../share/NavWishList/NavWishList";
 import { ThemeBtn } from "../theme/ThemeBtn";
 import SearchBox from "../SearchBox/SearchBox";
 import { Drawer, DrawerTrigger } from "../ui/drawer";
+import { MdLocalShipping } from "react-icons/md";
 
 export const userIcons = "w-7 h-7 text-secondary hover:text-nav";
 
@@ -140,6 +141,11 @@ const MainNav = () => {
 
               {/* Right Icons */}
               <ul className="flex items-center md:gap-4 gap-2">
+                <li className="hidden lg:block">
+                  <Link href="/order-searching">
+                    <MdLocalShipping className={userIcons} />
+                  </Link>
+                </li>
                 <li className="hidden lg:block">
                   <Link href="/wishlist">
                     <Wishlist css={userIcons} />
