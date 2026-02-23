@@ -1,3 +1,4 @@
+import { ZoneCharge } from "@/components/CartPage/CartTotals";
 import ToastCustom from "@/components/share/ToastCustom/ToastCustom";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -17,6 +18,7 @@ export interface CartItem {
 interface CartState {
   items: CartItem[];
   totalQuantity: number;
+  deliveryCharge: ZoneCharge | null;
   totalPrice: number;
 }
 
@@ -24,6 +26,7 @@ interface CartState {
 interface PersistedData {
   data: CartItem[];
   totalQuantity: number;
+  deliveryCharge: ZoneCharge | null;
   totalPrice: number;
   expiry: number;
 }
@@ -35,7 +38,7 @@ const EXPIRY_MS = 1000 * 60 * 60 * 24 * EXPIRY_DAYS;
 const calculateTotals = (items: CartItem[]) => {
   const totalPrice = items.reduce(
     (acc, item) => acc + item.price * item.qnt,
-    0
+    0,
   );
   const totalQuantity = items.reduce((acc, item) => acc + item.qnt, 0);
   return { totalPrice, totalQuantity };
@@ -46,6 +49,7 @@ const saveCart = (state: CartState) => {
   const payload: PersistedData = {
     data: state.items,
     totalPrice: state.totalPrice,
+    deliveryCharge: state.deliveryCharge,
     totalQuantity: state.totalQuantity,
     expiry: Date.now() + EXPIRY_MS,
   };
@@ -55,27 +59,38 @@ const saveCart = (state: CartState) => {
 // Load initial state from localStorage
 const loadInitialState = (): CartState => {
   if (typeof window === "undefined") {
-    return { items: [], totalQuantity: 0, totalPrice: 0 };
+    return { items: [], totalQuantity: 0, totalPrice: 0, deliveryCharge: null };
   }
 
   try {
     const raw = localStorage.getItem("cart");
-    if (!raw) return { items: [], totalQuantity: 0, totalPrice: 0 };
-
+    if (!raw)
+      return {
+        items: [],
+        deliveryCharge: null,
+        totalQuantity: 0,
+        totalPrice: 0,
+      };
     const parsed: PersistedData = JSON.parse(raw);
 
     if (Date.now() > parsed.expiry) {
       localStorage.removeItem("cart");
-      return { items: [], totalQuantity: 0, totalPrice: 0 };
+      return {
+        items: [],
+        deliveryCharge: null,
+        totalQuantity: 0,
+        totalPrice: 0,
+      };
     }
 
     return {
       items: parsed.data,
+      deliveryCharge: parsed.deliveryCharge,
       totalQuantity: parsed.totalQuantity,
       totalPrice: parsed.totalPrice,
     };
   } catch {
-    return { items: [], totalQuantity: 0, totalPrice: 0 };
+    return { items: [], totalQuantity: 0, totalPrice: 0, deliveryCharge: null };
   }
 };
 
@@ -89,6 +104,7 @@ const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem>) => {
       const exists = state.items.find((item) => item.id === action.payload.id);
+
       if (exists) {
         exists.qnt += action.payload.qnt;
         ToastCustom(`This ${action.payload.title} is already add to cart`);
@@ -147,7 +163,12 @@ const cartSlice = createSlice({
       state.items = [];
       state.totalPrice = 0;
       state.totalQuantity = 0;
+      state.deliveryCharge = null;
       ToastCustom(`All products are deleted`);
+      saveCart(state);
+    },
+    deliveryCharge: (state, action: PayloadAction<ZoneCharge | null>) => {
+      state.deliveryCharge = action.payload;
       saveCart(state);
     },
   },
@@ -159,5 +180,6 @@ export const {
   incrementQnt,
   decrementQnt,
   allCartClear,
+  deliveryCharge,
 } = cartSlice.actions;
 export default cartSlice.reducer;

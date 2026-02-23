@@ -9,7 +9,7 @@ const DeleteBtn = ({ action }: { action: () => void }) => {
   return (
     <Button
       onClick={action}
-      className="bg-transparent hover:bg-transparent text-badge"
+      className="bg-transparent cursor-pointer  hover:bg-transparent text-badge"
     >
       <RiDeleteBin3Line
         className="block group-hover:hidden"

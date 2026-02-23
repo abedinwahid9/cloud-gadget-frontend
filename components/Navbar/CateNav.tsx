@@ -77,13 +77,13 @@ const CateNav = () => {
               )}
 
               {cat?.subCategory.length > 0 && (
-                <NavigationMenuContent className="bg-primary/75  rounded-md p-4 shadow-lg min-w-[250px] backdrop-blur-3xl  border-4 border-nav/50">
+                <NavigationMenuContent className="bg-secondary/90 backdrop-blur-2xl  rounded-md p-4 shadow-lg min-w-[250px]  border-4 border-nav/50">
                   <ul className="grid gap-2 ">
                     {cat?.subCategory?.map((sub: SubCategory) => (
                       <li key={sub.id}>
                         <NavigationMenuLink asChild>
                           <Link href={`/shop/${cat.slug}/${sub.slug}`}>
-                            <div className="text-lg text-secondary hover:text-nav leading-none font-semibold capitalize hover:underline">
+                            <div className="text-lg text-primary hover:text-nav leading-none font-semibold capitalize hover:underline">
                               {sub.label}
                             </div>
                           </Link>

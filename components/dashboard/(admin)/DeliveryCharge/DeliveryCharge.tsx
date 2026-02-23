@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Title from "@/components/share/Title/Title";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,48 +18,88 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DeleteIcon } from "lucide-react";
-import ModelCharge from "./ModelCharge";
 import DeleteBtn from "@/components/share/DeleteBtn/DeleteBtn";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "@/hooks/useAxiosPublic/useAxiosPublic";
+import ConfirmToast from "@/components/share/ToastCustom/ConfirmToast";
+import ModelCharge from "./ModelCharge";
 
-// Types
+/* ================= TYPES ================= */
+
 type DeliveryZone = {
-  id: number;
+  id: string;
   zone: string;
   charge: number;
 };
 
-// Sample data
-const defaultData: DeliveryZone[] = [
-  { id: 1, zone: "Dhaka", charge: 60 },
-  { id: 2, zone: "Chattogram", charge: 120 },
-  { id: 3, zone: "Sylhet", charge: 100 },
-];
+/* ================= TABLE COLUMNS ================= */
 
-// Table columns
-const columns: ColumnDef<DeliveryZone>[] = [
+const getColumns = (
+  refetch: () => void,
+  handleZoneDelete: (id: string) => Promise<boolean | undefined>,
+): ColumnDef<DeliveryZone>[] => [
   {
     accessorKey: "zone",
     header: "Zone",
-    cell: ({ row }) => <span>{row.original.zone}</span>,
+    cell: ({ row }) => row.original.zone,
   },
   {
     accessorKey: "charge",
     header: "Charge (৳)",
-    cell: ({ row }) => <span>{row.original.charge}</span>,
+    cell: ({ row }) => row.original.charge,
   },
   {
     id: "actions",
     header: "Actions",
     cell: ({ row }) => (
-      <DeleteBtn action={() => alert(`Delete ${row.original.zone}`)} />
+      <div className="group">
+        <DeleteBtn
+          action={() =>
+            ConfirmToast(`Delete ${row.original.zone}`, async () => {
+              return await handleZoneDelete(row.original.id);
+            })
+          }
+        />
+      </div>
     ),
   },
 ];
 
+/* ================= COMPONENT ================= */
+
 const DeliveryCharge = () => {
-  const [data] = React.useState<DeliveryZone[]>(defaultData);
-  const [modelOpen, setModelOpen] = useState<boolean>(false);
+  const [modelOpen, setModelOpen] = useState(false);
+  const axiosPublic = useAxiosPublic();
+
+  const {
+    data = [],
+    refetch,
+    isLoading,
+  } = useQuery<DeliveryZone[]>({
+    queryKey: ["zone-charge"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/charge");
+
+      // 🔥 normalize backend data (_id → id)
+      return res.data.zone;
+    },
+  });
+
+  const handleZoneDelete = async (id: string) => {
+    try {
+      await axiosPublic.delete(`/charge/${id}`);
+      refetch();
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
+  const columns = useMemo(
+    () => getColumns(refetch, handleZoneDelete),
+    [refetch],
+  );
 
   const table = useReactTable({
     data,
@@ -67,54 +107,74 @@ const DeliveryCharge = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div>
       <Card className="bg-primary/10">
         <CardHeader className="flex flex-row justify-between items-center">
-          <CardTitle className="flex items-center gap-4">
+          <CardTitle>
             <Title text="Delivery Charge" />
           </CardTitle>
+
           <Button
-            className="bg-primary/50 text-secondary dark:text-nav rounded-4xl"
-            onClick={() => setModelOpen(!modelOpen)}
+            className="bg-primary/50 text-secondary dark:text-nav"
+            onClick={() => setModelOpen(true)}
           >
             Add Zone
           </Button>
         </CardHeader>
+
         <CardContent>
           <Table>
-            <TableHeader className="bg-primary/70 text-center">
+            <TableHeader className="bg-primary/70">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
-                    <TableHead className="text-center" key={header.id}>
+                    <TableHead key={header.id} className="text-center">
                       {flexRender(
                         header.column.columnDef.header,
-                        header.getContext()
+                        header.getContext(),
                       )}
                     </TableHead>
                   ))}
                 </TableRow>
               ))}
             </TableHeader>
+
             <TableBody>
-              {table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell className="text-center" key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+              {table.getRowModel().rows.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={3} className="text-center">
+                    No zones found
+                  </TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="text-center">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </CardContent>
       </Card>
-      <ModelCharge modelOpen={modelOpen} setModelOpen={setModelOpen} />
+
+      <ModelCharge
+        modelOpen={modelOpen}
+        refetch={refetch}
+        setModelOpen={setModelOpen}
+      />
     </div>
   );
 };

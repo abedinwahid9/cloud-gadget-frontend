@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import {
@@ -8,22 +9,29 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import { IoLogoYoutube } from "react-icons/io";
+import { RiMenu2Line } from "react-icons/ri";
+import { usePathname } from "next/navigation";
+
 import UserProfile from "../share/UserProfile/UserProfile";
 import CateNav from "./CateNav";
 import SidebarNav from "./SidebarNav";
-import { Drawer, DrawerTrigger } from "../ui/drawer";
-import { RiMenu2Line } from "react-icons/ri";
-import { usePathname } from "next/navigation";
 import Cart from "../share/Cart/Cart";
 import Wishlist from "../share/NavWishList/NavWishList";
 import { ThemeBtn } from "../theme/ThemeBtn";
 import SearchBox from "../SearchBox/SearchBox";
-import { useDispatch } from "react-redux";
+import { Drawer, DrawerTrigger } from "../ui/drawer";
+import { MdLocalShipping } from "react-icons/md";
+import Image from "next/image";
+import logo from "@/app/assets/logo/logo.png";
 
 export const userIcons = "w-7 h-7 text-secondary hover:text-nav";
+
 const MainNav = () => {
-  const [searchToggle, setSearchToggle] = useState<boolean>(false);
-  const [scrolling, setScrolling] = useState(false);
+  const [searchToggle, setSearchToggle] = useState(false);
+  const [showHeader, setShowHeader] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const pathname = usePathname();
 
   const socialIconStyle = "md:w-6 md:h-6 w-5 h-5 text-text";
 
@@ -34,40 +42,48 @@ const MainNav = () => {
     { name: "Contact Us", href: "/contact" },
   ];
 
-  const pathname = usePathname();
-  // Scroll Listener
+  // 🔥 Ghorerbazar-style scroll behavior
   useEffect(() => {
     const handleScroll = () => {
-      setScrolling(window.scrollY > 60);
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < 80) {
+        setShowHeader(true);
+      } else if (currentScrollY > lastScrollY) {
+        setShowHeader(false); // scrolling down
+      } else {
+        setShowHeader(true); // scrolling up
+      }
+
+      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   return (
-    <header>
-      <div className={`${scrolling ? "fixed top-0 right-0 w-full z-40" : ""}`}>
+    <header className="relative">
+      {/* FIXED NAV WRAPPER */}
+      <div
+        className={`fixed top-0 right-0 w-full z-40 transition-transform duration-300 ease-in-out
+        ${showHeader ? "translate-y-0" : "-translate-y-full"}`}
+      >
         <Drawer direction="left">
-          {/* top nav */}
-          <div className="w-full bg-primary relative z-30">
+          {/* 🔹 TOP BAR */}
+          <div className="w-full bg-primary">
             <div className="container mx-auto py-2 lg:px-5 px-1 flex justify-between">
-              <Link
-                href="tel:01716893200"
-                aria-hidden="true"
-                className="flex items-center gap-1"
-              >
+              <Link href="tel:01716893200" className="flex items-center gap-1">
                 <FaMobileAlt className="text-text md:text-base text-xs" />
-                <span className="text-text  font-semibold md:text-sm text-[8px]">
+                <span className="text-text font-semibold md:text-sm text-[8px]">
                   +88-01716893200
                 </span>
               </Link>
-              <h2
-                aria-hidden="true"
-                className="text-text font-semibold  md:text-lg text-xs"
-              >
+
+              <h2 className="text-text font-semibold md:text-lg text-xs">
                 Welcome to Cloudie Gadgets Shop
               </h2>
+
               <div className="flex gap-3">
                 <Link href="/">
                   <FaFacebookF className={socialIconStyle} />
@@ -81,37 +97,35 @@ const MainNav = () => {
               </div>
             </div>
           </div>
-          {/* main nav */}
-          <div className="w-full shadow-md shadow-primary/20 to-70%  py-4 lg:px-5 relative z-30 bg-background px-2 ">
+
+          {/* 🔹 MAIN NAV */}
+          <div className="w-full bg-background/90 backdrop-blur-md shadow-md lg:px-5 px-2">
             <div className="container mx-auto flex justify-between items-center">
-              {/* Logo + Menu */}
+              {/* Logo + Mobile Menu */}
               <div className="flex items-center gap-2">
-                <DrawerTrigger className="lg:hidden block" asChild>
+                <DrawerTrigger asChild className="lg:hidden block">
                   <RiMenu2Line className="w-7 h-7 text-primary dark:text-secondary cursor-pointer" />
                 </DrawerTrigger>
 
-                <Link className="" href="/">
-                  {/* <Image
-                  className="object-contain w-20 h-12"
-                  width={500}
-                  height={500}
-                  src={logo1}
-                  alt="logo"
-                /> */}
-                  <h2 className="text-xl font-bold">Cloudie Gadget</h2>
+                <Link href="/">
+                  {/* <h2 className="text-xl font-bold">Cloudie Gadget</h2> */}
+                  <Image width={80} height={60} src={logo} alt="hadiyya" />
                 </Link>
               </div>
-              {/* Nav links */}
-              <ul className="text-nav lg:flex items-center gap-6 hidden">
+
+              {/* Nav Links */}
+              <ul className="hidden lg:flex items-center gap-6">
                 {navLink.map((item) => {
                   const isActive =
                     pathname === item.href ||
                     (item.href !== "/" && pathname.startsWith(item.href));
+
                   return (
-                    <li key={item.name} className=" relative">
+                    <li key={item.name} className="relative">
                       <Link
                         href={item.href}
-                        className={`capitalize group font-semibold text-lg transition-colors duration-300  ${
+                        className={`font-semibold text-lg transition-colors duration-300
+                        ${
                           isActive
                             ? "text-nav"
                             : "text-secondary hover:text-nav"
@@ -119,9 +133,8 @@ const MainNav = () => {
                       >
                         {item.name}
                         <span
-                          className={`absolute left-0 -bottom-1 h-[2px] bg-nav transition-all duration-300 ${
-                            isActive ? "w-full" : "w-0 group-hover:w-full"
-                          }`}
+                          className={`absolute left-0 -bottom-1 h-[2px] bg-nav transition-all duration-300
+                          ${isActive ? "w-full" : "w-0 group-hover:w-full"}`}
                         />
                       </Link>
                     </li>
@@ -129,18 +142,25 @@ const MainNav = () => {
                 })}
               </ul>
 
-              {/* User icons */}
-              <ul className="text-nav flex items-center md:gap-4 gap-2">
+              {/* Right Icons */}
+              <ul className="flex items-center md:gap-4 gap-2">
+                <li className="hidden lg:block">
+                  <Link href="/order-searching">
+                    <MdLocalShipping className={userIcons} />
+                  </Link>
+                </li>
                 <li className="hidden lg:block">
                   <Link href="/wishlist">
                     <Wishlist css={userIcons} />
                   </Link>
                 </li>
-                <li className=" hidden lg:block">
+
+                <li className="hidden lg:block">
                   <Link href="/cart">
                     <Cart css={userIcons} />
                   </Link>
                 </li>
+
                 <button
                   disabled={searchToggle}
                   onClick={(e) => {
@@ -150,43 +170,44 @@ const MainNav = () => {
                 >
                   <FaSearch
                     className={`${userIcons} ${
-                      searchToggle ? "!text-nav !cursor-no-drop" : ""
-                    } cursor-pointer`}
+                      searchToggle ? "!text-nav !cursor-not-allowed" : ""
+                    }`}
                   />
                 </button>
-                {/* <div
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSearchToggle(false);
-                    }}
-                  >
-                    <FaSearch className={userIcons} />
-                  </div> */}
+
                 <li className="hidden lg:block">
                   <ThemeBtn />
-                </li>{" "}
+                </li>
+
                 <li>
                   <UserProfile />
                 </li>
               </ul>
             </div>
           </div>
-          {/* category nav link */}
-          {!scrolling && (
-            <div className="bg-secondary/50 mt-2 mx-2 shadow-[0px_0px_5px_0px_#233E2B]/50 rounded-xl hidden lg:block">
+
+          {/* 🔹 CATEGORY NAV */}
+          {showHeader && (
+            <div className="bg-secondary/40 backdrop-blur-2xl mt-2 mx-2  rounded-xl hidden lg:block">
               <CateNav />
             </div>
           )}
+
+          {/* 🔹 SIDEBAR */}
           <div className="relative z-[200]">
-            {/* side nav */}
             <SidebarNav />
           </div>
         </Drawer>
       </div>
+
+      {/* SEARCH BOX */}
       <SearchBox
         searchToggle={searchToggle}
         setSearchToggle={setSearchToggle}
       />
+
+      {/* Spacer so content doesn't jump */}
+      <div className="h-[120px] lg:h-[175px]" />
     </header>
   );
 };

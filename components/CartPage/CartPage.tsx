@@ -62,7 +62,7 @@ const CartPage = () => {
                       alt="img"
                     />
                     <div>
-                      <Link href={`/shop/${item.id}`}>
+                      <Link href={`/shop/product/${item.id}`}>
                         <h3 className="md:text-lg text-sm capitalize font-semibold truncate w-28 md:w-40 text-primary dark:text-nav hover:underline">
                           {item.title}
                         </h3>
@@ -86,7 +86,6 @@ const CartPage = () => {
                   <TableCell className="text-center text-primary dark:text-nav text-lg font-semibold ">
                     <div className=" flex justify-center items-center  flex-col md:flex-row gap-3">
                       <span className="md:w-3/4 w-full">
-                        {" "}
                         ৳ {(item?.qnt * item?.price).toFixed(2)}
                       </span>
                       <div
