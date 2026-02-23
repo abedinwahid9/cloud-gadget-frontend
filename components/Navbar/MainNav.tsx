@@ -21,6 +21,8 @@ import { ThemeBtn } from "../theme/ThemeBtn";
 import SearchBox from "../SearchBox/SearchBox";
 import { Drawer, DrawerTrigger } from "../ui/drawer";
 import { MdLocalShipping } from "react-icons/md";
+import Image from "next/image";
+import logo from "@/app/assets/logo/logo.png";
 
 export const userIcons = "w-7 h-7 text-secondary hover:text-nav";
 
@@ -97,7 +99,7 @@ const MainNav = () => {
           </div>
 
           {/* 🔹 MAIN NAV */}
-          <div className="w-full bg-background/90 backdrop-blur-md shadow-md py-4 lg:px-5 px-2">
+          <div className="w-full bg-background/90 backdrop-blur-md shadow-md lg:px-5 px-2">
             <div className="container mx-auto flex justify-between items-center">
               {/* Logo + Mobile Menu */}
               <div className="flex items-center gap-2">
@@ -106,7 +108,8 @@ const MainNav = () => {
                 </DrawerTrigger>
 
                 <Link href="/">
-                  <h2 className="text-xl font-bold">Cloudie Gadget</h2>
+                  {/* <h2 className="text-xl font-bold">Cloudie Gadget</h2> */}
+                  <Image width={80} height={60} src={logo} alt="hadiyya" />
                 </Link>
               </div>
 
@@ -204,7 +207,7 @@ const MainNav = () => {
       />
 
       {/* Spacer so content doesn't jump */}
-      <div className="h-[155px]" />
+      <div className="h-[120px] lg:h-[175px]" />
     </header>
   );
 };
