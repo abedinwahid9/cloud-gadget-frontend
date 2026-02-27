@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,7 @@ import Address, {
 import CustomBtn from "../share/CustomBtn/CustomBtn";
 import { CardStyle } from "@/lib/utils/customCss";
 import { useForm } from "react-hook-form";
+import Link from "next/link";
 
 const CheckoutPage = () => {
   const router = useRouter();
@@ -30,6 +31,10 @@ const CheckoutPage = () => {
 
   const charge = deliveryCharge ? deliveryCharge?.charge : 0;
   const total = subtotal + charge;
+
+  if (cartItems.length === 0) {
+    redirect("/cart");
+  }
 
   // const handleCheckout = () => {
   //   if (cartItems.length === 0) {
@@ -94,13 +99,14 @@ const CheckoutPage = () => {
             <span>Total</span>
             <span>৳ {total.toFixed(2)}</span>
           </div>
-
-          <CustomBtn
-            // handleBtn={handleCheckout}
-            type="submit"
-            className="w-full mt-4 rounded-md"
-            title="Place to order"
-          />
+          <Link href="/order-tracking">
+            <CustomBtn
+              // handleBtn={handleCheckout}
+              type="submit"
+              className="w-full mt-4 rounded-md"
+              title="Place to order"
+            />
+          </Link>
         </CardContent>
       </Card>
     </form>
