@@ -11,9 +11,9 @@ export function proxy(request: NextRequest) {
     "/my-account",
     "/profile",
     "/wishlist",
-    "/orders",
-    "/checkout",
-    "/cart/checkout",
+    // "/orders",
+    // "/checkout",
+    // "/cart/checkout",
   ];
   const adminRoutes = ["/admin"];
 
@@ -50,9 +50,9 @@ export const config = {
     "/my-account/:path*",
     "/profile/:path*",
     "/wishlist/:path*",
-    "/orders/:path*",
-    "/checkout/:path*",
-    "/cart/checkout/:path*",
+    // "/orders/:path*",
+    // "/checkout/:path*",
+    // "/cart/checkout/:path*",
     "/admin/:path*",
   ],
 };

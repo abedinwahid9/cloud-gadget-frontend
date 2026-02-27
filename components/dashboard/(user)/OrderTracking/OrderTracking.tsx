@@ -144,7 +144,15 @@ export default function OrderTrackingPage() {
   );
 }
 
-function StatusItem({ title, active, icon }) {
+function StatusItem({
+  title,
+  active,
+  icon,
+}: {
+  title: string;
+  active: boolean;
+  icon: React.ReactNode;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
